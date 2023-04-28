@@ -1,4 +1,15 @@
 #!make
+#
+#   make file for running a development server and running tests
+#
+#   This file is part of convert-pheno-ui
+#
+#   Last Modified: Apr/28/2023
+#
+#   Copyright (C) 2022-2023 Ivo Christopher Leist - CNAG (Ivo.leist@cnag.crg.eu)
+#
+#   License: GPL-3.0 license
+
 SHELL := /bin/bash
 
 CURRENT_DATE = $(shell date)

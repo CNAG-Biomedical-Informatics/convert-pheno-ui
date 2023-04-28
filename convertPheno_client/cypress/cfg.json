@@ -1,0 +1,47 @@
+{
+  "baseUrl": "http://localhost:5173",
+
+  "projectId": "convertPheno",
+
+  "experimentalStudio": true,
+
+  "retries": {
+    "runMode": 2,
+    "openMode": 0
+  },
+
+  "chromeWebSecurity": false,
+  "trashAssetsBeforeRuns": true,
+
+  "integrationFolder": "cypress/integration",
+  "fixturesFolder": "cypress/fixtures",
+  "downloadsFolder": "cypress/downloads",
+  "screenshotsFolder": "cypress/screenshots",
+  "videosFolder": "cypress/videos",
+
+  "pluginsFile": "cypress/plugins/index.js",
+  "supportFile": "cypress/support/index.js",
+
+  "component": {
+    "testFiles": "**/*.test.{js,ts,jsx,tsx}",
+    "componentFolder": "src/code"
+  },
+
+  "reporter": "cypress-multi-reporters",
+  "reporterOptions": {
+    "reporterEnabled": "mochawesome,mocha-junit-reporter",
+
+    "mochawesomeReporterOptions": {
+      "reportDir": "cypress/reports/mocha",
+      "overwrite": false,
+      "html": false,
+      "json": true,
+      "quiet": true
+    },
+
+    "mochaJunitReporterReporterOptions": {
+      "mochaFile": "cypress/reports/junit/junit.[hash].xml",
+      "jenkinsMode": true
+    }
+  }
+}

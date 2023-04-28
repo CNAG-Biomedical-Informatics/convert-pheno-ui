@@ -1,0 +1,19 @@
+{
+  "name": "mockapi",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "stop": "npx kill-port 5001"
+  },
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "json-server": "^0.16.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}

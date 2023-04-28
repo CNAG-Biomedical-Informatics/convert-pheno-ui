@@ -1,0 +1,11 @@
+node_modules
+build
+dist
+.env
+config.js
+config.json
+kc.env
+.nyc_output
+cypress/fixtures/users/*
+coverage
+reports

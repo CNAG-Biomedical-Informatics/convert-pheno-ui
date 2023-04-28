@@ -1,0 +1,359 @@
+/** 
+  DataGrid component
+
+  This file is part of convert-pheno-ui
+
+  Last Modified: Apr/28/2023
+
+  Copyright (C) 2022-2023 Ivo Christopher Leist - CNAG (Ivo.leist@cnag.crg.eu)
+
+  License: GPL-3.0 license
+*/
+
+import React, { useState } from "react";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  Grid,
+} from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { AgGridReact } from "ag-grid-react";
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-alpine.css";
+import { useLocation } from "react-router-dom";
+
+import { ErrorBoundary } from "react-error-boundary";
+import TableChartIcon from "@mui/icons-material/TableChart";
+
+import ColumnsTreeViewModal from "../columnsTreeViewModal/ColumnsTreeViewModal";
+
+import auth from "../../../../../../Auth";
+import CopyOnClick from "./CopyOnClick";
+
+const ErrorFallback = ({ error, resetErrorBoundary }) => (
+  <div role="alert">
+    <p>Something went wrong:</p>
+    <pre>{error.message}</pre>
+    <button onClick={resetErrorBoundary}>Try again</button>
+  </div>
+);
+
+export default function DataGrid(props) {
+  const {
+    jsonData,
+    colHeaders,
+    colTree,
+    colTreeNodeIds,
+    onGridReady,
+    shownColumns,
+    setShownColumns,
+    colTreeNodeSelected,
+    tabValue,
+  } = props;
+
+  const location = useLocation();
+
+  const defaultColDef = {
+    editable: false,
+    sortable: true,
+    flex: 1,
+    minWidth: 100,
+    filter: false,
+    resizable: true,
+  };
+
+  const theme = useTheme();
+
+  const [clickedCellInfo, setClickedCellInfo] = useState({ id: 0, field: "" });
+  const [open, setOpen] = useState(false);
+  const [openTreeView, setOpenTreeView] = useState(false);
+
+  // TODO
+  // in the basic table view
+  // Add to the nodes exposures and measurements
+  // the leaf nodes value
+  // so you can filter even the basic table
+  // based on a value
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleCellClick = (params) => {
+    const colId = params.column.colId;
+    const rowId = params.node.rowIndex;
+
+    // below should not be hardcoded get it from the backend
+    // depending on what is selected bff or pxf
+    const clickableCells = [
+      "exposures",
+      "measures",
+      "treatments",
+      "measurements",
+      "medicalActions",
+      "diseases",
+      "interventionsOrProcedures",
+      "phenotypicFeatures",
+    ];
+    if (clickableCells.includes(colId)) {
+      setOpen(true);
+      setClickedCellInfo({
+        id: rowId,
+        field: colId,
+      });
+    }
+  };
+
+  const checkKeyExists = (obj, key) => {
+    for (const ObjKey in obj) {
+      if (ObjKey === key) {
+        return true;
+      }
+      if (typeof obj[key] === "object") {
+        const found = checkKeyExists(obj[key]);
+        if (found) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
+  const getValue = (props) => {
+    const { data, colDef } = props;
+    const field = colDef.field;
+
+    return checkKeyExists(data[field], "count") ? (
+      <a
+        href={`#${location.pathname}`}
+        onClick={(event) => {
+          event.preventDefault();
+        }}
+        onContextMenu={(event) => {
+          event.preventDefault();
+        }}
+      >
+        {data[field]["values"].join(", ")}
+      </a>
+    ) : (
+      data[field]
+    );
+  };
+
+  const getDialogTableRows = (data) => {
+    const { id, field } = clickedCellInfo;
+
+    const rows = [];
+    if (field === "") {
+      return rows;
+    }
+
+    const cellData = data[id][field];
+
+    for (const [idx, row] of cellData.data.entries()) {
+      const rowData = {
+        id: parseInt(idx) + 1,
+      };
+      for (const [key, value] of Object.entries(row)) {
+        rowData[key] = value;
+      }
+      rows.push(rowData);
+    }
+    return rows;
+  };
+
+  const getDialogTableValue = (params) => {
+    const { value } = params;
+    if (value === undefined || value === []) {
+      return "";
+    }
+    return value;
+  };
+
+  const getDialogTableColumns = (data) => {
+    const { field } = clickedCellInfo;
+    const cols = [{ field: "id", headerName: "#" }];
+
+    if (field === "") {
+      return cols;
+    }
+
+    const cellData = data[field].data[0];
+    for (const key in cellData) {
+      cols.push({
+        field: key,
+        headerName: key,
+        flex: 1,
+        cellRenderer: getDialogTableValue,
+      });
+    }
+    return cols;
+  };
+
+  const getRows = (data) => {
+    if (data.length === undefined) {
+      return [];
+    }
+    return data;
+  };
+
+  const getColumns = (data) => {
+    const cols = [];
+
+    data.forEach((header) => {
+      cols.push({
+        field: header,
+        headerName: header,
+        flex: 1,
+        cellRenderer: CopyOnClick,
+      });
+    });
+    // for (const key in data) {
+    //   cols.push({
+    //     field: key,
+    //     headerName: key,
+    //     flex: 1,
+    //     cellRenderer: CopyOnClick,
+    //   });
+    // }
+    cols.sort(
+      (a, b) => colHeaders.indexOf(a.field) - colHeaders.indexOf(b.field)
+    );
+    return cols;
+  };
+
+  const renderDataGrid = (gridId, rowData, columnDefs, handleCellClick) => {
+    const gridClass =
+      theme.palette.mode === "dark"
+        ? "ag-theme-alpine-dark"
+        : "ag-theme-alpine";
+
+    const gridOptions = {
+      pagination: true,
+      paginationPageSize: 10,
+      onGridReady: (params) => {
+        onGridReady(params, gridId);
+      },
+    };
+
+    return (
+      <AgGridReact
+        id={gridId}
+        rowData={rowData}
+        className={gridClass}
+        gridOptions={gridOptions}
+        onCellClicked={handleCellClick}
+        defaultColDef={defaultColDef}
+        columnDefs={columnDefs}
+      />
+    );
+  };
+
+  if (auth.tokenExpired()) {
+    return <div>Session expired. Please login again</div>;
+  }
+
+  const handleShowHideColumns = () => {
+    setOpenTreeView(true);
+  };
+
+  function getSelectedColumnsRecursively(tree, checkedNodes) {
+    const result = {};
+
+    function traverseTree(nodeTree, isTopLevel) {
+      for (const node of nodeTree) {
+        if (checkedNodes[node.nodeId] && isTopLevel) {
+          result[node.name] = [];
+        }
+        if (node.children && node.children.length > 0) {
+          node.children.forEach((child) => {
+            if (checkedNodes[child.nodeId]) {
+              if (!result[node.name]) {
+                result[node.name] = [];
+              }
+              result[node.name].push(child.name);
+            }
+          });
+          traverseTree(node.children, false);
+        }
+      }
+    }
+    traverseTree(tree, true);
+    return result;
+  }
+
+  const handleCloseTreeView = (checkedBoxes) => {
+    if (checkedBoxes === null) {
+      setOpenTreeView(false);
+      return;
+    }
+
+    // TODO
+    // it might make sense to wrap the function below in a useMemo hook
+    const selectedColumns = getSelectedColumnsRecursively(
+      colTree,
+      checkedBoxes
+    );
+    setShownColumns(selectedColumns);
+    setOpenTreeView(false);
+  };
+
+  return (
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <ColumnsTreeViewModal
+        open={openTreeView}
+        handleClose={handleCloseTreeView}
+        colTree={colTree}
+        colTreeNodeIds={colTreeNodeIds}
+        shownColumns={shownColumns}
+        colTreeNodeSelected={colTreeNodeSelected}
+      />
+      <Grid container>
+        <Grid item xs={12} sx={{ padding: "0px 0px 10px 0px" }}>
+          <Button
+            variant="contained"
+            onClick={handleShowHideColumns}
+            startIcon={<TableChartIcon />}
+          >
+            show hide table columns
+          </Button>
+        </Grid>
+        <Grid item xs={12} style={{ height: 525 }}>
+          {renderDataGrid(
+            `${tabValue}-mainGrid`,
+            getRows(jsonData),
+            getColumns(colHeaders),
+            handleCellClick
+          )}
+        </Grid>
+        <Dialog
+          fullWidth={true}
+          maxWidth={"md"}
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {clickedCellInfo.field}
+          </DialogTitle>
+          <DialogContent style={{ height: "500px" }}>
+            {renderDataGrid(
+              `${tabValue}-dialogGrid`,
+              getDialogTableRows(jsonData),
+              getDialogTableColumns(jsonData[0])
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Grid>
+    </ErrorBoundary>
+  );
+}
