@@ -1,0 +1,126 @@
+version: '3.3'
+services:
+  api:
+    build:
+      context: ./convertPheno_server
+      target: prod
+      args:
+        - IGNORE_CACHE_FROM_HERE=${IGNORE_CACHE_FROM_HERE}
+    depends_on:
+      api-db:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+    ports:
+      - 5000:5000
+    env_file:
+      - .env
+    tty: true
+    volumes:
+      - api-data:/usr/src/data
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  api-db:
+    image: postgres:13-alpine
+    volumes:
+      - postgres-data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=${API_DB}
+      - POSTGRES_USER=${API_DB_USER}
+      - POSTGRES_PASSWORD=${API_DB_PW}
+    healthcheck:
+      test: pg_isready -U postgres
+
+  client:
+    build:
+      context: ./convertPheno_client
+      args:
+        - IGNORE_CACHE_FROM_HERE=${IGNORE_CACHE_FROM_HERE}
+    depends_on:
+      - api
+      - keycloak
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./convertPheno_client/config.js:/usr/share/nginx/html/config.js:ro
+      - ./nginx_mountpoint/templates:/etc/nginx/templates:ro
+      - ./nginx_mountpoint/includes:/etc/nginx/includes:ro
+      - ./nginx_mountpoint/logs:/var/log/nginx
+      - ./nginx_mountpoint/certs/convertpheno.dev.pem:/etc/nginx/convertpheno.dev.pem:ro
+      - ./nginx_mountpoint/certs/convertpheno.dev-key.pem:/etc/nginx/convertpheno.dev-key.pem:ro
+    environment:
+      NODE_ENV: production
+
+  keycloak-db:
+    container_name: kc-db
+    image: postgres:13-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${KC_DB}
+      POSTGRES_USER: ${KC_DB_USER}
+      POSTGRES_PASSWORD: ${KC_DB_PW}
+    healthcheck:
+      test: pg_isready -U ${KC_DB_USER}
+
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:20.0.1
+    depends_on:
+      - keycloak-db
+    environment:
+      DB_VENDOR: postgres
+      DB_ADDR: postgres
+      DB_DATABASE: keycloak
+      DB_USER: ${KC_DB_USER}
+      DB_PASSWORD: ${KC_DB_PW}
+      KEYCLOAK_ADMIN: ${KC_ADMIN_USER}
+      KEYCLOAK_ADMIN_PASSWORD: ${KC_ADMIN_PW}
+      KC_PROXY: edge
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME_PATH: /auth
+      KC_HOSTNAME_URL: ${KC_HOSTNAME_URL}
+      KC_HOSTNAME_ADMIN_URL: ${KC_HOSTNAME_ADMIN_URL}
+      KC_HTTPS_CERTIFICATE_FILE: /opt/keycloak/conf/server.crt.pem
+      KC_HTTPS_CERTIFICATE_KEY_FILE: /opt/keycloak/conf/server.key.pem
+      KC_HEALTH_ENABLED: true
+    ports:
+      - "28080:8080"
+      - "8443:443"
+    volumes:
+      - type: bind
+        source: ./realm-export.json
+        target: /opt/keycloak/data/import/realm-export.json
+      - type: bind
+        source: ./nginx_mountpoint/certs/convertpheno.dev.pem
+        target: /opt/keycloak/conf/server.crt.pem
+        read_only: true
+      - type: bind
+        source: ./nginx_mountpoint/certs/convertpheno.dev-key.pem
+        target: /opt/keycloak/conf/server.key.pem
+        read_only: true
+    restart: unless-stopped
+    command: ${KC_CMD}
+    healthcheck:
+      test: curl localhost:8080/health | grep -q "UP"
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  convert-pheno:
+    # user: ${UID}
+    image: manuelrueda/convert-pheno:latest
+    container_name: convert-pheno
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - api-data:/home
+
+volumes:
+  postgres-data:
+  api-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data
+      o: bind

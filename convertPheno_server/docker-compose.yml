@@ -1,0 +1,87 @@
+#
+#   Docker compose for running containerized development environment
+#
+#   This file is part of convert-pheno-ui
+#
+#   Last Modified: Apr/28/2023
+#
+#   Copyright (C) 2022-2023 Ivo Christopher Leist - CNAG (Ivo.leist@cnag.crg.eu)
+#
+#   License: GPL-3.0 license
+
+version: '3.3'
+services:
+  api:
+    build:
+      context: .
+      target: prod
+      args:
+        - IGNORE_CACHE_FROM_HERE=${IGNORE_CACHE_FROM_HERE}
+    depends_on:
+      - db
+      - keycloak
+    ports:
+      - 5000:5000
+    env_file:
+      - .env
+    tty: true
+    volumes:
+      - ./data:/data
+
+  db:
+    image: postgres:13-alpine
+    volumes:
+      - postgres-data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=${API_DB}
+      - POSTGRES_USER=${API_DB_USER}
+      - POSTGRES_PASSWORD=${API_DB_PW}
+
+  keycloak-db:
+    container_name: kc-db
+    image: postgres:13-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${KC_DB}
+      POSTGRES_USER: ${KC_DB_USER}
+      POSTGRES_PASSWORD: ${KC_DB_PW}
+
+  keycloak:
+    container_name: local_keycloak
+    image: quay.io/keycloak/keycloak:20.0.1
+    depends_on:
+      - keycloak-db
+    environment:
+      DB_VENDOR: postgres
+      DB_ADDR: postgres
+      DB_DATABASE: keycloak
+      DB_USER: ${KC_DB_USER}
+      DB_PASSWORD: ${KC_DB_PW}
+      KEYCLOAK_ADMIN: ${KC_ADMIN_USER}
+      KEYCLOAK_ADMIN_PASSWORD: ${KC_ADMIN_PW}
+    ports:
+      - "28080:8080"
+    volumes:
+      - type: bind
+        source: ./realm-export.json
+        target: /opt/keycloak/data/import/realm-export.json
+    restart: unless-stopped
+    command: ${KC_CMD}
+
+  convert-pheno:
+    user: ${UID}
+    image: manuelrueda/convert-pheno:latest
+    container_name: convert-pheno
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - api-data:/home
+
+volumes:
+  postgres-data:
+  api-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/server/data
+      o: bind

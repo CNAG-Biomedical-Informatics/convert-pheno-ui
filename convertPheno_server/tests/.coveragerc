@@ -1,0 +1,9 @@
+[run]
+relative_files = True
+
+omit =
+	server/run_prod.py
+	server/dev/debug.py
+
+[coverage:report]
+skip_empty = true

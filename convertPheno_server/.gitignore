@@ -1,0 +1,9 @@
+.env
+*.pem
+venv
+server/data/output/*
+server/data/uploads/*
+.pytest_cache
+.coverage
+__pycache__
+junit.xml

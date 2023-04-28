@@ -1,0 +1,16 @@
+anytree==2.8.0
+cryptography==37.0.2
+flask-restx==1.0.5
+Flask==2.2.3
+Flask-Cors==3.0.10
+Flask-SQLAlchemy==3.0.3
+genson==1.2.2
+jsonschema==4.17.0
+psycopg2-binary==2.9.4
+PyJWT==2.3.0
+pytest==6.2.5
+pytest-cov==3.0.0
+flake8==4.0.1
+flake8-html==0.4.1
+requests==2.27.1
+Werkzeug==2.2.3

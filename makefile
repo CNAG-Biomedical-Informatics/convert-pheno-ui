@@ -1,0 +1,55 @@
+#!make
+SHELL := /bin/bash
+
+CURRENT_DATE = $(shell date)
+export IGNORE_CACHE_FROM_HERE:=$(CURRENT_DATE)
+export KC_CMD =start-dev --import-realm
+# For containers, the import directory is /opt/keycloak/data/import
+
+update:
+	git submodule update --recursive
+
+run:
+	docker compose up -d
+
+stop:
+	docker compose down
+
+rebuild:
+	docker compose build --no-cache
+
+rebuild-api:
+	docker compose build --no-cache api
+
+d-api:
+	docker compose up --build api
+
+d-client:
+	docker compose up --build client
+
+re-kc:
+	docker compose restart keycloak
+
+re-api:
+	docker compose restart api
+
+re-client:
+	docker compose restart client
+
+l-api:
+	docker compose logs -f api
+
+l-kc:
+	docker compose logs -f keycloak
+
+kc:
+	docker compose up keycloak
+
+kc-ip:
+	docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' local_keycloak
+
+db-ip: 
+	docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' cp-pg
+
+mkcert:
+	/usr/local/bin/mkcert -cert-file ./nginx_mountpoint/certs/convertpheno.dev.pem -key-file ./nginx_mountpoint/certs/convertpheno.dev-key.pem convertpheno.dev

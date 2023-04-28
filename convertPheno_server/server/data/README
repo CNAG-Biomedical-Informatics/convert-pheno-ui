@@ -1,0 +1,5 @@
+This folder is only needed for local development.
+It is not used in production.
+
+Make sure that it is mounted correctly onto the following containers:
+convertpheno_server_convert-pheno and convertpheno_server_api
