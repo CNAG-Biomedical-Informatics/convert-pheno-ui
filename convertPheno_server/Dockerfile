@@ -20,8 +20,6 @@ COPY ./server.sh .
 FROM tiangolo/meinheld-gunicorn-flask:python3.8 as prod
 
 RUN apt-get update && apt-get install -y \
-    curl && \
-    gpg && \
     lsb-release
 
 RUN mkdir -m 0755 -p /etc/apt/keyrings \
