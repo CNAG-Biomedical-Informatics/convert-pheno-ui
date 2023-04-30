@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
     lsb-release
 
 RUN mkdir -m 0755 -p /etc/apt/keyrings \
-    && curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker-archive-keyring.gpg \
+    && /usr/bin/curl -fsSL https://download.docker.com/linux/debian/gpg | /usr/bin/gpg --dearmor -o /etc/apt/keyrings/docker-archive-keyring.gpg \
     && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null \
     && apt-get update && apt-get install -y \
     docker-ce-cli
