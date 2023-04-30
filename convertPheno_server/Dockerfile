@@ -1,6 +1,8 @@
 FROM python:3.10-slim-bullseye AS dev
 
 RUN apt-get update && apt-get install -y \
+    curl && \
+    gpg && \
     lsb-release
 
 RUN mkdir -m 0755 -p /etc/apt/keyrings \
