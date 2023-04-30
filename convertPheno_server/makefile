@@ -42,7 +42,10 @@ stop:
 	fuser -k 8082/tcp
 
 auth-test:
-	python3 -m pytest --junitxml=tests/reports/junit.xml tests/test_auth.py
+	KC_PUBLIC_KEY=$(KC_PUBLIC_KEY) python3 -m pytest --junitxml=tests/reports/junit.xml tests/test_auth.py
+
+unit-test:
+	KC_PUBLIC_KEY=$(KC_PUBLIC_KEY) python3 -m pytest --junitxml=tests/reports/junit.xml tests/test_auth.py::TestAuthClass::test_decorator_login_required
 
 .PHONY: test
 test:

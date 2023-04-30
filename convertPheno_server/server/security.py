@@ -61,7 +61,9 @@ def login_required(func):
 
     @wraps(func)
     def decorated_function(*args, **kwargs):
-        token = request.headers["Authorization"]
+        token = request.headers.get("Authorization")
+        if token is None:
+            return {"message": "No token provided"}, 401
 
         try:
             decoded = jwt.decode(token, public_key, algorithms="RS256", options=options)
