@@ -1,0 +1,12 @@
+{
+  "security": true,
+  "api_endpoint": "http://api:5000/",
+  "config_keycloak": {
+    "realm": "convertPheno",
+    "auth-server-url": "https://convertPheno.dev/auth",
+    "ssl-required": "external",
+    "resource": "convert-pheno",
+    "public-client": true,
+    "confidential-port": 0
+  }
+}
