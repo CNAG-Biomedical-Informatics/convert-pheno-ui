@@ -1,0 +1,24 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Flask",
+      "request": "launch",
+      "type": "python",
+      "python": "${workspaceFolder}/convertPheno_server/venv/bin/python3",
+      "module": "flask",
+      "cwd": "${workspaceFolder}/convertPheno_server/server",
+      "env": {
+        "FLASK_APP": "app.py",
+        "FLASK_ENV": "development",
+        "FLASK_DEBUG": "1",
+        "FLASK_RUN_HOST": "0.0.0.0",
+        "FLASK_RUN_PORT": "5001"
+      },
+      "envFile": "${workspaceFolder}/convertPheno_server/.env",
+      "args": ["run"],
+      "jinja": true,
+      "justMyCode": true
+    }
+  ]
+}

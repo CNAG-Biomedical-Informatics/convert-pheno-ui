@@ -1,0 +1,13 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "flask",
+      "type": "shell",
+      "command": "source venv/bin/activate && make run",
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
+    }
+  ]
+}
