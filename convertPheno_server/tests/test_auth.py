@@ -13,6 +13,7 @@
 import json
 from utils import req_get
 
+
 class TestAuthClass:
     def test_token(self, client, header):
         res = req_get(client, header, "tokentest")

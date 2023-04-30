@@ -12,6 +12,7 @@
 
 from pathlib import Path
 
+
 class DevelopmentConfig(object):
 
     """

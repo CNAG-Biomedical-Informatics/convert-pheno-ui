@@ -12,6 +12,7 @@
 
 import json
 
+
 class TestHealthClass:
     def test_health(self, client):
         res = client.get("/api/curltest")

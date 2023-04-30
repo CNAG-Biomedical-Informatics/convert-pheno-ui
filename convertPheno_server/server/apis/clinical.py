@@ -60,7 +60,8 @@ def get_value_from_nested_dict(nested_dict, paths):
     Parameters:
     nested_dict (dict): The nested dictionary to search
     path (list): A list of keys representing the path to the value.
-    For example, to get the value of nested_dict['a']['b']['c'], the path would be ['a', 'b', 'c'].
+    e.g to get the value of nested_dict['a']['b']['c']
+        the path would be ['a', 'b', 'c'].
 
     Returns:
     The value at the given path, or None if the path does not exist.
@@ -517,7 +518,8 @@ class ClinicalDataView(Resource):
                     for new_child in new_children:
                         new_child_id = new_child["nodeId"]
                         new_child_name = new_child["name"]
-                        if new_child_name in selected_fields[key]:
+                        # if new_child_name in selected_fields[key]:
+                        if new_child_name in selected_fields[col]:
                             node_to_selected[new_child_id] = True
 
         to_be_filtered = any(

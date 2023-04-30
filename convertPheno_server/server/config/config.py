@@ -10,6 +10,7 @@
 #
 #   License: GPL-3.0 license
 
+
 class Config(object):
 
     """
