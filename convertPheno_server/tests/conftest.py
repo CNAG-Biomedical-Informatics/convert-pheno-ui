@@ -72,7 +72,6 @@ def mock_client(mocker):
     mocker.patch("server.security.get_public_key", return_value=FAKE_PUBLIC_KEY)
     mocker.patch("jwt.decode", return_value=FAKE_PAYLOAD)
 
-    # with app.test_request_context():FAKE_PUBLIC_KEY
     yield app.test_client()
 
     db.drop_all()
