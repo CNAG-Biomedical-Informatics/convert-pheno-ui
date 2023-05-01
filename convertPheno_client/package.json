@@ -98,7 +98,9 @@
     "semgrep": "semgrep --config auto src",
     "licenses": "node_modules/license-report/index.js --output=markdown --only=prod > licenses.md",
     "storybook": "storybook dev -p 6008 --no-open",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test-ct": "playwright test -c playwright-ct.config.js",
+    "test-play": "playwright test -c playwright.config.js"
   },
   "nyc": {
     "report-dir": "cypress/coverage",
