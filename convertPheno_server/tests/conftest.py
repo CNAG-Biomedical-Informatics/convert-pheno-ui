@@ -22,6 +22,22 @@ from server.config.config_test import DevelopmentConfig
 sys.path.append(path.join(path.dirname(__file__), "helpers"))
 from utils import get_header, MyTester  # noqa: E402
 
+FAKE_PUBLIC_KEY = "-----BEGIN PUBLIC KEY-----\nMIIB-----END PUBLIC KEY-----\n"
+FAKE_PAYLOAD = {
+    "iat": 1619824766,
+    "preferred_username": "test",
+}
+
+
+@pytest.fixture()
+def fake_public_key():
+    return FAKE_PUBLIC_KEY
+
+
+@pytest.fixture()
+def fake_payload():
+    return FAKE_PAYLOAD
+
 
 @pytest.fixture(scope="session")
 def header():
@@ -34,19 +50,39 @@ def header_2():
 
 
 @pytest.fixture()
-def client(request):
+def client():
     app.testing = True  # propagate exceptions to the test client
     app.config.from_object(DevelopmentConfig)
-    test_client = app.test_client()
 
     db.create_all()
 
-    def teardown():
-        db.drop_all()
-        db.session.remove()
+    yield app.test_client()
 
-    request.addfinalizer(teardown)
-    return test_client
+    db.drop_all()
+    db.session.remove()
+
+
+@pytest.fixture()
+def mock_client(mocker):
+    app.testing = True  # propagate exceptions to the test client
+    app.config.from_object(DevelopmentConfig)
+
+    db.create_all()
+
+    mocker.patch("server.security.get_public_key", return_value=FAKE_PUBLIC_KEY)
+    mocker.patch("jwt.decode", return_value=FAKE_PAYLOAD)
+
+    # with app.test_request_context():FAKE_PUBLIC_KEY
+    yield app.test_client()
+
+    db.drop_all()
+    db.session.remove()
+
+
+@pytest.fixture(params=["mock_client", "client"])
+def test_client(request):
+    client_fixture = request.getfixturevalue(request.param)
+    yield client_fixture
 
 
 @pytest.fixture

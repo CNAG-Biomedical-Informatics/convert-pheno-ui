@@ -11,6 +11,7 @@
 #   License: GPL-3.0 license
 
 from io import BytesIO
+import pytest
 from utils import req_post_file, convert_clinical_data
 
 api_path = "submission"
@@ -19,11 +20,12 @@ convert_url_suffix = f"{api_path}/convert"
 
 
 class TestSubmissionClass:
-    def test_upload(self, client, header):
+    @pytest.mark.parametrize("test_client", ["mock_client", "client"], indirect=True)
+    def test_upload(self, test_client, header):
         data = dict(
             files=(BytesIO(b"my file contents"), "test.csv"),
         )
-        res = req_post_file(client, header, upload_url_suffix, data)
+        res = req_post_file(test_client, header, upload_url_suffix, data)
         assert res.status_code == 200
         assert "tempFilename" in res.json
 

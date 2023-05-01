@@ -28,12 +28,8 @@ class TestAuthClass:
         response = json.loads(res.data.decode("utf8"))
         assert response["user"] == "test"
 
-    def test_decorator_login_required(self, mocker):
-        mocker.patch("server.security.get_public_key", return_value=FAKE_PUBLIC_KEY)
-        fake_payload = {
-            "iat": 1619824766,
-            "preferred_username": "test",
-        }
+    def test_decorator_login_required(self, mocker, fake_public_key, fake_payload):
+        mocker.patch("server.security.get_public_key", return_value=fake_public_key)
         mocker.patch("jwt.decode", return_value=fake_payload)
 
         # Define a dummy function to be decorated
@@ -47,8 +43,6 @@ class TestAuthClass:
         token = "a_valid_token"
         with app.test_request_context(headers={"Authorization": token}):
             response = protected_function()
-
-        # response = protected_function(token=token)
 
         assert response == "Success!"
 
