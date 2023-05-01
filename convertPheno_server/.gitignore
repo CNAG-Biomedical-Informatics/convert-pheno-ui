@@ -7,3 +7,4 @@ server/data/uploads/*
 .coverage
 __pycache__
 junit.xml
+.coveralls.yml
