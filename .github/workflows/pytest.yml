@@ -28,4 +28,4 @@ jobs:
           ruff --format=github --target-version=py37 .
       - name: Test with pytest
         run: |
-          pytest
+          make -C convertPheno_server unit-test
