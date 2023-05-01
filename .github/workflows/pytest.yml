@@ -20,7 +20,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install ruff pytest
           if [ -f convertPheno_server/requirements.txt ]; 
-          then pip install -r convertPheno_serer/requirements.txt; fi
+          then pip install -r convertPheno_server/requirements.txt; fi
       - name: Lint with ruff
         run: |
           # stop the build if there are Python syntax errors or undefined names
