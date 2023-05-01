@@ -22,7 +22,7 @@ export default function Home() {
     <Grid container>
       <Grid item xs={12}>
         <Box textAlign={"center"}>
-          <Typography variant={"h4"}>Welcome to Convert-Pheno</Typography>
+          <Typography id={"welcome"} variant={"h4"}>Welcome to Convert-Pheno</Typography>
           <Typography variant={"h5"}>
             {" "}
             Your interactive tool for interconverting pheno-clinical data

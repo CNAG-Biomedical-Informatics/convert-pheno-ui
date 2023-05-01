@@ -119,7 +119,7 @@
     "@cypress/code-coverage": "^3.9.12",
     "@cypress/react": "^7.0.3",
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
-    "@playwright/experimental-ct-react": "^1.33.0",
+    "@playwright/experimental-ct-react": "1.32.3",
     "@playwright/test": "1.32.3",
     "@storybook/addon-actions": "^7.0.5",
     "@storybook/addon-essentials": "^7.0.5",

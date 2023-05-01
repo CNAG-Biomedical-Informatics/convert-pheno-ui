@@ -3,7 +3,10 @@ import Home from './Home';
 
 test.use({ viewport: { width: 500, height: 500 } });
 
-test('should work', async ({ mount }) => {
-  const component = await mount(<Home />);
-  await expect(component).toContainText('Learn React');
+test('configure routing through hooks config', async ({ mount }) => {
+  const component = await mount(<Home />, {
+    hooksConfig: { enableRouting: true },
+  });
+  const element = component.locator('#welcome');
+  await expect(element).toHaveText('Welcome to Convert-Pheno');
 });

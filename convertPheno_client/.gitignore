@@ -9,3 +9,4 @@ kc.env
 cypress/fixtures/users/*
 coverage
 reports
+.cache
