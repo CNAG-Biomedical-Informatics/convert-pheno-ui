@@ -23,11 +23,30 @@ from server.app import app, db
 from server.model import History
 
 cfg = app.config
+options = cfg["JWT_OPTIONS"]
 
-kc_key = os.environ.get("KC_PUBLIC_KEY")
-options = app.config["JWT_OPTIONS"]
-cert = f"-----BEGIN CERTIFICATE-----\n{kc_key}\n-----END CERTIFICATE-----"
-public_key = load_pem_x509_certificate(cert.encode(), default_backend()).public_key()
+# kc_key = os.environ.get("KC_PUBLIC_KEY")
+# cert = f"-----BEGIN CERTIFICATE-----\n{kc_key}\n-----END CERTIFICATE-----"
+# public_key = load_pem_x509_certificate(cert.encode(), default_backend()).public_key()
+
+
+def get_public_key():
+    """
+    Gets the public key from the KC_PUBLIC_KEY environment variable.
+
+    Parameters:
+    kc_key (str): The public key from the environment variable.
+
+    Returns:
+    The public key loaded from the certificate string.
+    """
+
+    kc_key = os.environ.get("KC_PUBLIC_KEY")
+    cert = f"-----BEGIN CERTIFICATE-----\n{kc_key}\n-----END CERTIFICATE-----"
+    public_key = load_pem_x509_certificate(
+        cert.encode(), default_backend()
+    ).public_key()
+    return public_key
 
 
 def extract_items(token, name):
@@ -65,12 +84,13 @@ def login_required(func):
         if token is None:
             return {"message": "No token provided"}, 401
 
+        public_key = get_public_key()
         try:
             decoded = jwt.decode(token, public_key, algorithms="RS256", options=options)
 
         except jwt.exceptions.InvalidSignatureError as err:
             print(err, "check if the public key is correct")
-            print("public key:", kc_key)
+            print("public key:", public_key)
             return {"message": f"{err}"}, 500
 
         # Check if changing the cryptograph version helps
@@ -113,6 +133,7 @@ def history(response):
     """
     if request.method != "OPTIONS" and "Authorization" in request.headers:
         token = request.headers["Authorization"]
+        public_key = get_public_key()
         try:
             decoded = jwt.decode(token, public_key, algorithms="RS256", options=options)
 

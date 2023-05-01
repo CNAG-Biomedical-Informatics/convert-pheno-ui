@@ -18,6 +18,7 @@ import jwt
 from server.security import login_required
 
 app = Flask(__name__)
+FAKE_PUBLIC_KEY = "-----BEGIN PUBLIC KEY-----\nMIIB-----END PUBLIC KEY-----\n"
 
 
 class TestAuthClass:
@@ -28,7 +29,7 @@ class TestAuthClass:
         assert response["user"] == "test"
 
     def test_decorator_login_required(self, mocker):
-        # Mock the jwt.decode function to return a predefined payload
+        mocker.patch("server.security.get_public_key", return_value=FAKE_PUBLIC_KEY)
         fake_payload = {
             "iat": 1619824766,
             "preferred_username": "test",
