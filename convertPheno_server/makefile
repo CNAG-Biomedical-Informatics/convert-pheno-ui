@@ -11,7 +11,7 @@
 #   License: GPL-3.0 license
 
 SHELL := /bin/bash
-include .env
+# include .env
 
 install:
 	pip install --upgrade .
