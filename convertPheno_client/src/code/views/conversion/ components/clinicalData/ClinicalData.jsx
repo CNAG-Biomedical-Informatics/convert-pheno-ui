@@ -33,7 +33,7 @@ export default function ClinicalData(props) {
   const [tabValue, setTabValue] = useState(0);
   const [jsonDataKeys, setJsonDataKeys] = useState([]);
 
-  const [shownColumns, setShownColumns] = useState([]);
+  const [shownColumns, setShownColumns] = useState({});
 
   const [headers, setHeaders] = useState([]);
 
@@ -99,7 +99,7 @@ export default function ClinicalData(props) {
       inclusion: {},
       exclusion: {},
     });
-    setShownColumns([]);
+    setShownColumns({});
   };
 
   const handleTabChanged = (_, tab) => {

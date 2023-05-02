@@ -3,10 +3,10 @@
     "extends": "@istanbuljs/nyc-config-typescript",
     "check-coverage": true,
     "include": [
-        "src/**/*.js",
-        "src/**/*.jsx",
-        "src/**/*.ts",
-        "src/**/*.tsx"
+        "src/code/**/*.js",
+        "src/code/**/*.jsx",
+        "src/code/**/*.ts",
+        "src/code/**/*.tsx"
       ],
       "exclude": [
         "cypress/**/*.*",

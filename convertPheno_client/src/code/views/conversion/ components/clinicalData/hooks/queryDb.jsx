@@ -24,6 +24,8 @@ export default function useQueryDb(props) {
     (prop) => outputFormats[prop]
   );
   query.phenoFormat = trueProps[tabValue];
+  delete query.outputFormats;
+  delete query.tabValue;
 
   return useQuery({
     queryKey: ["resultsQuery", tabValue, filter, location, shownColumns],

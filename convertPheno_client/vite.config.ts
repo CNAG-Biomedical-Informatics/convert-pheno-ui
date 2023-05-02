@@ -7,6 +7,9 @@ export default defineConfig({
   server: {
     port: 5173,
   },
+  build: {
+    sourcemap: true,
+  },
   plugins: [
     react(),
     html({
@@ -14,7 +17,6 @@ export default defineConfig({
       template: "index.html",
     }),
     istanbul({
-      include: '/src/code/**/*',
       exclude: ['node_modules', 'test/'],
       extension: [ '.js', '.jsx', '.tsx' ],
       requireEnv: true,

@@ -54,7 +54,7 @@
     "lint": "eslint src",
     "lint:fix": "npm run lint -- --fix",
     "pretest": "bash getKCTokens.sh && bash cypress/utils/deleteReports.sh && vite --host&",
-    "test": "cypress run --config-file cypress/cfg.json",
+    "test": "DEBUG=code-coverage cypress run --config-file cypress/cfg.json",
     "test:components": "cypress run-ct --config-file cypress/cfg.json && jest --config testing/jest/jest.config.js",
     "posttest": "bash cypress/utils/mergeReports.sh",
     "jest": "jest --config testing/jest/jest.config.js",
