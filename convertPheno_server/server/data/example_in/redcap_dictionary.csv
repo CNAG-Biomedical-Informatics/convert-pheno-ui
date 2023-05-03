@@ -130,7 +130,7 @@ other_fistula;clinical_visit;;radio;"Other fistula";"1, yes|0, no";;;;;;;y;;;ext
 fever;clinical_visit;;radio;"Fever over 37.8°C during past 7 days";"1, yes|0, no";;;;;;;y;;;extraintestinal_manifestations;;
 cd_pro2;clinical_visit;;calc;"PRO2 (CD)";"if([week_0_arm_1][diagnosis] = 1, [stool_liquid]*2+[abdominal_pain]*5, """")";;;;;;"[week_0_arm_1][diagnosis] = '1'";;;;;;
 cd_pro3;clinical_visit;;calc;"PRO3 (CD)";"if([week_0_arm_1][diagnosis] = 1, [stool_liquid]*2+[abdominal_pain]*5+[wellbeing]*7, """")";;;;;;"[week_0_arm_1][diagnosis] = '1'";;;;;;
-cdai;clinical_visit;;calc;CDAI;"if([week_0_arm_1][diagnosis] = 1, 
+cdai;clinical_visit;;calc;CDAI;"if([week_0_arm_1][diagnosis] = 1,
 round(
 [stool_liquid]*14+
 [abdominal_pain]*35+

@@ -434,7 +434,7 @@ class ClinicalDataView(Resource):
                     selected_fields[field_of_interest] = []
                 continue
 
-            if set(child["name"] for child in top_level_node_children) == {
+            if {child["name"] for child in top_level_node_children} == {
                 "id",
                 "label",
             }:

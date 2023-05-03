@@ -1,4 +1,4 @@
-/** 
+/**
   Drag and drop box for the query builder
 
   This file is part of convert-pheno-ui

@@ -17,6 +17,6 @@ RUN pnpm run build
 #production environment
 FROM nginx:1.23-alpine
 RUN apk add openssl
-EXPOSE 80 
+EXPOSE 80
 COPY --from=build /app/dist /usr/share/nginx/html
 CMD ["nginx", "-g", "daemon off;"]

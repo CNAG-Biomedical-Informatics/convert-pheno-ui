@@ -1,4 +1,4 @@
-/** 
+/**
   ColumnTreeView Modal component
 
   This file is part of convert-pheno-ui
@@ -119,7 +119,7 @@ const ColumnsTreeView = (props) => {
 
     Functionality:
     - It first checks if all checkboxes are currently unchecked. If so, it sets select to true to check them all.
-    - It then checks if all checkboxes are currently checked. If so, it sets select to false to uncheck them all.  
+    - It then checks if all checkboxes are currently checked. If so, it sets select to false to uncheck them all.
     - Finally, it iterates over all checkboxes and sets their value to the select boolean, either checking or unchecking them.
     */
 

@@ -1,4 +1,4 @@
-/** 
+/**
   Helper functions for the Login
 
   This file is part of convert-pheno-ui

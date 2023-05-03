@@ -4,4 +4,3 @@ venv
 .nginx_mountpoint
 .ruff_cache
 .pytest_cache
-

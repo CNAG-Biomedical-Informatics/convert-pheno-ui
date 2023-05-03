@@ -89,8 +89,8 @@ def del_from_db(cfg, cmd):
 
 def get_token(user, cfg):
     payload = (
-        f"client_id={cfg.CLIENT}&grant_type=password&"
-        f"username={user}&password={cfg.PASSWORD}"
+        f"client_id={cfg.AUTH_CLIENT}&grant_type=password&"
+        f"username={user}&password={cfg.AUTH_PW}"
     )
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
     response = requests.post(  # nosec (don't need to verify on localhost)

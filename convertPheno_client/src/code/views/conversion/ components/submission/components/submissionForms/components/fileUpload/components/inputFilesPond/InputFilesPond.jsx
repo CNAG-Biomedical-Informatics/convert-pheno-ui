@@ -1,4 +1,4 @@
-/** 
+/**
   Filepond component
 
   This file is part of convert-pheno-ui
@@ -85,7 +85,7 @@ export default function InputFilesPond(props) {
       - file (object): File object that was uploaded
 
     Functionality:
-      - tries to infer based on the file name and extension the file type 
+      - tries to infer based on the file name and extension the file type
         (input file, dictionary, mapping file)
 
         Purpose:

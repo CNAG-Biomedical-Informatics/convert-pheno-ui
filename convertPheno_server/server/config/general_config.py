@@ -14,7 +14,7 @@ from pathlib import Path
 from os import environ
 
 
-class GeneralConfig(object):
+class GeneralConfig:
 
     """
     config for convertPheno_server

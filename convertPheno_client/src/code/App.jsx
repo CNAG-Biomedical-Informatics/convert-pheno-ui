@@ -1,4 +1,4 @@
-/** 
+/**
   Runs the application and renders the main components.
 
   This file is part of convert-pheno-ui

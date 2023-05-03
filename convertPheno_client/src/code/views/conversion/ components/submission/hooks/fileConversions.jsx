@@ -1,4 +1,4 @@
-/** 
+/**
   helper function to trigger the file conversion
 
   This file is part of convert-pheno-ui

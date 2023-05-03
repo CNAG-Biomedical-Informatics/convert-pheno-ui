@@ -1,7 +1,9 @@
 {
   "python.testing.pytestArgs": [
-    "--rootdir","${workspaceFolder}/convertPheno_server",
+    "--rootdir",
+    "${workspaceFolder}/convertPheno_server"
   ],
+  "python.testing.pytestPath": "${workspaceFolder}/convertPheno_server/venv/bin/pytest",
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
   "python.envFile": "${workspaceFolder}/convertPheno_server/.env",
@@ -11,6 +13,6 @@
   "python.linting.enabled": true,
   "python.formatting.provider": "black",
   "coverage-gutters.manualCoverageFilePaths": [
-    "${workspaceFolder}/convertPheno_server/coverage.lcov"
+    "${workspaceFolder}/convertPheno_server/tests/reports/coverage/coverage.xml"
   ]
 }

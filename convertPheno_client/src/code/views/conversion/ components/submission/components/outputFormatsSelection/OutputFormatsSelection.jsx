@@ -1,4 +1,4 @@
-/** 
+/**
   Output Formats Selection component
 
   This file is part of convert-pheno-ui

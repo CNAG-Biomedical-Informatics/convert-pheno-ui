@@ -1,4 +1,4 @@
-/** 
+/**
   Main function for the convertPheno_client application.
 
   This file is part of convert-pheno-ui

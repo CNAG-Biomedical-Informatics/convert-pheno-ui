@@ -1,4 +1,4 @@
-/** 
+/**
   helper function query finished jobs
 
   This file is part of convert-pheno-ui

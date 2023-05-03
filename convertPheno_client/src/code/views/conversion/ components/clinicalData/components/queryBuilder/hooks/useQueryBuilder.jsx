@@ -1,4 +1,4 @@
-/** 
+/**
   hook to initialize the query builder component
 
   This file is part of convert-pheno-ui

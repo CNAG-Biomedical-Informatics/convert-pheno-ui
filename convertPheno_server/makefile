@@ -11,7 +11,7 @@
 #   License: GPL-3.0 license
 
 SHELL := /bin/bash
-# include .env
+include .env
 
 install:
 	pip install --upgrade .
@@ -65,8 +65,7 @@ remove_reports:
 
 cov:
 	KC_PUBLIC_KEY=$(KC_PUBLIC_KEY) python3 -m pytest --junitxml=tests/reports/junit.xml --cov-config=tests/.coveragerc --cov-branch --cov-report html:tests/reports/coverage --cov-report xml:tests/reports/coverage/coverage.xml  --cov-report term --cov=server tests/
-	coveralls -f tests/reports/coverage/coverage.xml
-	
+
 flake:
 	echo > tests/reports/flake8/flake8stats.txt
 	flake8 server --statistics --tee --output-file tests/reports/flake8/flake8stats.txt --format=html --htmldir=tests/reports/flake8 --exit-zero

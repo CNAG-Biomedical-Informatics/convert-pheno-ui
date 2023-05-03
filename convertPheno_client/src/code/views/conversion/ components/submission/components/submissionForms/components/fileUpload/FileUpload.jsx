@@ -1,4 +1,4 @@
-/** 
+/**
   FileUpload component
 
   This file is part of convert-pheno-ui

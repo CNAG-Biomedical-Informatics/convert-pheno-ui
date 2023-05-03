@@ -213,7 +213,7 @@ class ConvertFile(Resource):
                 errors = {target_format: error}
                 break
 
-            with open(out_dir / file_name_mapping["output_name"], "r") as file:
+            with open(out_dir / file_name_mapping["output_name"]) as file:
                 obj = json.load(file)
 
             json_schema = generate_schema_tree(obj)

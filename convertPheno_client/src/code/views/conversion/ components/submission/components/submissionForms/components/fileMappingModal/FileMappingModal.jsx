@@ -1,4 +1,4 @@
-/** 
+/**
   File Mapping Modal
 
   This file is part of convert-pheno-ui
@@ -38,9 +38,9 @@ const FileMappingModal = (props) => {
     - The user can change the mapping by selecting a different option from the dropdown menu
     - The user needs to click a "Save" button to save the mapping -> update a state with the mapping
 
-  Purpose: 
+  Purpose:
     - To display a modal for mapping uploaded files to the correct convert-pheno command options:
-      (-i(bff/omop/pxf/redcap/cdisc);-rcd|redcap-dictionary; -mapping-file; 
+      (-i(bff/omop/pxf/redcap/cdisc);-rcd|redcap-dictionary; -mapping-file;
 
   */
   const {

@@ -59,7 +59,7 @@ kc:
 kc-ip:
 	docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' local_keycloak
 
-db-ip: 
+db-ip:
 	docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' cp-pg
 
 mkcert:

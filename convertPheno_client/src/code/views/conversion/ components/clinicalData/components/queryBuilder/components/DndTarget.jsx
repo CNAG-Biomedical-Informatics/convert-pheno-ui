@@ -1,4 +1,4 @@
-/** 
+/**
   Drag and drop target for the query builder
 
   This file is part of convert-pheno-ui

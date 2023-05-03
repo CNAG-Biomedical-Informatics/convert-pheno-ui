@@ -34,7 +34,7 @@ def get_log_info(log_file):
     """
     # TODO
     # add error handling
-    with open(log_file, "r") as file:
+    with open(log_file) as file:
         log = json.load(file)
     return log
 

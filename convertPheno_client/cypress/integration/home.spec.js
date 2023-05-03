@@ -1,4 +1,4 @@
-/** 
+/**
   Cypress test for the home page of the Convert-Pheno UI.
 
   This file is part of convert-pheno-ui

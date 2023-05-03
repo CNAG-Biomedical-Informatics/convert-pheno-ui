@@ -1,4 +1,4 @@
-/** 
+/**
   helper functions to query the database
 
   This file is part of convert-pheno-ui

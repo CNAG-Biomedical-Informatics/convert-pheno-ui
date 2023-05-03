@@ -11,27 +11,33 @@
 #   License: GPL-3.0 license
 
 from pathlib import Path
+from os import environ
+from dotenv import load_dotenv
+
+load_dotenv()
+db_user = environ.get("TEST_DB_USER")
+db_pw = environ.get("TEST_DB_PW")
+db_host = environ.get("TEST_DB_HOST")
+db_port = environ.get("TEST_DB_PORT")
+db_name = environ.get("TEST_DB_NAME")
 
 
-class DevelopmentConfig(object):
+class DevelopmentConfig:
 
     """
     config for convertPheno
     """
 
-    # postgres
-    SQLALCHEMY_DATABASE_URI = "postgresql://postgres:postgres@10.10.0.3:5432/postgres"
+    SQLALCHEMY_DATABASE_URI = (
+        f"postgresql://{db_user}:{db_pw}@{db_host}:{db_port}/{db_name}"
+    )
 
-    # jwt
-    SECRET_KEY = "othrt-some-secret-string"
-    JWT_SECRET_KEY = "jwt-secret-string"
     JWT_OPTIONS = {"verify_exp": False, "verify_aud": False}
 
-    # keycloak
-    AUTH_BASE_URL = "https://convertpheno.dev/auth"
-    AUTH_REALM = "convertPheno"
-    CLIENT = "convert-pheno"
-    PASSWORD = "1234"
+    AUTH_BASE_URL = environ.get("KC_HOSTNAME_URL")
+    AUTH_REALM = environ.get("KC_REALM")
+    AUTH_CLIENT = environ.get("KC_CLIENT_ID")
+    AUTH_PW = environ.get("KC_TEST_PASSWORD")
     TOKEN_URL = f"{AUTH_BASE_URL}/realms/{AUTH_REALM}/protocol/openid-connect/token"
 
     # flask

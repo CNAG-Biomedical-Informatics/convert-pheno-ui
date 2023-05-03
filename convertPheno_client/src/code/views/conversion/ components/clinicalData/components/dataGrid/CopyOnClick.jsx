@@ -1,4 +1,4 @@
-/** 
+/**
   helper functions to copy data from the data grid to the clipboard
 
   This file is part of convert-pheno-ui
