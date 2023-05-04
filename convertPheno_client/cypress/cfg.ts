@@ -31,26 +31,33 @@ export default defineConfig({
       jenkinsMode: true,
     },
   },
-
-  e2e: {
-    // We've imported your old cypress plugins here.
-    // You may want to clean this up later by importing these.
-    setupNodeEvents(on, config) {
-      return require("./plugins/index.js")(on, config);
+  env: {
+    codeCoverage: {
+        exclude: "cypress/**/*.*",
     },
+  },
+  e2e: {
     baseUrl: "http://localhost:5173",
     specPattern: "cypress/e2e/**/*.{js,jsx,ts,tsx}",
+    setupNodeEvents(on, config) {
+      require('@cypress/code-coverage/task')(on, config)
+      return config
+    }
   },
 
-  component: {
-    setupNodeEvents(on, config) {},
-    specPattern: "src/code/**/*.test.{js,ts,jsx,tsx}",
-  },
+  // component: {
+  //   setupNodeEvents(on, config) {},
+  //   specPattern: "src/code/**/*.test.{js,ts,jsx,tsx}",
+  // },
 
   component: {
     devServer: {
       framework: "react",
       bundler: "vite",
     },
+    setupNodeEvents(on, config) {
+      require("@cypress/code-coverage/task")(on, config);
+      return config;
+  },
   },
 });
