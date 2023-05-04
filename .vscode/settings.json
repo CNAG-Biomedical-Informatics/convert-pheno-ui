@@ -14,5 +14,10 @@
   "python.formatting.provider": "black",
   "coverage-gutters.manualCoverageFilePaths": [
     "${workspaceFolder}/convertPheno_server/tests/reports/coverage/coverage.xml"
-  ]
+  ],
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/*/**": true
+  }
 }

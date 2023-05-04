@@ -10,9 +10,6 @@ export default defineConfig({
     host: true,
     port: 5173,
   },
-  build: {
-    sourcemap: true,
-  },
   plugins: [
     react(),
     istanbul({
@@ -22,4 +19,9 @@ export default defineConfig({
       requireEnv: false,
     }),
   ],
+  // rollupOptions: {
+  //   output: {
+  //     manualChunks: () => 'bundle',
+  //   }
+  // }
 });

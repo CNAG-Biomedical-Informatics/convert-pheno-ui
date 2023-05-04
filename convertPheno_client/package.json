@@ -60,7 +60,7 @@
     "jest": "jest --config testing/jest/jest.config.js",
     "jest:make-badges": "istanbul-badges-readme --coverageDir='./testing/jest/coverage/'",
     "precy": "bash getKCTokens.sh && bash cypress/utils/deleteReports.sh && vite --host&",
-    "cy": "DEBUG=code-coverage cypress open --config-file cypress/cfg.ts",
+    "cy": "cypress open",
     "cy:run": "npm run precy && cypress run --config-file cypress/cfg.ts",
     "cy:run:jenkins": "docker exec cy-docker cypress run --config-file /cy/cypress/cfg.json",
     "cy:run:parallel": "cypress run --config-file cypress/cfg.json",
