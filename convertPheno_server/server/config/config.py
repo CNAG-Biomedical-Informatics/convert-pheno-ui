@@ -11,11 +11,11 @@
 #   License: GPL-3.0 license
 from os import environ
 
-db_user = environ.get("TEST_DB_USER")
-db_pw = environ.get("TEST_DB_PW")
-db_host = environ.get("TEST_DB_HOST")
-db_port = environ.get("TEST_DB_PORT")
-db_name = environ.get("TEST_DB_NAME")
+db_user = environ.get("API_DB_USER")
+db_pw = environ.get("API_DB_PW")
+db_host = environ.get("API_DB_HOST")
+db_port = environ.get("API_DB_PORT")
+db_name = environ.get("API_DB_NAME")
 
 
 class Config:

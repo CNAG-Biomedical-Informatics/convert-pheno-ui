@@ -1,0 +1,101 @@
+server {
+    listen 443 ssl; # For IPv4 addresses
+    listen [::]:443 ssl; # For IPv6 addresses
+    ssl_certificate /etc/nginx/convertpheno.dev.pem;
+    ssl_certificate_key /etc/nginx/convertpheno.dev-key.pem;
+
+    location / {
+        access_log  /var/log/nginx/http.access.log;
+        error_log  /var/log/nginx/http.error.log;
+
+        root /usr/share/nginx/html;
+        index index.html index.htm;
+        try_files $uri $uri/ /index.html =404;
+    }
+
+    location /api/ {
+        # This is the maximum size of the file that can be uploaded
+        # todo throw an error on the client side if the file is too big
+        # todo make this more specific by defining exactly which url this should apply to
+        client_max_body_size 150M;
+
+        access_log /var/log/nginx/api.access.log;
+        error_log /var/log/nginx/api.error.log;
+        proxy_pass http://api:5000/api/;
+        include includes/proxy-set-header.conf;
+    }
+
+    location /doc/ {
+        access_log /var/log/nginx/doc.access.log;
+        error_log /var/log/nginx/doc.error.log;
+        proxy_pass http://api:5000/doc/;
+        include includes/proxy-set-header.conf;
+    }
+
+    location /swaggerui/ {
+        access_log /var/log/nginx/swaggerui.access.log;
+        error_log /var/log/nginx/swaggerui.error.log;
+        proxy_pass http://api:5000/swaggerui/;
+        include includes/proxy-set-header.conf;
+    }
+
+    location /swagger.json {
+        access_log /var/log/nginx/swaggerjson.access.log;
+        error_log /var/log/nginx/swaggerjson.error.log;
+        proxy_pass http://api:5000/swagger.json;
+        include includes/proxy-set-header.conf;
+    }
+
+    location /auth/ {
+        access_log /var/log/nginx/kc.access.log;
+        error_log /var/log/nginx/kc.error.log;
+
+        proxy_pass http://keycloak:8080/;
+        include includes/proxy-set-header.conf;
+    }
+
+    location /auth/admin/ {
+        access_log /var/log/nginx/kc.access.log;
+        error_log /var/log/nginx/kc.error.log;
+
+        proxy_pass http://keycloak:8080/admin/;
+        include includes/proxy-set-header.conf;
+    }
+
+    location /auth/js/ {
+        access_log /var/log/nginx/kc_js.access.log;
+        error_log /var/log/nginx/kc_js.error.log;
+
+        proxy_pass http://keycloak:8080/js/;
+        include includes/proxy-set-header.conf;
+    }
+
+    location /auth/resources/ {
+        access_log /var/log/nginx/kc_res.access.log;
+        error_log /var/log/nginx/kc_res.error.log;
+
+        proxy_pass http://keycloak:8080/resources/;
+        include includes/proxy-set-header.conf;
+    }
+
+    location /auth/realms/ {
+        access_log /var/log/nginx/kc_realms.access.log;
+        error_log /var/log/nginx/kc_realms.error.log;
+
+        proxy_pass http://keycloak:8080/realms/;
+        include includes/proxy-set-header.conf;
+
+        # needed for user creation
+        proxy_buffer_size 64k;
+        proxy_buffers 8 64k;
+        proxy_busy_buffers_size 64k;
+    }
+
+    location /auth/health/ {
+        access_log /var/log/nginx/kc_health.access.log;
+        error_log /var/log/nginx/kc_health.error.log;
+
+        proxy_pass http://keycloak:8080/health/;
+        include includes/proxy-set-header.conf;
+    }
+}

@@ -17,9 +17,6 @@ export IGNORE_CACHE_FROM_HERE:=$(CURRENT_DATE)
 export KC_CMD =start-dev --import-realm
 # For containers, the import directory is /opt/keycloak/data/import
 
-update:
-	git submodule update --recursive
-
 run:
 	docker compose up -d
 
