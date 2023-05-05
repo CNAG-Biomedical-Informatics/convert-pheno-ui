@@ -16,8 +16,6 @@ import { Button } from "@mui/material";
 import { fileDownload } from "../../../../../../../../apis";
 import auth from "../../../../../../../../Auth";
 
-// import config from "/config.json";
-
 const api_endpoint = import.meta.env.VITE_API_URL;
 
 function FileDownloadButton(jobId, tempFilename, newFilename, targetFormat) {

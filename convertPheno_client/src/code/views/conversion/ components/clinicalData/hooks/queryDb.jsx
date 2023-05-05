@@ -14,7 +14,6 @@ import { useQuery } from "@tanstack/react-query";
 
 import { getJson } from "../../../../../apis";
 import auth from "../../../../../Auth";
-// import config from "/config.json";
 
 const api_endpoint = import.meta.env.VITE_API_URL;
 

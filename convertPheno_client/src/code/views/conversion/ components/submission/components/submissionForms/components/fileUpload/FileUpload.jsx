@@ -17,7 +17,6 @@ import InputFilesPond from "./components/inputFilesPond/InputFilesPond";
 import InputFormatSelection from "./components/inputFormatSelection/InputFormatSelection";
 import { fileDownloadExample } from "../../../../../../../../apis";
 import auth from "../../../../../../../../Auth";
-// import config from "/config.json";
 
 const api_endpoint = import.meta.env.VITE_API_URL;
 

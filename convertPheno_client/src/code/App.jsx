@@ -25,10 +25,7 @@ import Conversion from "./views/conversion/Conversion";
 
 import Header from "./header/Header";
 
-// import config from "/config.json";
-
 const security = import.meta.env.VITE_SECURITY;
-console.log("security", security);
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 function ErrorFallback({ error, resetErrorBoundary }) {

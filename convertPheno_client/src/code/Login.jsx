@@ -16,21 +16,15 @@ import { Typography } from "@mui/material";
 import Keycloak from "keycloak-js";
 
 import auth from "./Auth";
-// import Home from "./home/Home";
 import Home from "./views/home/Home";
 
-// import config from "/config.json";
-
 const kcConfig = JSON.parse(import.meta.env.VITE_KC_CONFIG);
-console.log("kcConfig", kcConfig);
 
 const keycloakConfig = {
   realm: kcConfig.realm,
   url: kcConfig["auth-server-url"],
   clientId: kcConfig.resource,
 };
-
-console.log("keycloakConfig", keycloakConfig);
 
 const Login = (props) => {
   const { authenticated, setAuthenticated } = props;
