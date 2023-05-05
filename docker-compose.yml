@@ -51,6 +51,9 @@ services:
       - ./nginx_mountpoint/certs/convertpheno.dev-key.pem:/etc/nginx/convertpheno.dev-key.pem:ro
     environment:
       NODE_ENV: production
+      SECURITY: true
+      API_URL: ${API_URL}
+      KC_CONFIG: ${KC_CONFIG}
 
   keycloak-db:
     container_name: kc-db

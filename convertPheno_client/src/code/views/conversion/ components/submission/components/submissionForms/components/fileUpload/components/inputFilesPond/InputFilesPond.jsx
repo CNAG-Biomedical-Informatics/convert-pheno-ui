@@ -15,7 +15,7 @@ import { FilePond } from "react-filepond";
 import "filepond/dist/filepond.min.css";
 
 import auth from "../../../../../../../../../../Auth";
-import config from "/config.json";
+// import config from "/config.json";
 import {
   Button,
   Grid,
@@ -29,6 +29,8 @@ import {
   DialogTitle,
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
+
+const api_endpoint = import.meta.env.VITE_API_URL;
 
 function CustomAlert(props) {
   const { info } = props;
@@ -158,7 +160,7 @@ export default function InputFilesPond(props) {
   };
 
   const serverConfig = {
-    url: `${config.api_endpoint}api/submission/upload`,
+    url: `${api_endpoint}api/submission/upload`,
     process: {
       headers: { Authorization: auth.getToken() },
     },

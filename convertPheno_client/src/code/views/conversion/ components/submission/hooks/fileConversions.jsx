@@ -17,7 +17,9 @@ import toast from "react-hot-toast";
 
 import { fileConversion } from "../../../../../apis";
 import auth from "../../../../../Auth";
-import config from "/config.json";
+// import config from "/config.json";
+
+const api_endpoint = import.meta.env.VITE_API_URL;
 
 export default function useFileConversions(props) {
   const navigate = useNavigate();
@@ -27,7 +29,7 @@ export default function useFileConversions(props) {
     async () => {
       const res = await fileConversion(
         auth.getToken(),
-        config.api_endpoint,
+        api_endpoint,
         JSON.stringify(query)
       );
       return res.json();

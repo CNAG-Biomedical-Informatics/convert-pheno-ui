@@ -14,7 +14,9 @@ import { useQuery } from "@tanstack/react-query";
 
 import { getJobData } from "../../../apis";
 import auth from "../../../Auth";
-import config from "/config.json";
+// import config from "/config.json";
+
+const api_endpoint = import.meta.env.VITE_API_URL;
 
 export default function useFinishedJobs(props) {
   const { query, conversionFinished } = props;
@@ -25,7 +27,7 @@ export default function useFinishedJobs(props) {
     async () => {
       const res = await getJobData(
         auth.getToken(),
-        config.api_endpoint,
+        api_endpoint,
         JSON.stringify(query)
       );
       if (!res.ok) {

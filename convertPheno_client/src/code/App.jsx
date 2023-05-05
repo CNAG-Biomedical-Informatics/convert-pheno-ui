@@ -25,10 +25,12 @@ import Conversion from "./views/conversion/Conversion";
 
 import Header from "./header/Header";
 
-import config from "/config.json";
+// import config from "/config.json";
+
+const security = import.meta.env.VITE_SECURITY;
+console.log("security", security);
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
-
 function ErrorFallback({ error, resetErrorBoundary }) {
   if (process.env.NODE_ENV !== "production") {
     return (
@@ -46,12 +48,12 @@ const routes = [
   {
     path: "/",
     component: Home,
-    security: config.security,
+    security,
   },
   {
     path: "/conversion",
     component: Conversion,
-    security: config.security,
+    security,
   },
 ];
 

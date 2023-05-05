@@ -19,13 +19,18 @@ import auth from "./Auth";
 // import Home from "./home/Home";
 import Home from "./views/home/Home";
 
-import config from "/config.json";
+// import config from "/config.json";
+
+const kcConfig = JSON.parse(import.meta.env.VITE_KC_CONFIG);
+console.log("kcConfig", kcConfig);
 
 const keycloakConfig = {
-  realm: config.config_keycloak.realm,
-  url: config.config_keycloak["auth-server-url"],
-  clientId: config.config_keycloak.resource,
+  realm: kcConfig.realm,
+  url: kcConfig["auth-server-url"],
+  clientId: kcConfig.resource,
 };
+
+console.log("keycloakConfig", keycloakConfig);
 
 const Login = (props) => {
   const { authenticated, setAuthenticated } = props;

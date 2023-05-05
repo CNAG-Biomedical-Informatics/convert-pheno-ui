@@ -17,7 +17,9 @@ import InputFilesPond from "./components/inputFilesPond/InputFilesPond";
 import InputFormatSelection from "./components/inputFormatSelection/InputFormatSelection";
 import { fileDownloadExample } from "../../../../../../../../apis";
 import auth from "../../../../../../../../Auth";
-import config from "/config.json";
+// import config from "/config.json";
+
+const api_endpoint = import.meta.env.VITE_API_URL;
 
 export default function fileUpload(props) {
   const {
@@ -43,7 +45,7 @@ export default function fileUpload(props) {
       inputFormat,
       downloadName: inputFormatToFileNameMapping[inputFormat],
     };
-    await fileDownloadExample(auth.getToken(), config.api_endpoint, query);
+    await fileDownloadExample(auth.getToken(), api_endpoint, query);
   };
 
   return (

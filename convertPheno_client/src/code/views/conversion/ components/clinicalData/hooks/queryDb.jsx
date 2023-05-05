@@ -14,7 +14,9 @@ import { useQuery } from "@tanstack/react-query";
 
 import { getJson } from "../../../../../apis";
 import auth from "../../../../../Auth";
-import config from "/config.json";
+// import config from "/config.json";
+
+const api_endpoint = import.meta.env.VITE_API_URL;
 
 export default function useQueryDb(props) {
   const { query, location, setShownColumns, setHeaders } = props;
@@ -32,7 +34,7 @@ export default function useQueryDb(props) {
     queryFn: async () => {
       const res = await getJson(
         auth.getToken(),
-        config.api_endpoint,
+        api_endpoint,
         JSON.stringify(query)
       );
       if (!res.ok) {
