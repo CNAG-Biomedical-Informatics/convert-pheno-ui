@@ -16,7 +16,12 @@ import { Button } from "@mui/material";
 import { fileDownload } from "../../../../../../../../apis";
 import auth from "../../../../../../../../Auth";
 
-const api_endpoint = import.meta.env.VITE_API_URL;
+// const api_endpoint = import.meta.env.VITE_API_URL;
+
+const api_endpoint =
+  process.env.NODE_ENV === "production"
+    ? window.REACT_APP_API_URL
+    : import.meta.env.VITE_API_URL;
 
 function FileDownloadButton(jobId, tempFilename, newFilename, targetFormat) {
   // better on the server side

@@ -1,8 +1,8 @@
 server {
     listen 443 ssl; # For IPv4 addresses
     listen [::]:443 ssl; # For IPv6 addresses
-    ssl_certificate /etc/nginx/convertpheno.dev.pem;
-    ssl_certificate_key /etc/nginx/convertpheno.dev-key.pem;
+    ssl_certificate /etc/nginx/convertpheno.local.dev.pem;
+    ssl_certificate_key /etc/nginx/convertpheno.local.dev-key.pem;
 
     location / {
         access_log  /var/log/nginx/http.access.log;

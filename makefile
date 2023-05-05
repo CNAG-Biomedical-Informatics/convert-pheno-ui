@@ -60,4 +60,4 @@ db-ip:
 	docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' cp-pg
 
 mkcert:
-	/usr/local/bin/mkcert -cert-file ./nginx_mountpoint/certs/convertpheno.dev.pem -key-file ./nginx_mountpoint/certs/convertpheno.dev-key.pem convertpheno.dev
+	/usr/local/bin/mkcert -cert-file ./nginx_mountpoint/certs/convertpheno.local.dev.pem -key-file ./nginx_mountpoint/certs/convertpheno.local.dev-key.pem convertpheno.local.dev

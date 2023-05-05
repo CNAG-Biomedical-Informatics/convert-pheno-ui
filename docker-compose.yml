@@ -38,11 +38,11 @@ services:
       test: pg_isready -U postgres
 
   client:
-    image: leistivo/convert-pheno-ui-client:latest
-    # build:
-    #   context: ./convertPheno_client
-    #   args:
-    #     - IGNORE_CACHE_FROM_HERE=${IGNORE_CACHE_FROM_HERE}
+    # image: leistivo/convert-pheno-ui-client:latest
+    build:
+      context: ./convertPheno_client
+      args:
+        - IGNORE_CACHE_FROM_HERE=${IGNORE_CACHE_FROM_HERE}
     depends_on:
       - api
       - keycloak
@@ -53,12 +53,13 @@ services:
       - ./nginx_mountpoint/templates:/etc/nginx/templates:ro
       - ./nginx_mountpoint/includes:/etc/nginx/includes:ro
       - ./nginx_mountpoint/logs:/var/log/nginx
-      - ./nginx_mountpoint/certs/convertpheno.dev.pem:/etc/nginx/convertpheno.dev.pem:ro
-      - ./nginx_mountpoint/certs/convertpheno.dev-key.pem:/etc/nginx/convertpheno.dev-key.pem:ro
+      - ./nginx_mountpoint/certs/${DOMAIN}.pem:/etc/nginx/${DOMAIN}.pem:ro
+      - ./nginx_mountpoint/certs/${DOMAIN}-key.pem:/etc/nginx/${DOMAIN}-key.pem:ro
+      - ./nginx_mountpoint/replace_env_vars.sh:/docker-entrypoint.d/replace_env_vars.sh
     environment:
       NODE_ENV: production
       VITE_SECURITY: true
-      VITE_API_URL: ${API_URL}
+      VITE_API_URL: https://${DOMAIN}/api
       VITE_KC_CONFIG: ${KC_CONFIG}
 
   keycloak-db:
@@ -88,8 +89,8 @@ services:
       KC_PROXY: edge
       KC_HOSTNAME_STRICT: false
       KC_HOSTNAME_PATH: /auth
-      KC_HOSTNAME_URL: ${KC_HOSTNAME_URL}
-      KC_HOSTNAME_ADMIN_URL: ${KC_HOSTNAME_ADMIN_URL}
+      KC_HOSTNAME_URL: https://${DOMAIN}/auth/
+      KC_HOSTNAME_ADMIN_URL: https://${DOMAIN}/auth/admin/
       KC_HTTPS_CERTIFICATE_FILE: /opt/keycloak/conf/server.crt.pem
       KC_HTTPS_CERTIFICATE_KEY_FILE: /opt/keycloak/conf/server.key.pem
       KC_HEALTH_ENABLED: true
@@ -101,11 +102,11 @@ services:
         source: ./realm-export.json
         target: /opt/keycloak/data/import/realm-export.json
       - type: bind
-        source: ./nginx_mountpoint/certs/convertpheno.dev.pem
+        source: ./nginx_mountpoint/certs/${DOMAIN}.pem
         target: /opt/keycloak/conf/server.crt.pem
         read_only: true
       - type: bind
-        source: ./nginx_mountpoint/certs/convertpheno.dev-key.pem
+        source: ./nginx_mountpoint/certs/${DOMAIN}-key.pem
         target: /opt/keycloak/conf/server.key.pem
         read_only: true
     restart: unless-stopped

@@ -14,7 +14,13 @@
     <title>Convert-Pheno</title>
   </head>
   <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <script>
+      window.REACT_APP_SECURITY = "{{VITE_SECURITY}}";
+      window.REACT_APP_API_URL = "{{VITE_API_URL}}";
+      window.REACT_APP_KC_CONFIG = "{{VITE_KC_CONFIG}}";
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

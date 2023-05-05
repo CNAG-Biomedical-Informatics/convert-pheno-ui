@@ -18,7 +18,12 @@ import Keycloak from "keycloak-js";
 import auth from "./Auth";
 import Home from "./views/home/Home";
 
-const kcConfig = JSON.parse(import.meta.env.VITE_KC_CONFIG);
+// const kcConfig = JSON.parse(import.meta.env.VITE_KC_CONFIG);
+
+const kcConfig =
+  process.env.NODE_ENV === "production"
+    ? JSON.parse(window.REACT_APP_SECURITY)
+    : JSON.parse(import.meta.env.VITE_SECURITY);
 
 const keycloakConfig = {
   realm: kcConfig.realm,
