@@ -22,13 +22,13 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r convertPheno_server/requirements.txt
-      - name: Run Snyk to check for vulnerabilities
+      - name: Run Snyk in convertPheno_server
         uses: snyk/actions/python-3.8@master
         continue-on-error: true # To make sure that SARIF upload gets called
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: convertPheno_server --sarif-file-output=snyk.py.sarif
+          args: convertPheno_server --policy-path=convertPheno_server/.snyk --sarif-file-output=snyk.py.sarif
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
@@ -36,9 +36,10 @@ jobs:
           version: 7
           run_install: |
             - recursive: true
-            - cwd: convertPheno_client
+              cwd: convertPheno_client
+              args: ["--frozen-lockfile", "--production"]
 
-      - name: Run Snyk to check for vulnerabilities
+      - name: Run Snyk in convertPheno_client
         uses: snyk/actions/node@master
         continue-on-error: true # To make sure that SARIF upload gets called
         env:
