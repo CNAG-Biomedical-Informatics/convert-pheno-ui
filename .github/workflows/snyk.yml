@@ -35,7 +35,7 @@ jobs:
         with:
           version: 7
           run_install: |
-            - recursive: true
+            - recursive: false
               cwd: convertPheno_client
               args: ["--frozen-lockfile", "--production"]
 
