@@ -26,7 +26,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --file=${{ github.workspace }}/convertPheno_server/requirements.txt -d --sarif-file-output=${{ github.workspace }}/snyk.py.sarif
+          args: --file=/github/workspace/convertPheno_server/requirements.txt -d --sarif-file-output=/github/workspace/snyk.py.sarif
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
@@ -43,7 +43,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: convertPheno_client --sarif-file-output=${{ github.workspace }}/snyk.node.sarif -d
+          args: convertPheno_client --sarif-file-output=/github/workspace/snyk.node.sarif -d
 
       - name: List all files
         run: ls ${{ github.workspace }}
