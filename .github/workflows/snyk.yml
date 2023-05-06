@@ -43,7 +43,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: convertPheno_client --sarif-file-output=${{ github.workspace }}/snyk.node.sarif -
+          args: convertPheno_client --sarif-file-output=${{ github.workspace }}/snyk.node.sarif -d
 
       - name: List all files
         run: ls -R ${{ github.workspace }}
