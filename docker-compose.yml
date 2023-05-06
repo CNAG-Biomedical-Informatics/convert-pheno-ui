@@ -2,7 +2,6 @@ version: '3.3'
 services:
   api:
     # image: leistivo/convert-pheno-ui-server:latest
-
     build:
       context: ./convertPheno_server
       target: prod
@@ -25,8 +24,12 @@ services:
       API_DB_HOST: ${API_DB_HOST}
       API_DB_PORT: ${API_DB_PORT}
       API_DB_NAME: ${API_DB_NAME}
-      KC_URL: https://${DOMAIN}/auth
       KC_REALM: ${KC_REALM}
+    healthcheck:
+      test: curl -f http://0.0.0.0:5000/api/curltest
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
   api-db:
     image: postgres:13-alpine
@@ -40,14 +43,16 @@ services:
       test: pg_isready -U postgres
 
   client:
-    # image: leistivo/convert-pheno-ui-client:latest
-    build:
-      context: ./convertPheno_client
-      args:
-        - IGNORE_CACHE_FROM_HERE=${IGNORE_CACHE_FROM_HERE}
+    image: leistivo/convert-pheno-ui-client:latest
+    # build:
+    #   context: ./convertPheno_client
+    #   args:
+    #     - IGNORE_CACHE_FROM_HERE=${IGNORE_CACHE_FROM_HERE}
     depends_on:
-      - api
-      - keycloak
+      keycloak:
+        condition: service_healthy
+      api:
+        condition: service_healthy
     ports:
       - 80:80
       - 443:443
@@ -63,6 +68,11 @@ services:
       VITE_SECURITY: true
       VITE_API_URL: https://${DOMAIN}/
       VITE_KC_CONFIG: ${KC_CONFIG}
+    healthcheck:
+      test: curl -kf https://0.0.0.0:443
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
   keycloak-db:
     container_name: kc-db

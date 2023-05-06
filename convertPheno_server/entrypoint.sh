@@ -1,5 +1,5 @@
 #!/bin/bash
-CERTS_URL="https://client/auth/realms/$KC_REALM/protocol/openid-connect/certs"
+CERTS_URL="http://keycloak:8080/realms/$KC_REALM/protocol/openid-connect/certs"
 echo getting public key from $CERTS_URL
 
 echo "=== DEBUG: KC_PUBLIC_KEY start ==="
