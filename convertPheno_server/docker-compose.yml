@@ -32,6 +32,7 @@ services:
     image: postgres:13-alpine
     volumes:
       - postgres-data:/var/lib/postgresql/data/
+    restart: unless-stopped
     environment:
       - POSTGRES_DB=${API_DB}
       - POSTGRES_USER=${API_DB_USER}

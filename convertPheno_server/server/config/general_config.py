@@ -11,7 +11,6 @@
 #   License: GPL-3.0 license
 
 from pathlib import Path
-from os import environ
 
 
 class GeneralConfig:
@@ -23,20 +22,10 @@ class GeneralConfig:
     # postgres
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    path_prefix = ""
-    AUTH_BASE_URL = "http://localhost:28080/"
-    if "DOCKER_COMPOSE" in environ:
-        print("DOCKER_COMPOSE is in environ")
-        path_prefix = ""
-        DOCKER_CMD = []
-        AUTH_BASE_URL = "http://keycloak:8080/"
-    else:
-        print("DOCKER_COMPOSE is not in environ")
-
     # flask
-    FLASK_UPLOAD_DIR = Path(f"{path_prefix}data/uploads/")
-    FLASK_EXAMPLE_DIR = Path(f"{path_prefix}data/example_in/").resolve()
-    FLASK_OUT_DIR = Path(f"{path_prefix}data/output/").resolve()
+    FLASK_UPLOAD_DIR = Path("data/uploads/")
+    FLASK_EXAMPLE_DIR = Path("data/example_in/").resolve()
+    FLASK_OUT_DIR = Path("data/output/").resolve()
     ALLOWED_EXTENSIONS = ["tsv", "csv", "txt", "json"]
 
     # convert-pheno

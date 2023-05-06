@@ -29,6 +29,3 @@ class Config:
     )
 
     JWT_OPTIONS = {"verify_exp": False, "verify_aud": False}
-
-    AUTH_BASE_URL = environ.get("KC_HOSTNAME_URL")
-    AUTH_REALM = environ.get("KC_REALM")

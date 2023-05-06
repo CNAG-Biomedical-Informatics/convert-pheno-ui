@@ -2,6 +2,7 @@ version: '3.3'
 services:
   api:
     image: leistivo/convert-pheno-ui-server:latest
+    container_name: convert-pheno-api
     # build:
     #   context: ./convertPheno_server
     #   target: prod
@@ -14,7 +15,6 @@ services:
         condition: service_healthy
     ports:
       - 5000:5000
-    tty: true
     volumes:
       - api-data:/usr/src/data
       - /var/run/docker.sock:/var/run/docker.sock
@@ -25,6 +25,7 @@ services:
       API_DB_PORT: ${API_DB_PORT}
       API_DB_NAME: ${API_DB_NAME}
       KC_REALM: ${KC_REALM}
+    restart: unless-stopped
     healthcheck:
       test: curl -f http://0.0.0.0:5000/api/curltest
       interval: 10s
@@ -33,17 +34,20 @@ services:
 
   api-db:
     image: postgres:13-alpine
+    container_name: convert-pheno-api-db
     volumes:
       - postgres-data:/var/lib/postgresql/data/
     environment:
       - POSTGRES_DB=${API_DB_NAME}
       - POSTGRES_USER=${API_DB_USER}
       - POSTGRES_PASSWORD=${API_DB_PW}
+    restart: unless-stopped
     healthcheck:
       test: pg_isready -U postgres
 
   client:
     image: leistivo/convert-pheno-ui-client:latest
+    container_name: convert-pheno-client
     # build:
     #   context: ./convertPheno_client
     #   args:
@@ -68,6 +72,7 @@ services:
       VITE_SECURITY: true
       VITE_API_URL: https://${DOMAIN}/
       VITE_KC_CONFIG: ${KC_CONFIG}
+    restart: unless-stopped
     healthcheck:
       test: curl -kf https://0.0.0.0:443
       interval: 10s
@@ -75,13 +80,13 @@ services:
       retries: 5
 
   keycloak-db:
-    container_name: kc-db
     image: postgres:13-alpine
-    restart: unless-stopped
+    container_name: kc-db
     environment:
       POSTGRES_DB: ${KC_DB}
       POSTGRES_USER: ${KC_DB_USER}
       POSTGRES_PASSWORD: ${KC_DB_PW}
+    restart: unless-stopped
     healthcheck:
       test: pg_isready -U ${KC_DB_USER}
 
@@ -106,9 +111,6 @@ services:
       KC_HTTPS_CERTIFICATE_FILE: /opt/keycloak/conf/server.crt.pem
       KC_HTTPS_CERTIFICATE_KEY_FILE: /opt/keycloak/conf/server.key.pem
       KC_HEALTH_ENABLED: true
-    ports:
-      - "28080:8080"
-      - "8443:443"
     volumes:
       - type: bind
         source: ./realm-export.json
@@ -130,11 +132,9 @@ services:
       retries: 5
 
   convert-pheno:
-    # user: ${UID}
     image: manuelrueda/convert-pheno:latest
     container_name: convert-pheno
     restart: unless-stopped
-    tty: true
     volumes:
       - api-data:/home
 
