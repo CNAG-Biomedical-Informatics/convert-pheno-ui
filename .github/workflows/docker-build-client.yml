@@ -27,7 +27,7 @@ jobs:
         continue-on-error: true
         with:
           image: leistivo/convert-pheno-ui-client:latest
-          args: --file=Dockerfile --sarif-file-output=snyk.sarif
+          args: --file=convertPheno_client/Dockerfile --sarif-file-output=snyk.sarif
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
