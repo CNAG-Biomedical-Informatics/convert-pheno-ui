@@ -17,7 +17,7 @@ jobs:
         continue-on-error: true
         with:
           image: leistivo/convert-pheno-ui-server:latest
-          args: --file=convertPheno_client/Dockerfile --sarif-file-output=snyk.server.sarif
+          args: --file=convertPheno_client/Dockerfile --sarif-file-output=/github/workspace/snyk.server.sarif
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
@@ -26,7 +26,7 @@ jobs:
         continue-on-error: true
         with:
           image: leistivo/convert-pheno-ui-client:latest
-          args: --file=convertPheno_client/Dockerfile --sarif-file-output=snyk.client.sarif
+          args: --file=convertPheno_client/Dockerfile --sarif-file-output=/github/workspace/snyk.client.sarif
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
