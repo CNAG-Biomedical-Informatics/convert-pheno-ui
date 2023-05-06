@@ -28,7 +28,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: convertPheno_server --file=convertPheno_server/requirements.txt --sarif-file-output=snyk.py.sarif
+          args: convertPheno_server --file=requirements.txt --sarif-file-output=snyk.py.sarif
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
