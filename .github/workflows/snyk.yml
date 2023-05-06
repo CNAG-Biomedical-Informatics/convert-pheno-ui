@@ -1,4 +1,4 @@
-name: Snyk Security
+name: Snyk server and client scan
 
 on:
   workflow_dispatch:

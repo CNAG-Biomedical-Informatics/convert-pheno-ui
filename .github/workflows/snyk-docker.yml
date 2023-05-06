@@ -1,4 +1,4 @@
-name: Snyk Security
+name: Snyk docker scan
 
 on:
   workflow_dispatch:
