@@ -1,4 +1,4 @@
-name: Snyk server docker
+name: Snyk client docker scan
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: Snyk server and client scan
+name: Snyk server scan
 
 on:
   workflow_dispatch:
