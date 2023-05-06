@@ -3,13 +3,12 @@ name: Snyk Security
 on:
   workflow_dispatch:
 
-permissions:
-  contents: read
-  security-events: write
-
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python 3.8
@@ -26,7 +25,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --file=${{ github.workspace }}/convertPheno_server/requirements.txt -d --sarif-file-output=${{ github.workspace }}/snyk.py.sarif
+          args: --file=${{ github.workspace }}convertPheno_server/requirements.txt -d --sarif-file-output=${{ github.workspace }}/snyk.py.sarif
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
