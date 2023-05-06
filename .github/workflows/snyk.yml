@@ -43,7 +43,10 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: convertPheno_client --sarif-file-output=${{ github.workspace }}/snyk.node.sarif -d
+          args: convertPheno_client --sarif-file-output=${{ github.workspace }}/snyk.node.sarif -
+
+      - name: List all files
+        run: ls -R ${{ github.workspace }}
 
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v2
