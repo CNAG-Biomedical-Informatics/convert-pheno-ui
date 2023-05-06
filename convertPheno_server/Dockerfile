@@ -20,7 +20,8 @@ COPY ./server.sh .
 FROM tiangolo/meinheld-gunicorn-flask:python3.8 as prod
 
 RUN apt-get update && apt-get install -y \
-    lsb-release
+    lsb-release \
+    jq
 
 RUN mkdir -m 0755 -p /etc/apt/keyrings \
     && curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker-archive-keyring.gpg \
@@ -35,5 +36,7 @@ ARG IGNORE_CACHE_FROM_HERE=unknown
 RUN echo "IGNORE_CACHE_FROM_HERE=${IGNORE_CACHE_FROM_HERE}"
 COPY server ./server
 COPY ./server.sh .
+COPY ./entrypoint.sh .
 ENV FLASK_ENV production
-CMD ["gunicorn","--conf","server/config/gunicorn_conf.py","server.app:app"]
+CMD ["./entrypoint.sh"]
+# CMD ["gunicorn","--conf","server/config/gunicorn_conf.py","server.app:app"]

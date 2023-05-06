@@ -30,7 +30,7 @@ db-empty:
 	python3 emptyAllTables.py postgres:postgres postgres $(shell docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' cp-pg)
 
 kc-key:
-	./get_public_kc_key.sh ${KC_HOSTNAME_URL} ${KC_REALM} >> .env
+	./get_public_kc_key.sh https://${DOMAIN}/auth/ ${KC_REALM} >> .env
 
 cp:
 	docker compose up --build convert-pheno

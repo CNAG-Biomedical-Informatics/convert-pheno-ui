@@ -17,6 +17,8 @@ export IGNORE_CACHE_FROM_HERE:=$(CURRENT_DATE)
 export KC_CMD =start-dev --import-realm
 # For containers, the import directory is /opt/keycloak/data/import
 
+include .env
+
 run:
 	docker compose up -d
 
@@ -52,6 +54,9 @@ l-kc:
 
 kc:
 	docker compose up keycloak
+
+kc-key:
+	./get_public_kc_key.sh "https://${DOMAIN}/auth" ${KC_REALM} >> .env
 
 kc-ip:
 	docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' local_keycloak

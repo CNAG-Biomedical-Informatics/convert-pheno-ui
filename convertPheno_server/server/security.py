@@ -25,10 +25,6 @@ from server.model import History
 cfg = app.config
 options = cfg["JWT_OPTIONS"]
 
-# kc_key = os.environ.get("KC_PUBLIC_KEY")
-# cert = f"-----BEGIN CERTIFICATE-----\n{kc_key}\n-----END CERTIFICATE-----"
-# public_key = load_pem_x509_certificate(cert.encode(), default_backend()).public_key()
-
 
 def get_public_key():
     """

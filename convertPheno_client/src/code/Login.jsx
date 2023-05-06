@@ -20,10 +20,13 @@ import Home from "./views/home/Home";
 
 // const kcConfig = JSON.parse(import.meta.env.VITE_KC_CONFIG);
 
+console.log("window.REACT_APP_KC_CONFIG", window.REACT_APP_KC_CONFIG);
 const kcConfig =
   process.env.NODE_ENV === "production"
-    ? JSON.parse(window.REACT_APP_SECURITY)
-    : JSON.parse(import.meta.env.VITE_SECURITY);
+    ? JSON.parse(window.REACT_APP_KC_CONFIG.replace(/'/g, "\""))
+    : JSON.parse(import.meta.env.VITE_KC_CONFIG);
+
+console.log("kcConfig", kcConfig);
 
 const keycloakConfig = {
   realm: kcConfig.realm,

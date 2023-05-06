@@ -1,13 +1,13 @@
 version: '3.3'
 services:
   api:
-    image: leistivo/convert-pheno-ui-server:latest
+    # image: leistivo/convert-pheno-ui-server:latest
 
-    # build:
-    #   context: ./convertPheno_server
-    #   target: prod
-    #   args:
-    #     - IGNORE_CACHE_FROM_HERE=${IGNORE_CACHE_FROM_HERE}
+    build:
+      context: ./convertPheno_server
+      target: prod
+      args:
+        - IGNORE_CACHE_FROM_HERE=${IGNORE_CACHE_FROM_HERE}
     depends_on:
       api-db:
         condition: service_healthy
@@ -25,6 +25,8 @@ services:
       API_DB_HOST: ${API_DB_HOST}
       API_DB_PORT: ${API_DB_PORT}
       API_DB_NAME: ${API_DB_NAME}
+      KC_URL: https://${DOMAIN}/auth
+      KC_REALM: ${KC_REALM}
 
   api-db:
     image: postgres:13-alpine
@@ -59,7 +61,7 @@ services:
     environment:
       NODE_ENV: production
       VITE_SECURITY: true
-      VITE_API_URL: https://${DOMAIN}/api
+      VITE_API_URL: https://${DOMAIN}/
       VITE_KC_CONFIG: ${KC_CONFIG}
 
   keycloak-db:
@@ -90,7 +92,7 @@ services:
       KC_HOSTNAME_STRICT: false
       KC_HOSTNAME_PATH: /auth
       KC_HOSTNAME_URL: https://${DOMAIN}/auth/
-      KC_HOSTNAME_ADMIN_URL: https://${DOMAIN}/auth/admin/
+      KC_HOSTNAME_ADMIN_URL: https://${DOMAIN}/auth/
       KC_HTTPS_CERTIFICATE_FILE: /opt/keycloak/conf/server.crt.pem
       KC_HTTPS_CERTIFICATE_KEY_FILE: /opt/keycloak/conf/server.key.pem
       KC_HEALTH_ENABLED: true
