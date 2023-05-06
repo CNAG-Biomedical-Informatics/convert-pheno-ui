@@ -1,0 +1,30 @@
+name: Snyk server docker
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: Scan client docker image
+        uses: snyk/actions/docker@master
+        continue-on-error: true
+        with:
+          image: leistivo/convert-pheno-ui-client:latest
+          args: --file=convertPheno_client/Dockerfile
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: List all files
+        run: ls -l ${{ github.workspace }}
+
+      - name: Upload SARIF to Snyk
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: ${{ github.workspace }}

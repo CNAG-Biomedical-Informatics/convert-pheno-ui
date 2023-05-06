@@ -1,4 +1,4 @@
-name: Snyk docker scan
+name: Snyk server docker
 
 on:
   workflow_dispatch:
@@ -17,16 +17,7 @@ jobs:
         continue-on-error: true
         with:
           image: leistivo/convert-pheno-ui-server:latest
-          args: --file=convertPheno_server/Dockerfile --sarif-file-output=/github/workspace/snyk.server.sarif -d
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
-      - name: Scan client docker image
-        uses: snyk/actions/docker@master
-        continue-on-error: true
-        with:
-          image: leistivo/convert-pheno-ui-client:latest
-          args: --file=convertPheno_client/Dockerfile --sarif-file-output=/github/workspace/snyk.client.sarif -d
+          args: --file=convertPheno_server/Dockerfile
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 

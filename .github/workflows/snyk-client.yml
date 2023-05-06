@@ -1,0 +1,38 @@
+name: Snyk server and client scan
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 7
+          run_install: |
+            - recursive: false
+              cwd: convertPheno_client
+              args: ["--frozen-lockfile", "--production"]
+
+      - name: Run Snyk in convertPheno_client
+        uses: snyk/actions/node@master
+        continue-on-error: true # To make sure that SARIF upload gets called
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: convertPheno_client --sarif-file-output=/github/workspace/snyk.sarif
+
+      - name: List all files
+        run: ls -l ${{ github.workspace }}
+
+      - name: Upload result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: ${{ github.workspace }}

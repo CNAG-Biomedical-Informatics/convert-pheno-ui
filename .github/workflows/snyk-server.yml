@@ -26,24 +26,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --file=/github/workspace/convertPheno_server/requirements.txt -d --sarif-file-output=/github/workspace/snyk.py.sarif
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 7
-          run_install: |
-            - recursive: false
-              cwd: convertPheno_client
-              args: ["--frozen-lockfile", "--production"]
-
-      - name: Run Snyk in convertPheno_client
-        uses: snyk/actions/node@master
-        continue-on-error: true # To make sure that SARIF upload gets called
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: convertPheno_client --sarif-file-output=/github/workspace/snyk.node.sarif -d
+          args: -d --file=/github/workspace/convertPheno_server/requirements.txt --sarif-file-output=/github/workspace/snyk.sarif
 
       - name: List all files
         run: ls -l ${{ github.workspace }}
