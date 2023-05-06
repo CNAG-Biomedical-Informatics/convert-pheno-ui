@@ -46,7 +46,7 @@ jobs:
           args: convertPheno_client --sarif-file-output=/github/workspace/snyk.node.sarif -d
 
       - name: List all files
-        run: ls ${{ github.workspace }}
+        run: ls -l ${{ github.workspace }}
 
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v2
