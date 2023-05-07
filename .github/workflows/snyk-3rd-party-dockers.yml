@@ -19,7 +19,7 @@ jobs:
       - name: List all files
         run: ls -l ${{ github.workspace }}
 
-      - name: run jq
+      - name: test jq
         run: echo $(jq -R -s -c 'split("\n")[:-1]' imgs.txt)
 
       - name: Read images
@@ -28,9 +28,6 @@ jobs:
           echo "images=$(jq -R -s -c 'split("\n")[:-1]' imgs.txt)" >> "$GITHUB_OUTPUT"
         shell: bash
 
-      - name: show images
-        run: echo ${{ steps.read_images.outputs.images }}
-
   snyk_scan:
     runs-on: ubuntu-latest
     needs: get_images
@@ -38,7 +35,6 @@ jobs:
       matrix:
         image: ${{ fromJson(needs.get_images.outputs.matrix) }}
     steps:
-      - run: echo ${{ matrix.image }}
       - name: Scan Docker images with Snyk
         uses: snyk/actions/docker@master
         continue-on-error: true
