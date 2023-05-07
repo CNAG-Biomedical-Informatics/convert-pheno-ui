@@ -27,7 +27,7 @@ FROM builder AS dev
 COPY --from=builder /opt/venv venv
 # ARG IGNORE_CACHE_FROM_HERE=unknown
 # RUN echo "IGNORE_CACHE_FROM_HERE=${IGNORE_CACHE_FROM_HERE}"
-COPY server ./
+COPY server ./server
 COPY ./server.sh .
 CMD ["./server.sh"]
 
@@ -36,8 +36,7 @@ COPY --from=builder /opt/venv venv
 RUN poetry install --no-interaction --no-root --only main,prod
 ARG IGNORE_CACHE_FROM_HERE=unknown
 RUN echo "IGNORE_CACHE_FROM_HERE=${IGNORE_CACHE_FROM_HERE}"
-COPY server ./
+COPY server ./server
 COPY ./server.sh .
 COPY ./entrypoint.sh .
-ENV FLASK_ENV production
 CMD ["./entrypoint.sh"]
