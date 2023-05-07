@@ -1,13 +1,13 @@
 version: '3.3'
 services:
   api:
-    image: leistivo/convert-pheno-ui-server:latest
+    # image: leistivo/convert-pheno-ui-server:latest
     container_name: convert-pheno-api
-    # build:
-    #   context: ./convertPheno_server
-    #   target: prod
-    #   args:
-    #     - IGNORE_CACHE_FROM_HERE=${IGNORE_CACHE_FROM_HERE}
+    build:
+      context: ./convertPheno_server
+      target: prod
+      args:
+        - IGNORE_CACHE_FROM_HERE=${IGNORE_CACHE_FROM_HERE}
     depends_on:
       api-db:
         condition: service_healthy
@@ -16,7 +16,7 @@ services:
     ports:
       - 5000:5000
     volumes:
-      - api-data:/usr/src/data
+      - api-data:/opt/data
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       API_DB_USER: ${API_DB_USER}
@@ -135,6 +135,7 @@ services:
     image: manuelrueda/convert-pheno:latest
     container_name: convert-pheno
     restart: unless-stopped
+    tty: true
     volumes:
       - api-data:/home
 
