@@ -25,7 +25,6 @@ jobs:
       - name: Read images
         id: read_images
         run: |
-          # echo "::set-output name=images::$(jq -R -s -c 'split("\n")[:-1]' imgs.txt)"
           echo "{images}={$(jq -R -s -c 'split("\n")[:-1]' imgs.txt)}" >> $GITHUB_OUTPUT"
         shell: bash
 
