@@ -18,23 +18,16 @@ jobs:
         with:
           python-version: 3.8
 
-      - uses: actions/cache@v3
-        id: cache-venv # name for referring later
+      - name: Load cached Poetry installation
+        id: cached-poetry
+        uses: actions/cache@v3
         with:
-          path: ${{ github.workspace }}/venv/ # what we cache: the virtualenv
-          # The cache key depends on requirements.txt
-          key: ${{ runner.os }}-venv-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-venv-
+          path: ~/.local
+          key: poetry-0 # increment to reset cache
 
-      # Build a virtualenv, but only if it doesn't already exist
-      - name: Build virtualenv
-        if: steps.cache-venv.outputs.cache-hit != 'true'
-        run: |
-          python -m venv venv
-          pip install --upgrade pip
-          source ./venv/bin/activate
-          pip install -r convertPheno_server/requirements.txt
+      - name: Install Poetry
+        if: steps.cached-poetry.outputs.cache-hit != 'true'
+        uses: snok/install-poetry@v1
 
       - name: Run Snyk in convertPheno_server
         uses: snyk/actions/python-3.8@master
