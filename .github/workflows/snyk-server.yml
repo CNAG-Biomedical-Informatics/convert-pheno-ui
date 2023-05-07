@@ -17,8 +17,6 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: 3.8
-          cache: "pip"
-          cache-dependency-path: "**/requirements.txt"
 
       - uses: actions/cache@v3
         id: cache-venv # name for referring later
@@ -32,7 +30,9 @@ jobs:
       # Build a virtualenv, but only if it doesn't already exist
       - name: Build virtualenv
         if: steps.cache-venv.outputs.cache-hit != 'true'
-        run: python -m venv ./.venv && . ./.venv/bin/activate &&
+        run: |
+          python -m pip install --upgrade pip
+          python -m venv ./.venv && . ./.venv/bin/activate &&
           pip install -r convertPheno_server/requirements.txt
 
       - name: Run Snyk in convertPheno_server
