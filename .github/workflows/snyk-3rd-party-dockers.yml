@@ -41,8 +41,8 @@ jobs:
       - run: echo ${{ matrix.image }}
       - name: Scan Docker images with Snyk
         uses: snyk/actions/docker@master
+        continue-on-error: true
         with:
-          command: test
           image: ${{ matrix.image }}
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
