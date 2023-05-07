@@ -25,7 +25,7 @@ jobs:
       - name: Read images
         id: read_images
         run: |
-          echo "{images}={$(jq -R -s -c 'split("\n")[:-1]' imgs.txt)}" >> $GITHUB_OUTPUT"
+          echo "{images}={$(jq -R -s -c 'split("\n")[:-1]' imgs.txt)}" >> "$GITHUB_OUTPUT"
         shell: bash
 
   snyk_scan:
