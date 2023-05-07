@@ -1,13 +1,13 @@
 version: '3.3'
 services:
   api:
-    # image: leistivo/convert-pheno-ui-server:latest
+    image: leistivo/convert-pheno-ui-server:latest
     container_name: convert-pheno-api
-    build:
-      context: ./convertPheno_server
-      target: prod
-      args:
-        - IGNORE_CACHE_FROM_HERE=${IGNORE_CACHE_FROM_HERE}
+    # build:
+    #   context: ./convertPheno_server
+    #   target: prod
+    #   args:
+    #     - IGNORE_CACHE_FROM_HERE=${IGNORE_CACHE_FROM_HERE}
     depends_on:
       api-db:
         condition: service_healthy
