@@ -35,7 +35,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: -d --file=/github/workspace/convertPheno_server/requirements.txt --sarif-file-output=/github/workspace/snyk.sarif
+          args: -d --file=/github/workspace/convertPheno_server/poetry.lock --sarif-file-output=/github/workspace/snyk.sarif
 
       - name: List all files
         run: ls -l ${{ github.workspace }}
