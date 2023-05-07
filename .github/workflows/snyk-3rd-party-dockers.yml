@@ -6,6 +6,8 @@ on:
 jobs:
   get_images:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.read_images.outputs.matrix }}
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -28,7 +30,7 @@ jobs:
     needs: get_images
     strategy:
       matrix:
-        image: ${{ fromJson(needs.get_images.outputs.images) }}
+        image: ${{ fromJson(needs.get_images.outputs.matrix) }}
     steps:
       - name: Scan Docker images with Snyk
         uses: snyk/actions/docker@master
