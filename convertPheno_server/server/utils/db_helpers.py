@@ -34,8 +34,13 @@ def get_log_info(log_file):
     """
     # TODO
     # add error handling
-    with open(log_file) as file:
-        log = json.load(file)
+    if not log_file.is_file():
+        return {"error": "log file not found"}
+    try:
+        with open(log_file) as file:
+            log = json.load(file)
+    except Exception as err:
+        log = {"error": str(err)}
     return log
 
 

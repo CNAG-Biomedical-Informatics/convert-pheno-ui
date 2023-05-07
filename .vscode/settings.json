@@ -3,7 +3,7 @@
     "--rootdir",
     "${workspaceFolder}/convertPheno_server"
   ],
-  "python.testing.pytestPath": "${workspaceFolder}/convertPheno_server/venv/bin/pytest",
+  "python.testing.pytestPath": "${workspaceFolder}/convertPheno_server/.venv/bin/pytest",
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
   "python.envFile": "${workspaceFolder}/convertPheno_server/.env",

@@ -1,6 +1,6 @@
 .env
 *.pem
-venv
+.venv
 server/data/output/*
 server/data/uploads/*
 .pytest_cache
@@ -8,3 +8,4 @@ server/data/uploads/*
 __pycache__
 junit.xml
 .coveralls.yml
+poetry.toml

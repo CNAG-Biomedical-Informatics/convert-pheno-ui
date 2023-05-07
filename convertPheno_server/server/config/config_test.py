@@ -41,7 +41,12 @@ class DevelopmentConfig:
     TOKEN_URL = f"{AUTH_BASE_URL}/realms/{AUTH_REALM}/protocol/openid-connect/token"
 
     # flask
-    path_prefix = "server"
-    FLASK_UPLOAD_DIR = Path(f"{path_prefix}/data/uploads/")
-    FLASK_EXAMPLE_DIR = Path(f"{path_prefix}/data/example_in/").resolve()
-    FLASK_OUT_DIR = Path(f"{path_prefix}/data/output/").resolve()
+    convertPheno_mountpoint = environ.get("CONVERTPHENO_DATA_MOUNTPOINT")
+    if convertPheno_mountpoint == "convert-pheno-ui":
+        data_dir = Path.cwd().parent / "data"
+    else:
+        data_dir = Path.cwd() / "data"
+
+    FLASK_UPLOAD_DIR = data_dir / "uploads"
+    FLASK_EXAMPLE_DIR = data_dir / "example_in"
+    FLASK_OUT_DIR = data_dir / "output"

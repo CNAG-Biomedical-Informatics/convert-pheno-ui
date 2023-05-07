@@ -14,10 +14,10 @@ import sys
 from os import path
 import pytest
 
+# import order matters
+from server.config.config_test import DevelopmentConfig
 from server.app import app
 from server.model import db
-
-from server.config.config_test import DevelopmentConfig
 
 sys.path.append(path.join(path.dirname(__file__), "helpers"))
 from utils import get_header, MyTester  # noqa: E402
@@ -47,6 +47,12 @@ def header():
 @pytest.fixture(scope="session")
 def header_2():
     return get_header("test2", DevelopmentConfig)
+
+
+@pytest.fixture(autouse=True)
+def app_context():
+    with app.app_context():
+        yield
 
 
 @pytest.fixture()

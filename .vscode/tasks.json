@@ -4,7 +4,7 @@
     {
       "label": "flask",
       "type": "shell",
-      "command": "source venv/bin/activate && make run",
+      "command": "source convertPheno_server/.venv/bin/activate && make -C convertPheno_server run",
       "runOptions": {
         "runOn": "folderOpen"
       }
