@@ -7,7 +7,7 @@ jobs:
   get_images:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.read_images.outputs.matrix }}
+      matrix: ${{ steps.read_images.outputs.images }}
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -19,10 +19,14 @@ jobs:
       - name: List all files
         run: ls -l ${{ github.workspace }}
 
+      - name: run jq
+        run: echo $(jq -R -s -c 'split("\n")[:-1]' imgs.txt)
+
       - name: Read images
         id: read_images
         run: |
-          echo "::set-output name=images::$(jq -R -s -c 'split("\n")[:-1]' imgs.txt)"
+          # echo "::set-output name=images::$(jq -R -s -c 'split("\n")[:-1]' imgs.txt)"
+          echo "{images}={$(jq -R -s -c 'split("\n")[:-1]' imgs.txt)}" >> $GITHUB_OUTPUT"
         shell: bash
 
   snyk_scan:
@@ -32,6 +36,7 @@ jobs:
       matrix:
         image: ${{ fromJson(needs.get_images.outputs.matrix) }}
     steps:
+      - run: echo ${{ matrix.image }}
       - name: Scan Docker images with Snyk
         uses: snyk/actions/docker@master
         with:
