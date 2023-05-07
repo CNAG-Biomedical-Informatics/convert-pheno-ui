@@ -1,4 +1,4 @@
-name: Snyk Docker Image Scan
+name: Snyk 3rd party Docker image scan
 
 on:
   workflow_dispatch:
