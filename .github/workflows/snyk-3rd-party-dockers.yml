@@ -6,6 +6,9 @@ on:
 jobs:
   snyk_scan:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image: ${{ fromJson(readFile('imgs.txt')) }}
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -24,6 +27,3 @@ jobs:
           image: ${{ matrix.image }}
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        strategy:
-          matrix:
-            image: ${{ fromJson(readFile('imgs.txt')) }}
