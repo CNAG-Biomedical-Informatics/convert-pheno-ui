@@ -28,6 +28,9 @@ jobs:
           echo "{images}={$(jq -R -s -c 'split("\n")[:-1]' imgs.txt)}" >> "$GITHUB_OUTPUT"
         shell: bash
 
+      - name: show images
+        run: echo ${{ steps.read_images.outputs.images }}
+
   snyk_scan:
     runs-on: ubuntu-latest
     needs: get_images
