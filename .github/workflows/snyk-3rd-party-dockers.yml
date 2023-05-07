@@ -1,0 +1,29 @@
+name: Snyk Docker Image Scan
+
+on:
+  workflow_dispatch:
+
+jobs:
+  snyk_scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Extract Docker images
+        run: |
+          grep -E "^\s*image:" docker-compose.yml | awk '{print $2}'  | grep -v "^leistivo" | sort | uniq > imgs.txt
+
+      - name: List all files
+        run: ls -l ${{ github.workspace }}
+
+      - name: Scan Docker images with Snyk
+        uses: snyk/actions/docker@master
+        with:
+          command: test
+          image: ${{ matrix.image }}
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        strategy:
+          matrix:
+            image: ${{ fromJson(readFile('imgs.txt')) }}
