@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   api:
-    image: leistivo/convert-pheno-ui-server:latest
+    # image: leistivo/convert-pheno-ui-server:latest
     container_name: convert-pheno-api
     # build:
     #   context: ./convertPheno_server
@@ -25,6 +25,8 @@ services:
       API_DB_PORT: ${API_DB_PORT}
       API_DB_NAME: ${API_DB_NAME}
       KC_REALM: ${KC_REALM}
+      UID: ${UID}
+      GID: ${GID}
     restart: unless-stopped
     healthcheck:
       test: curl -f http://0.0.0.0:5000/api/curltest
@@ -48,12 +50,12 @@ services:
       test: pg_isready -U postgres
 
   client:
-    image: leistivo/convert-pheno-ui-client:latest
+    # image: leistivo/convert-pheno-ui-client:latest
     container_name: convert-pheno-client
-    # build:
-    #   context: ./convertPheno_client
-    #   args:
-    #     - IGNORE_CACHE_FROM_HERE=${IGNORE_CACHE_FROM_HERE}
+    build:
+      context: ./convertPheno_client
+      args:
+        - IGNORE_CACHE_FROM_HERE=${IGNORE_CACHE_FROM_HERE}
     depends_on:
       keycloak:
         condition: service_healthy
@@ -65,7 +67,6 @@ services:
     volumes:
       - ./nginx_mountpoint/templates:/etc/nginx/templates:ro
       - ./nginx_mountpoint/includes:/etc/nginx/includes:ro
-      - ./nginx_mountpoint/logs:/var/log/nginx
       - ./nginx_mountpoint/certs/${DOMAIN}.pem:/etc/nginx/${DOMAIN}.pem:ro
       - ./nginx_mountpoint/certs/${DOMAIN}-key.pem:/etc/nginx/${DOMAIN}-key.pem:ro
       - ./nginx_mountpoint/replace_env_vars.sh:/docker-entrypoint.d/replace_env_vars.sh
@@ -134,6 +135,7 @@ services:
       retries: 5
 
   convert-pheno:
+    user: ${UID}
     image: manuelrueda/convert-pheno:latest
     container_name: convert-pheno
     restart: unless-stopped

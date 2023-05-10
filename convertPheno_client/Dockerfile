@@ -16,16 +16,24 @@ RUN pnpm run build
 
 #production environment
 FROM nginx:1.23-alpine
-RUN apk add openssl
+RUN apk add openssl shadow
+
+# Create a new user and switch to that user
+RUN addgroup -g 1000 -S nginxuser && adduser -u 1000 -S nginxuser -G nginxuser
+
 EXPOSE 80
 COPY --from=build /app/dist /usr/share/nginx/html
 COPY replace_env_vars.sh /replace_env_vars.sh
 COPY entrypoint.sh /entrypoint.sh
-# CMD ["/bin/sh", "-c", "/replace_env_vars.sh && exec nginx -g 'daemon off;'"]
-# CMD ["ls"]
-# CMD ["/bin/sh","-c","/replace_env_vars.sh"]
-# ENTRYPOINT ["/bin/sh", "-c", "/replace_env_vars.sh && exec nginx -g 'daemon off;'"]
-# ENTRYPOINT [ "/entrypoint.sh"]
-# CMD ["nginx", "-g", "daemon off;"]
-# ENTRYPOINT ["ls && exec nginx -g 'daemon off;'"]
+
+RUN chown -R nginxuser:nginxuser /usr/share/nginx/html && \
+	chown -R nginxuser:nginxuser /var/cache/nginx && \
+	chown -R nginxuser:nginxuser /var/run && \
+	chown -R nginxuser:nginxuser /etc/nginx/conf.d && \
+	chown -R nginxuser:nginxuser /var/log/nginx
+
+RUN touch /var/run/nginx.pid && \
+	chown -R nginxuser:nginxuser /var/run/nginx.pid
+
+USER nginxuser
 CMD ["nginx", "-g", "daemon off;"]
