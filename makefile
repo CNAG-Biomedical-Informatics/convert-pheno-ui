@@ -18,6 +18,7 @@ export KC_CMD =start-dev --import-realm
 # For containers, the import directory is /opt/keycloak/data/import
 
 include .env
+include .sonar.env
 
 run:
 	docker compose up -d
@@ -66,3 +67,6 @@ db-ip:
 
 mkcert:
 	/usr/local/bin/mkcert -cert-file ./nginx_mountpoint/certs/convertpheno.local.dev.pem -key-file ./nginx_mountpoint/certs/convertpheno.local.dev-key.pem convertpheno.local.dev
+
+sonar:
+	bash sonar.sh
