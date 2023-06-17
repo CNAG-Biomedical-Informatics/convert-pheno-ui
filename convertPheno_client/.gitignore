@@ -6,3 +6,5 @@ kc.env
 .nyc_output
 cypress/fixtures/users/*
 reports
+.sonar.env
+.scannerwork
