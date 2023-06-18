@@ -4,28 +4,47 @@ on:
   workflow_dispatch:
 
 jobs:
-  license_check:
+  #   license_check_server:
+  #     runs-on: ubuntu-latest
+  #     steps:
+  #       - name: Checkout the code
+  #         uses: actions/checkout@v3
+  #         with:
+  #           fetch-depth: 0
+  #       - name: Setup Python
+  #         uses: actions/setup-python@v2
+  #         with:
+  #           python-version: "3.10.6"
+  #       - name: Get explicit and transitive dependencies
+  #         run: |
+  #           pip install -r convertPheno_server/requirements.txt
+  #           pip freeze > requirements-all.txt
+  #       - name: Check python
+  #         id: license_check_report
+  #         uses: pilosus/action-pip-license-checker@v2
+  #         with:
+  #           requirements: "requirements-all.txt"
+  #           fail: "Copyleft"
+  #           exclude: "(?i)^(pylint|aio[-_]*).*"
+  #       - name: Print report
+  #         if: ${{ always() }}
+  #         run: echo "${{ steps.license_check_report.outputs.report }}"
+
+  license-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout the code
+      - name: Checkout latest code
         uses: actions/checkout@v3
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3.6.0
         with:
-          fetch-depth: 0
-      - name: Setup Python
-        uses: actions/setup-python@v2
+          node-version: 16.x
+      - name: Run npm install
+        run: cd convertPheno_client && npm install
+      - name: Check licenses
+        uses: tangro/actions-license-check@v1.0.13
         with:
-          python-version: "3.10.6"
-      - name: Get explicit and transitive dependencies
-        run: |
-          pip install -r convertPheno_server/requirements.txt
-          pip freeze > requirements-all.txt
-      - name: Check python
-        id: license_check_report
-        uses: pilosus/action-pip-license-checker@v2
-        with:
-          requirements: "requirements-all.txt"
-          fail: "Copyleft"
-          exclude: "(?i)^(pylint|aio[-_]*).*"
-      - name: Print report
-        if: ${{ always() }}
-        run: echo "${{ steps.license_check_report.outputs.report }}"
+          allowed-licenses: "MIT; ISC; Apache-2.0; BSD"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_CONTEXT: ${{ toJson(github) }}
