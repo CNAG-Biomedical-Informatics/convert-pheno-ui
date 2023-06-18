@@ -37,13 +37,43 @@ A web-interface on top of [Convert::Pheno](https://metacpan.org/pod/Convert%3A%3
 
 # INSTALLATION
 
+## General pre-requisites for deployment:
+
+- Ideally a Unix based distribution
+
+## Prepare the environment
+
+The following steps are only for unix based systems (GNU/Linux, MacOS)
+
+### Step 0: Come up with a domain name
+
+### Step 1: Setting up a local domain
+
+Add the following line to your `/etc/hosts` file:
+
+```
+127.0.0.1       <yourDomain>
+```
+
+### Step 2: SSL certificate for your domain
+
+Get a certificate for your domain and place it in the folder `nginx_mountpoint/certs/` with the name `<yourDomain>.pem` and the key with the name `<yourDomain-key>.pem`.
+you could generate a locally-trusted development certificate with e.g. [mkcert](https://github.com/FiloSottile/mkcert)
+
+Command to generate a certificate using mkcert `localhost`:
+
+```shell
+mkcert -install
+mkcert -cert-file ./nginx_mountpoint/certs/<yourDomain>.pem -key-file ./nginx_mountpoint/certs/<yourDomain>-key.pem <yourDomain>
+```
+
 ## Containerized
 
 ### Method 1: Using Docker compose (recommended)
 
 1. Install [Docker](https://docs.docker.com/get-docker/) and [Docker compose](https://docs.docker.com/compose/install/)
 2. Clone the repository
-3. rename the file env.example to .env and fill in the variables
+3. rename the file [env.example](https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui/blob/main/env.example) to .env and fill in the variables
 4. Run `docker-compose up -d`
 
 ### Method 2: Using Docker
