@@ -60,7 +60,7 @@ Add the following line to your `/etc/hosts` file:
 Get a certificate for your domain and place it in the folder `nginx_mountpoint/certs/` with the name `<yourDomain>.pem` and the key with the name `<yourDomain-key>.pem`.
 you could generate a locally-trusted development certificate with e.g. [mkcert](https://github.com/FiloSottile/mkcert)
 
-Command to generate a certificate using mkcert `localhost`:
+Command to generate a certificate using `mkcert`:
 
 ```shell
 mkcert -install
