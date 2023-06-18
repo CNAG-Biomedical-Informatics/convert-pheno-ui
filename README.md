@@ -45,7 +45,7 @@ Windows with [WSL (Windows Subsystem for Linux)](https://learn.microsoft.com/en-
 The following steps are only for unix based systems.
 It is tested on Ubuntu 22.04 LTS and CentOS Linux 7.
 
-### Step 0: Come up with a domain name
+### Step 0: Clone the repository
 
 ### Step 1: Setting up a local domain
 
@@ -80,36 +80,11 @@ with your domain name.
 
 ## Containerized
 
-### Method 1: Using Docker compose (recommended)
-
 1. Install [Docker](https://docs.docker.com/get-docker/) and [Docker compose](https://docs.docker.com/compose/install/)
-2. Clone the repository
-3. rename the file [env.example](https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui/blob/main/env.example) to .env and fill in the variables
-4. Run `docker-compose up -d`
-5. Open your browser and go to `https://<yourDomain>/auth` to access the Keycloak admin console
-6. Create a new user in the realm you defined in the .env file
-
-### Method 2: Using Docker
-
-Please download the Dockerfiles from the repo:
-
-```shell
-wget https://raw.githubusercontent.com/cnag-biomedical-informatics/convert-pheno/main/Dockerfile
-wget https://raw.githubusercontent.com/CNAG-Biomedical-Informatics/convert-pheno-ui/main/convertPheno_server/Dockerfile
-wget https://raw.githubusercontent.com/CNAG-Biomedical-Informatics/convert-pheno-ui/main/convertPheno_client/Dockerfile
-```
-
-And then run:
-
-<!-- TODO -->
-<!-- The environment vars are still missing -->
-
-```shell
-docker build -t cnag/convert-pheno:latest .
-docker build -t cnag/convert-pheno-ui-server:latest .
-docker build -t cnag/convert-pheno-ui-client:latest .
-docker run --name cp-pg -e POSTGRES_PASSWORD=<insert_password> -d postgres
-```
+2. rename the file [example.env](https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui/blob/main/example.env) to .env and fill in the variables
+3. Run `docker-compose up -d`
+4. Open your browser and go to `https://<yourDomain>/auth` to access the Keycloak admin console
+5. Create a new user in the realm you defined in the .env file
 
 ## Non containerized
 
@@ -120,8 +95,6 @@ docker run --name cp-pg -e POSTGRES_PASSWORD=<insert_password> -d postgres
 - Install [Convert::Pheno](https://metacpan.org/pod/Convert%3A%3APheno) from CPAN or build it from [source](https://github.com/cnag-biomedical-informatics/convert-pheno)
 
 - Install and configure [Keycloak](https://www.keycloak.org/)
-
-- Clone the repository
 
 ### Run the server:
 
@@ -161,7 +134,7 @@ npm run vite
 
 # CITATION
 
-The author requests that any published work that utilizes `Convert-Pheno` includes a cite to the the following reference:
+The author requests that any published work that utilizes `Convert-Pheno-UI` includes a cite to the the following reference:
 
 Rueda, M; Leist, IC et al., (2023). Convert-Pheno: A software toolkit for the interconversion of standard data models for phenotypic data \[Software\]. Available from https://github.com/cnag-biomedical-informatics/convert-pheno
 
