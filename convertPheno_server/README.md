@@ -3,6 +3,7 @@
 [![Docker build](https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui/actions/workflows/docker-build-server.yml/badge.svg)](https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui/actions/workflows/docker-build-server.yml)
 [![Docker Pulls](https://badgen.net/docker/pulls/leistivo/convert-pheno-ui-server?label=pulls&icon=docker)](https://hub.docker.com/r/leistivo/convert-pheno-ui-server)
 [![Docker Image Size](https://badgen.net/docker/size/leistivo/convert-pheno-ui-server?label=image%20size&icon=docker)](https://hub.docker.com/r/leistivo/convert-pheno-ui-server)
+[![codecov](https://codecov.io/gh/CNAG-Biomedical-Informatics/convert-pheno-ui/branch/main/graph/badge.svg?flag=server)](https://app.codecov.io/gh/CNAG-Biomedical-Informatics/convert-pheno-ui/tree/main/convertPheno_server%2Fserver)
 ![version](https://img.shields.io/badge/version-0.0.0_beta-orange)
 [![License: GPL-3.0](https://img.shields.io/pypi/l/fpvgcc.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
