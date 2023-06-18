@@ -6,7 +6,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Upload coverage reports to Codecov
+
+      - name: Upload server coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
-          files: ./convertPheno_server/tests/reports/coverage/coverage.xml, ./convertPheno_client/cypress/coverage/lcov.info
+          flags: server
+          files: ./convertPheno_server/tests/reports/coverage/coverage.xml
+
+      - name: Upload client coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          flags: client
+          files: ./convertPheno_client/cypress/coverage/lcov.info
