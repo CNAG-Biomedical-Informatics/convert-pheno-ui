@@ -67,6 +67,17 @@ mkcert -install
 mkcert -cert-file ./nginx_mountpoint/certs/<yourDomain>.pem -key-file ./nginx_mountpoint/certs/<yourDomain>-key.pem <yourDomain>
 ```
 
+### Step 3: Configure nginx
+
+Modify the file `nginx_mountpoint/templates` and replace the domain names in the following lines:
+
+```
+ssl_certificate /etc/nginx/convertpheno.local.dev.pem;
+ssl_certificate_key /etc/nginx/convertpheno.local.dev-key.pem;
+```
+
+with your domain name.
+
 ## Containerized
 
 ### Method 1: Using Docker compose (recommended)
@@ -75,6 +86,8 @@ mkcert -cert-file ./nginx_mountpoint/certs/<yourDomain>.pem -key-file ./nginx_mo
 2. Clone the repository
 3. rename the file [env.example](https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui/blob/main/env.example) to .env and fill in the variables
 4. Run `docker-compose up -d`
+5. Open your browser and go to `https://<yourDomain>/auth` to access the Keycloak admin console
+6. Create a new user in the realm you defined in the .env file
 
 ### Method 2: Using Docker
 
