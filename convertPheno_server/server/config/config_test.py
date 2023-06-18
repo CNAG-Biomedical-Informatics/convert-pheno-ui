@@ -14,6 +14,12 @@ from pathlib import Path
 from os import environ
 from dotenv import load_dotenv
 
+# BUG
+# looks like it is not using this file
+# because changing the TEST_DB_HOST IP in the .env
+# does not change the IP used in the test
+# it is still using the IP from API_DB_HOST
+
 load_dotenv()
 db_user = environ.get("TEST_DB_USER")
 db_pw = environ.get("TEST_DB_PW")

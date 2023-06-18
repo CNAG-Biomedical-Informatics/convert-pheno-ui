@@ -68,9 +68,7 @@ def handle_general_exception(err):
     # better log them somewhere?
     print(f"Unknown Exception: {str(err)}")
     print(
-        "".join(
-            traceback.format_exception(etype=type(err), value=err, tb=err.__traceback__)
-        )
+        "".join(traceback.format_exception(type(err), value=err, tb=err.__traceback__))
     )
     return {"message": "Sorry, that error is on our side, please contact:"}, 500
 
@@ -84,7 +82,6 @@ def handle_raised_exception(err):
 
 
 if app.debug:  # pragma: no cover
-
     # for database migrations
     # from flask_migrate import Migrate
     # migrate = Migrate(app, db)
@@ -115,4 +112,4 @@ api.add_namespace(ns_jobs, path="/api/jobs")
 api.add_namespace(ns_clinical, path="/api/clinical")
 
 if __name__ == "__main__":  # pragma: no cover
-    app.run(host="0.0.0.0", port=5000, threaded=True)
+    app.run(host="127.0.0.1", port=5000, threaded=True)

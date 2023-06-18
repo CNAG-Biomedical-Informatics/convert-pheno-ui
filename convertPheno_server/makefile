@@ -12,6 +12,7 @@
 
 SHELL := /bin/bash
 include .env
+include .sonar.env
 
 install:
 	pip install --upgrade .
@@ -36,10 +37,10 @@ cp:
 	docker compose up --build convert-pheno
 
 run:
-	FLASK_APP=server.app.py FLASK_DEBUG=1 FLASK_RUN_PORT=8082 flask run
+	FLASK_APP=server.app.py FLASK_DEBUG=1 FLASK_RUN_PORT=5001 flask run
 
 stop:
-	fuser -k 8082/tcp
+	fuser -k 5001/tcp
 
 auth-test:
 	KC_PUBLIC_KEY=$(KC_PUBLIC_KEY) python3 -m pytest --junitxml=tests/reports/junit.xml tests/test_auth.py
@@ -50,6 +51,9 @@ unit-test:
 .PHONY: test
 test:
 	KC_PUBLIC_KEY=$(KC_PUBLIC_KEY) python3 -m pytest --junitxml=tests/reports/junit.xml tests/
+
+test2:
+	KC_PUBLIC_KEY=$(KC_PUBLIC_KEY) poetry run pytest --junitxml=tests/reports/junit.xml
 
 debug-test:
 	KC_PUBLIC_KEY=$(KC_PUBLIC_KEY) python3 -m pytest --pdb --junitxml=tests/reports/junit.xml tests/
@@ -84,3 +88,6 @@ push:	cov flake, lint badge
 	git add -A
 	git commit -am "updated tests,cov,flake,lint badge"
 	git push
+
+sonar:
+	bash sonar.sh

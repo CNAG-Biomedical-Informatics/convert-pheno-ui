@@ -9,3 +9,5 @@ __pycache__
 junit.xml
 .coveralls.yml
 poetry.toml
+.sonar.env
+.scannerwork

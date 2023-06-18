@@ -43,6 +43,9 @@ class JobView(Resource):
         data = request.get_json()
         job_id = data["jobId"]
 
+        # TODO
+        # error handling when job_id == undefined
+
         job = (
             db.session.query(Job).filter_by(job_id=job_id, owner=user.id).one_or_none()
         )
