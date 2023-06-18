@@ -1,5 +1,5 @@
 {
-  "name": "convertPheno",
+  "name": "convert-pheno-client",
   "version": "0.1.0",
   "private": true,
   "homepage": "./.",

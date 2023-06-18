@@ -125,7 +125,7 @@ npm run vite
 
 ### System requirements:
 
-- Ideally a Debian-based distribution (Ubuntu or Mint), but any other (e.g., CentOs, OpenSuse) should do as well.
+- Unix based distribution (it is tested on Ubuntu 22.04 LTS and CentOS Linux 7)
 - Python 3 (>= 3.6; installed by default in most Linux distributions). Check the version with "python3 -V".
 - Perl 5 (>= 5.10 core; installed by default in most Linux distributions). Check the version with "perl -v".
 - \>= 4GB of RAM
