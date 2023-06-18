@@ -113,7 +113,7 @@ docker run --name cp-pg -e POSTGRES_PASSWORD=<insert_password> -d postgres
 
 ## Non containerized
 
-### Pre-requisites:
+### General Pre-requisites:
 
 - Install and run a PostgreSQL database server (>= 9.5)
 
@@ -125,6 +125,10 @@ docker run --name cp-pg -e POSTGRES_PASSWORD=<insert_password> -d postgres
 
 ### Run the server:
 
+#### Server Pre-requisites:
+
+- rename the file [convertPheno_server/example.env](https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui/blob/main/convertPheno_server/example.env) to .env and fill in the variables
+
 ```shell
 cd convertPheno_server
 python3 -m venv venv
@@ -135,6 +139,11 @@ FLASK_APP=server.app.py FLASK_RUN_PORT=5000 flask run
 
 ### Run the client:
 
+#### Client Pre-requisites:
+
+- Install [Node.js](https://nodejs.org/en/) (>= 14.0.0)
+- rename the file [convertPheno_client/example.env](https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui/blob/main/convertPheno_client/example.env) to .env and fill in the variables
+
 ```shell
 cd convertPheno_client
 npm install
@@ -143,11 +152,12 @@ npm run vite
 
 ### System requirements:
 
-    * Ideally a Debian-based distribution (Ubuntu or Mint), but any other (e.g., CentOs, OpenSuse) should do as well.
-    * Perl 5 (>= 5.10 core; installed by default in most Linux distributions). Check the version with "perl -v".
-    * >= 4GB of RAM
-    * 1 core
-    * At least 16GB HDD
+- Ideally a Debian-based distribution (Ubuntu or Mint), but any other (e.g., CentOs, OpenSuse) should do as well.
+- Python 3 (>= 3.6; installed by default in most Linux distributions). Check the version with "python3 -V".
+- Perl 5 (>= 5.10 core; installed by default in most Linux distributions). Check the version with "perl -v".
+- \>= 4GB of RAM
+- 1 core
+- At least 16GB HDD
 
 # CITATION
 
