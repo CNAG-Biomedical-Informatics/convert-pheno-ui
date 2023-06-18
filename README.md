@@ -1,5 +1,3 @@
-docker run --name cp-pg -e POSTGRES_PASSWORD=postgres -d postgresFLASK_APP=server.app.py FLASK_DEBUG=1 FLASK_RUN_PORT=5001 flask run# convert-pheno-ui
-
 <p align="left">
   <a href="https://github.com/cnag-biomedical-informatics/convert-pheno"><img src="https://github.com/cnag-biomedical-informatics/convert-pheno/blob/main/docs/img/CP-logo.png" width="220" alt="Convert-Pheno"></a>
   <a href="https://github.com/cnag-biomedical-informatics/convert-pheno"><img src="https://github.com/cnag-biomedical-informatics/convert-pheno/blob/main/docs/img/CP-text.png" width="500" alt="Convert-Pheno"></a>
@@ -39,11 +37,13 @@ A web-interface on top of [Convert::Pheno](https://metacpan.org/pod/Convert%3A%3
 
 ## General pre-requisites for deployment:
 
-- Ideally a Unix based distribution
+Ideally a unix (GNU/Linux, MacOS) based distribution.
+Windows with [WSL (Windows Subsystem for Linux)](https://learn.microsoft.com/en-us/windows/wsl) enabled should work as well - not tested
 
 ## Prepare the environment
 
-The following steps are only for unix based systems (GNU/Linux, MacOS)
+The following steps are only for unix based systems.
+It is tested on Ubuntu 22.04 LTS and CentOS Linux 7.
 
 ### Step 0: Come up with a domain name
 
