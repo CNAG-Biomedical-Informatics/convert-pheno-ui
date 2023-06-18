@@ -141,7 +141,7 @@ FLASK_APP=server.app.py FLASK_RUN_PORT=5000 flask run
 
 #### Client Pre-requisites:
 
-- Install [Node.js](https://nodejs.org/en/) (>= 14.0.0)
+- Install [Node.js](https://nodejs.org/en) (>= 14.15)
 - rename the file [convertPheno_client/example.env](https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui/blob/main/convertPheno_client/example.env) to .env and fill in the variables
 
 ```shell
