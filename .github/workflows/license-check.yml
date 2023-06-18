@@ -36,7 +36,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
-      - run: npm install
+      - run: cd convertPheno_client && npm install --legacy-peer-deps
       - name: Check licenses
         uses: hearthsim/action-npm-permissive-license-checker@v2
         with:
