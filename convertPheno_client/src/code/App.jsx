@@ -99,11 +99,11 @@ const AuthenticatedRoute = ({ element: Component, path, security }) => {
   console.log("security", security);
   console.log("isAuthenticated", isAuthenticated);
 
-  // useEffect(() => {
-  //   if (!isAuthenticated) {
-  //     navigate("/login", { state: { redirect: path } });
-  //   }
-  // }, [auth.user.authenticated, navigate]);
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login", { state: { redirect: path } });
+    }
+  }, [auth.user.authenticated, navigate]);
 
   return isAuthenticated ? <Component /> : null;
 };
