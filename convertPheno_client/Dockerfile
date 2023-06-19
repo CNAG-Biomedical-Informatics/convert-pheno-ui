@@ -17,6 +17,8 @@ RUN pnpm run build
 #production environment
 FROM nginx:1.23-alpine
 RUN apk add openssl shadow
+RUN apk add --no-cache npm
+RUN npm install -g vite
 
 # Create a new user and switch to that user
 RUN addgroup -g 1000 -S nginxuser && adduser -u 1000 -S nginxuser -G nginxuser
