@@ -30,6 +30,12 @@ const security =
     ? window.REACT_APP_SECURITY
     : import.meta.env.VITE_SECURITY;
 
+if (security !== "true" && security !== "false") {
+  throw new Error(
+    "The security variable must be a string of either 'true' or 'false'"
+  );
+}
+
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 function ErrorFallback({ error, resetErrorBoundary }) {
   if (process.env.NODE_ENV !== "production") {
@@ -67,7 +73,7 @@ function renderRoutes() {
           key={route.path}
           path={route.path}
           element={route.component}
-          enabled={route.security}
+          security={route.security}
         />
       }
     >
@@ -79,7 +85,7 @@ function renderRoutes() {
             key={route.path}
             path={`${route.path}/:jobId`}
             element={route.component}
-            enabled={route.security}
+            security={route.security}
           />
         }
       />
@@ -87,15 +93,17 @@ function renderRoutes() {
   ));
 }
 
-const AuthenticatedRoute = ({ element: Component, enabled, path }) => {
+const AuthenticatedRoute = ({ element: Component, path, security }) => {
   const navigate = useNavigate();
-  const isAuthenticated = auth.user.authenticated === true || !enabled;
+  const isAuthenticated = security === "false" || auth.user.authenticated;
+  console.log("security", security);
+  console.log("isAuthenticated", isAuthenticated);
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/login", { state: { redirect: path } });
-    }
-  }, [auth.user.authenticated, navigate]);
+  // useEffect(() => {
+  //   if (!isAuthenticated) {
+  //     navigate("/login", { state: { redirect: path } });
+  //   }
+  // }, [auth.user.authenticated, navigate]);
 
   return isAuthenticated ? <Component /> : null;
 };
