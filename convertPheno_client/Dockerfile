@@ -26,6 +26,7 @@ RUN addgroup -g 1000 -S nginxuser && adduser -u 1000 -S nginxuser -G nginxuser
 EXPOSE 80
 COPY --from=build /app/dist /usr/share/nginx/html
 COPY replace_env_vars.sh /replace_env_vars.sh
+COPY entrypoint_run_vite_preview.sh /entrypoint_run_vite_preview.sh
 COPY entrypoint.sh /entrypoint.sh
 
 RUN chown -R nginxuser:nginxuser /usr/share/nginx/html && \
