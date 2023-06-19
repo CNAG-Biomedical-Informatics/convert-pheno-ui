@@ -38,7 +38,7 @@ The module will be uploaded to CPAN once the paper is submitted.
 
 - [Docker](https://docs.docker.com/get-docker/) and [Docker compose](https://docs.docker.com/compose/install/) installed
 
-# Quick Start
+### Quick Start
 
 **_no SSL and user authentication_**
 
@@ -46,7 +46,7 @@ The module will be uploaded to CPAN once the paper is submitted.
 2. Run `docker-compose up -d`
 3. Open your browser and go to `https://localhost` most likely you will get a warning about the certificate, just accept it
 
-# For self-hosters:
+### For self-hosters:
 
 **_SSL and keycloak-based user authentication_**
 
@@ -54,16 +54,18 @@ Convert-Pheno is designed to be run as a collection of microservices.
 Please consult [dev_docs/how_to_self_host_w_keycloak_login_enabled.md](https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui/blob/main/dev_docs/how_to_self_host_w_keycloak_login_enabled.md)
 how to prepare your environment and run the services.
 
-# CITATION
+### CITATION
 
 The author requests that any published work that utilizes `Convert-Pheno-UI` includes a cite to the the following reference:
 
 Rueda, M; Leist, IC et al., (2023). Convert-Pheno: A software toolkit for the interconversion of standard data models for phenotypic data \[Software\]. Available from https://github.com/cnag-biomedical-informatics/convert-pheno
 
-# AUTHOR
+### AUTHOR
 
 Written by Ivo Christopher Leist, PhD student at CNAG [https://www.cnag.crg.eu](https://www.cnag.crg.eu).
 
-# COPYRIGHT AND LICENSE
+### COPYRIGHT AND LICENSE
 
 Copyright (C) 2022-2023, Ivo Christopher Leist - CNAG.
+
+GPLv3 - GNU General Public License v3.0
