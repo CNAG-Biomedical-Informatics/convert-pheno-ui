@@ -26,7 +26,7 @@ which is a software toolkit for the interconversion of standard data models for 
 
 The module will be uploaded to CPAN once the paper is submitted.
 
-[![Convert-Pheno-UI](docs/ui.gif)](CNAG-Biomedical-Informatics/convert-pheno-ui/blob/main/docs/ui.gif)
+[![Convert-Pheno-UI](docs/ui.gif)](docs/ui.gif)
 
 # Getting Started
 
@@ -42,7 +42,7 @@ The module will be uploaded to CPAN once the paper is submitted.
 
 **_no SSL and user authentication_**
 
-1. rename the file [example.env](https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui/blob/main/example.env) to .env and fill in the variables
+1. rename the file [example.env](example.env) to .env and fill in the variables
 2. Run `docker-compose up -d`
 3. Open your browser and go to `https://localhost` most likely you will get a warning about the certificate, just accept it
 
@@ -51,7 +51,7 @@ The module will be uploaded to CPAN once the paper is submitted.
 **_SSL and keycloak-based user authentication_**
 
 Convert-Pheno is designed to be run as a collection of microservices.
-Please consult [dev_docs/how_to_self_host_w_keycloak_login_enabled.md](https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui/blob/main/dev_docs/how_to_self_host_w_keycloak_login_enabled.md)
+Please consult [dev_docs/how_to_self_host_w_keycloak_login_enabled.md](dev_docs/how_to_self_host_w_keycloak_login_enabled.md)
 how to prepare your environment and run the services.
 
 ### CITATION
