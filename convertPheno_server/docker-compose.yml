@@ -34,7 +34,7 @@ services:
       - postgres-data:/var/lib/postgresql/data/
     restart: unless-stopped
     environment:
-      - POSTGRES_DB=${API_DB}
+      - POSTGRES_DB=${API_DB_NAME}
       - POSTGRES_USER=${API_DB_USER}
       - POSTGRES_PASSWORD=${API_DB_PW}
 

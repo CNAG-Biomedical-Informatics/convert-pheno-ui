@@ -252,9 +252,12 @@ export default function DataGrid(props) {
     );
   };
 
-  if (auth.tokenExpired()) {
-    return <div>Session expired. Please login again</div>;
-  }
+  // TDOO
+  // below should be depend on if the security is enabled or not
+
+  // if (auth.tokenExpired()) {
+  //   return <div>Session expired. Please login again</div>;
+  // }
 
   const handleShowHideColumns = () => {
     setOpenTreeView(true);

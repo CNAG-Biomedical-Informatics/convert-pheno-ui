@@ -17,12 +17,15 @@ For testing if Flask can be accessed from the frontend
 from flask_restx import Resource, Namespace
 from flask_cors import cross_origin
 
-from server.security import login_required
-from server.app import api
+from server.security import login
+from server.app import api, app
 
 ns = Namespace(
     "test", description="test related operations", decorators=[cross_origin()]
 )
+
+cfg = app.config
+login_required = cfg["SECURITY"]
 
 parser = api.parser()
 parser.add_argument("Authorization", type=str, location="headers", required=True)
@@ -45,6 +48,6 @@ class TokenTest(Resource):
         - userid = Keycloak id of the user
     """
 
-    @login_required
+    @login(login_required)
     def get(self, userid):
         return {"user": userid}

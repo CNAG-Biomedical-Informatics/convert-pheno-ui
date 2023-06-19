@@ -12,8 +12,22 @@
 """
 For converting a file into a different format using convert-pheno
 """
-import subprocess
+import docker
 from server.utils.db_helpers import update_job_status
+
+
+def get_docker_container():
+    """
+    return a docker container object
+    """
+    # TODO: add error handling
+    client = docker.from_env()
+    try:
+        container_obj = client.containers.get("convert-pheno")
+    except docker.errors.NotFound:
+        raise ValueError("Docker container convert-pheno not found")
+
+    return container_obj
 
 
 def generate_file_names(job_id, target_format):
@@ -37,7 +51,7 @@ def run_convert_pheno(
     cli_args_mapping,
     input_file,
     file_name_mapping,
-    docker_cmd,
+    executable_path,
     job_db_obj,
     logger,
     log_file,
@@ -78,19 +92,20 @@ def run_convert_pheno(
     cli_args = []
     for item in cli_args_mapping.values():
         cli_args.extend(item)
-    cmd = docker_cmd + cli_args
 
     logger(f"Converting file:{input_file} to format {target_format}")
+    cmd = [executable_path] + cli_args
 
     update_job_status(job_db_obj, target_format, "running")
-    result = subprocess.run(
-        cmd,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-    )
 
-    status = "success" if result.returncode == 0 else "failed"
-    error_msg = result.stderr.decode().strip()
+    container = get_docker_container()
+    result, error_msg = container.exec_run(cmd, demux=True)
+    print("result", result)
+
+    status = "success" if result == 0 else "failed"
+
+    # TODO
+    # test errors
     update_job_status(
         job_db_obj, target_format, status, log_file=log_file, error_msg=error_msg
     )

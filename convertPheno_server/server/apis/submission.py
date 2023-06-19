@@ -27,7 +27,7 @@ from werkzeug.datastructures import FileStorage
 
 from server.app import app, api, db
 from server.model import Job, Output, User
-from server.security import login_required
+from server.security import login
 
 from server.utils.db_helpers import (
     get_or_create_user,
@@ -38,6 +38,7 @@ from server.utils.convert_pheno import generate_file_names, run_convert_pheno
 from server.utils.jsonschema_helpers import generate_schema_tree
 
 cfg = app.config
+login_required = cfg["SECURITY"]
 
 ns = Namespace(
     "submission",
@@ -74,7 +75,7 @@ class UploadFile(Resource):
     # error messag from frontend
     # DELETE http://...:5001/api/submission/upload 405 (METHOD NOT ALLOWED)
 
-    @login_required
+    @login(login_required)
     def post(self, userid):
         """
         Upload file
@@ -110,7 +111,7 @@ class ConvertFile(Resource):
     API to convert uploaded file
     """
 
-    @login_required
+    @login(login_required)
     def post(self, userid):
         """
         Convert file
@@ -202,7 +203,7 @@ class ConvertFile(Resource):
                 cli_args_mapping,
                 input_file,
                 file_name_mapping,
-                cfg["DOCKER_CMD"],
+                cfg["CP_EXECUTABLE_PATH"],
                 job,
                 ns.logger.info,
                 log_file=log_file,
@@ -295,7 +296,7 @@ class DownloadFile(Resource):
     API to download the converted file
     """
 
-    @login_required
+    @login(login_required)
     def post(self, userid):
         """
         Flask send_file
@@ -340,7 +341,7 @@ class DownloadExampleFile(Resource):
     API to download example input
     """
 
-    @login_required
+    @login(login_required)
     def post(self, userid):
         """
         Flask send_file

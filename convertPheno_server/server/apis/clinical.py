@@ -16,11 +16,12 @@ from flask import request, make_response
 from flask_restx import Resource, Namespace, fields
 from flask_cors import cross_origin
 
-from server.security import login_required
+from server.security import login
 from server.model import Output, User, Job
 from server.app import api, db, app
 
 cfg = app.config
+login_required = cfg["SECURITY"]
 
 ns = Namespace(
     "clinical",
@@ -343,7 +344,7 @@ resource_fields = api.model(
 
 
 class ClinicalDataView(Resource):
-    @login_required
+    @login(login_required)
     @api.expect(resource_fields, validate=True)
     @api.doc(responses={200: "Success", 400: "Validation Error"})
     def post(self, userid):

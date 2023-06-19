@@ -1,8 +1,8 @@
 .env
 *.pem
 .venv
-server/data/output/*
-server/data/uploads/*
+data/output/*
+data/uploads/*
 .pytest_cache
 .coverage
 __pycache__

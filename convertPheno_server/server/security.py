@@ -24,6 +24,7 @@ from server.model import History
 
 cfg = app.config
 options = cfg["JWT_OPTIONS"]
+login_required = cfg["SECURITY"]
 
 
 def get_public_key():
@@ -45,81 +46,68 @@ def get_public_key():
     return public_key
 
 
-def extract_items(token, name):
-    """
-    Get information from Keycloak like e.g. keycloak groups
-    """
-    if token.get(name) is not None:
-        return [s.replace("/", "") for s in token.get(name)]
-    return []
-
-
-def get_token(func):
-    """
-    Get token from request header
-    """
-
-    @wraps(func)
-    def decorated_function(*args, **kwargs):
-        token = request.headers["Authorization"]
-        return func(token=token, *args, **kwargs)
-
-    return decorated_function
-
-
-# TODO
-# refactor below
-def login_required(func):
+def login(login_required=True):
     """
     Decorator for handling keycloak login
+    # TODO: refactor
     """
 
-    @wraps(func)
-    def decorated_function(*args, **kwargs):
-        token = request.headers.get("Authorization")
-        if token is None:
-            return {"message": "No token provided"}, 401
+    def decorator(func):
+        @wraps(func)
+        def decorated_function(*args, **kwargs):
+            if not login_required:
+                return func(userid="dev", *args, **kwargs)
 
-        public_key = get_public_key()
-        try:
-            decoded = jwt.decode(token, public_key, algorithms="RS256", options=options)
+            token = request.headers.get("Authorization")
 
-        except jwt.exceptions.InvalidSignatureError as err:
-            print(err, "check if the public key is correct")
-            print("public key:", public_key)
-            return {"message": f"{err}"}, 500
+            if token is None:
+                return {"message": "No token provided"}, 401
 
-        # Check if changing the cryptograph version helps
-        except jwt.exceptions.InvalidAlgorithmError as e:
-            # If this exception is triggered it is likely
-            # that the installed cryptography version is wrong
-            # supported versions = [3.4.7]
-            return {"message": f"{e}"}, 500
+            public_key = get_public_key()
+            try:
+                decoded = jwt.decode(
+                    token, public_key, algorithms="RS256", options=options
+                )
 
-        except jwt.exceptions.DecodeError as e:
-            # If this exception is triggered it is likely
-            # that the token has a invalid header or cryptopadding`
-            return {"message": f"{e}"}, 500
+            except jwt.exceptions.InvalidSignatureError as err:
+                print(err, "check if the public key is correct")
+                print("public key:", public_key)
+                return {"message": f"{err}"}, 500
 
-        except Exception as e:
-            return {"message": f"Something went wrong {e} {e.__class__.__name__}"}, 500
+            # Check if changing the cryptograph version helps
+            except jwt.exceptions.InvalidAlgorithmError as e:
+                # If this exception is triggered it is likely
+                # that the installed cryptography version is wrong
+                # supported versions = [41.0]
+                return {"message": f"{e}"}, 500
 
-        userid = decoded.get("preferred_username")
+            except jwt.exceptions.DecodeError as e:
+                # If this exception is triggered it is likely
+                # that the token has a invalid header or cryptopadding`
+                return {"message": f"{e}"}, 500
 
-        timestamp = datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")
-        print(
-            "\t".join(
-                [
-                    timestamp,
-                    userid,
-                    f"{request.url}-{request.method}",
-                ]
+            except Exception as e:
+                return {
+                    "message": f"Something went wrong {e} {e.__class__.__name__}"
+                }, 500
+
+            userid = decoded.get("preferred_username")
+
+            timestamp = datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")
+            print(
+                "\t".join(
+                    [
+                        timestamp,
+                        userid,
+                        f"{request.url}-{request.method}",
+                    ]
+                )
             )
-        )
+            return func(userid=userid, *args, **kwargs)
 
-        return func(userid=userid, *args, **kwargs)
+        return decorated_function
 
-    return decorated_function
+    return decorator
 
 
 @app.after_request
@@ -127,7 +115,11 @@ def history(response):
     """
     Record any request and save it in history table (on postgres)
     """
-    if request.method != "OPTIONS" and "Authorization" in request.headers:
+    if (
+        login_required
+        and request.method != "OPTIONS"
+        and "Authorization" in request.headers
+    ):
         token = request.headers["Authorization"]
         public_key = get_public_key()
         try:

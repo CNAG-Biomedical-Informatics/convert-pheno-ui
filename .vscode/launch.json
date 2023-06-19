@@ -13,7 +13,8 @@
         "FLASK_ENV": "development",
         "FLASK_DEBUG": "1",
         "FLASK_RUN_HOST": "0.0.0.0",
-        "FLASK_RUN_PORT": "5001"
+        "FLASK_RUN_PORT": "5001",
+        "DEBUGGER": "true"
       },
       "envFile": "${workspaceFolder}/convertPheno_server/.env",
       "args": ["run"],

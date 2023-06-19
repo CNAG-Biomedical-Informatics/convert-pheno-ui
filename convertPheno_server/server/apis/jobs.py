@@ -14,10 +14,13 @@ from flask import request
 from flask_restx import Resource, Namespace
 from flask_cors import cross_origin
 
-from server.security import login_required
-from server.app import api, db
+from server.security import login
+from server.app import api, db, app
 
 from server.model import User, Job
+
+cfg = app.config
+login_required = cfg["SECURITY"]
 
 ns = Namespace(
     "jobs",
@@ -34,7 +37,7 @@ class JobView(Resource):
     Returns the job data of a specific job id
     """
 
-    @login_required
+    @login(login_required)
     def post(self, userid):
         user = db.session.query(User).filter_by(name=userid).one_or_none()
         if user is None:

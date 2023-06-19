@@ -22,6 +22,10 @@ class GeneralConfig:
     # postgres
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    # TODO
+    # there should be a way to check if the expected folders exist
+    # and if not throw an error
+
     # flask
     FLASK_UPLOAD_DIR = Path("data/uploads/")
     FLASK_EXAMPLE_DIR = Path("data/example_in/").resolve()
@@ -34,7 +38,7 @@ class GeneralConfig:
     REDCAP_IN_FOLDER = f"{CONVERT_PHENO_PATH}/t/redcap2bff/in"
     RCD = f"{REDCAP_IN_FOLDER}/{DATA_DICTIONARY}"
     MAPPING_FILE = f"{REDCAP_IN_FOLDER}/redcap_mapping.yaml"
-    BINARY = f"{CONVERT_PHENO_PATH}/bin/convert-pheno"
+    CP_EXECUTABLE_PATH = f"{CONVERT_PHENO_PATH}/bin/convert-pheno"
 
     IN_OUT_DIR = "/home"
     UPLOAD_DIR = f"{IN_OUT_DIR}/uploads/"
@@ -42,7 +46,6 @@ class GeneralConfig:
     OUT_DIR = f"{IN_OUT_DIR}/output/"
 
     LOG_FILE_NAME = "convert-pheno-log.json"
-    DOCKER_CMD = ["docker", "exec", "convert-pheno", BINARY]
 
     CLI_ARGS_MAPPING = {
         "general": {

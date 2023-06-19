@@ -15,7 +15,7 @@ from utils import req_get
 from flask import Flask
 import jwt
 
-from server.security import login_required
+from server.security import login
 
 app = Flask(__name__)
 FAKE_PUBLIC_KEY = "-----BEGIN PUBLIC KEY-----\nMIIB-----END PUBLIC KEY-----\n"
@@ -36,8 +36,8 @@ class TestAuthClass:
         def dummy_function(*args, **kwargs):
             return "Success!"
 
-        # Decorate the dummy function with login_required
-        protected_function = login_required(dummy_function)
+        # Decorate the dummy function with login
+        protected_function = login(dummy_function)
 
         # Test with a valid token
         token = "a_valid_token"
