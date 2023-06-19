@@ -26,7 +26,7 @@ which is a software toolkit for the interconversion of standard data models for 
 
 The module will be uploaded to CPAN once the paper is submitted.
 
-[![Convert-Pheno-UI](docs/ui.gif)](https://convert-pheno.cnag.cat)
+[![Convert-Pheno-UI](docs/ui.gif)](CNAG-Biomedical-Informatics/convert-pheno-ui/blob/main/docs/ui.gif)
 
 # Getting Started
 
