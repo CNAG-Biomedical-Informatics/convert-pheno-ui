@@ -144,12 +144,6 @@ services:
     volumes:
       - api-data:/home
 
-  sonarqube:
-    image: sonarqube:9.9.1-community
-    ports:
-      - "9000:9000"
-      - "9092:9092"
-
 volumes:
   postgres-data:
   api-data:
