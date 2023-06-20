@@ -1,13 +1,13 @@
 version: '3.3'
 services:
   api:
-    image: leistivo/convert-pheno-ui-server:latest
+    # image: leistivo/convert-pheno-ui-server:latest
     container_name: convert-pheno-api
-    # build:
-    #   context: ./convertPheno_server
-    #   target: prod
-    #   args:
-    #     - IGNORE_CACHE_FROM_HERE=${IGNORE_CACHE_FROM_HERE}
+    build:
+      context: ./convertPheno_server
+      target: prod
+      args:
+        - IGNORE_CACHE_FROM_HERE=${IGNORE_CACHE_FROM_HERE}
     depends_on:
       api-db:
         condition: service_healthy
@@ -29,12 +29,12 @@ services:
       GID: ${GID}
       API_SECURITY: true
     restart: unless-stopped
-    # healthcheck:
-    #   test: curl -f http://0.0.0.0:5000/api/curltest
-    #   interval: 10s
-    #   timeout: 10s
-    #   retries: 5
-    # tty: true
+    healthcheck:
+      test: curl -f http://0.0.0.0:5000/api/curltest
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    tty: true
 
   api-db:
     image: postgres:13-alpine
@@ -50,12 +50,12 @@ services:
       test: pg_isready -U postgres
 
   client:
-    image: leistivo/convert-pheno-ui-client:latest
-    # container_name: convert-pheno-client
-    # build:
-    #   context: ./convertPheno_client
-    #   args:
-    #     - IGNORE_CACHE_FROM_HERE=${IGNORE_CACHE_FROM_HERE}
+    # image: leistivo/convert-pheno-ui-client:latest
+    container_name: convert-pheno-client
+    build:
+      context: ./convertPheno_client
+      args:
+        - IGNORE_CACHE_FROM_HERE=${IGNORE_CACHE_FROM_HERE}
     depends_on:
       keycloak:
         condition: service_healthy
