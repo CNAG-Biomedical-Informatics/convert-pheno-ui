@@ -56,4 +56,4 @@ RUN groupadd docker && usermod -aG docker dockeruser
 # To use user "dockeruser" you have to add "dockeruser" to the docker group on your host system.
 # Caution: The docker group is equivalent to the root so DO NOT do it on production!
 # USER dockeruser
-# CMD ["./entrypoint.sh"]
+CMD ["./entrypoint.sh"]

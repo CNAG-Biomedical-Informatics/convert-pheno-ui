@@ -29,13 +29,12 @@ services:
       GID: ${GID}
       API_SECURITY: true
     restart: unless-stopped
-    healthcheck:
-      test: curl -f http://0.0.0.0:5000/api/curltest
-      interval: 10s
-      timeout: 10s
-      retries: 5
+    # healthcheck:
+    #   test: curl -f http://0.0.0.0:5000/api/curltest
+    #   interval: 10s
+    #   timeout: 10s
+    #   retries: 5
     # tty: true
-    command: /entrypoint.sh
 
   api-db:
     image: postgres:13-alpine
