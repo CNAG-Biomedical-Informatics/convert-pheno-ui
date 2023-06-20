@@ -136,7 +136,7 @@ services:
       retries: 5
 
   convert-pheno:
-    user: ${UID}
+    user: root
     image: manuelrueda/convert-pheno:latest
     container_name: convert-pheno
     restart: unless-stopped
