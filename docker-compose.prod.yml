@@ -70,6 +70,7 @@ services:
       - ./nginx_mountpoint/certs/${DOMAIN}.pem:/etc/nginx/${DOMAIN}.pem:ro
       - ./nginx_mountpoint/certs/${DOMAIN}-key.pem:/etc/nginx/${DOMAIN}-key.pem:ro
       - ./nginx_mountpoint/replace_env_vars.sh:/docker-entrypoint.d/replace_env_vars.sh
+    user: root
     environment:
       NODE_ENV: production
       VITE_SECURITY: true
