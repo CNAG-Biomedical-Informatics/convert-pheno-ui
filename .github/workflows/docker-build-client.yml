@@ -27,4 +27,4 @@ jobs:
         with:
           context: convertPheno_client
           push: true
-          tags: leistivo/convert-pheno-ui-client:latest
+          tags: leistivo/convert-pheno-ui-client:${{ github.sha }}
