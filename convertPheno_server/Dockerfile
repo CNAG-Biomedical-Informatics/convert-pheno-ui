@@ -34,7 +34,7 @@ COPY server ./server
 COPY ./server.sh .
 CMD ["./server.sh"]
 
-FROM builder as prod
+FROM builder AS prod
 COPY --from=builder /opt/venv venv
 RUN poetry install --no-interaction --no-root --only main,prod
 ARG IGNORE_CACHE_FROM_HERE=unknown
@@ -56,4 +56,4 @@ RUN groupadd docker && usermod -aG docker dockeruser
 # To use user "dockeruser" you have to add "dockeruser" to the docker group on your host system.
 # Caution: The docker group is equivalent to the root so DO NOT do it on production!
 # USER dockeruser
-CMD ["./entrypoint.sh"]
+# CMD ["./entrypoint.sh"]

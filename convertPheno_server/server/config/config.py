@@ -40,9 +40,7 @@ class Config:
 
     JWT_OPTIONS = {"verify_exp": False, "verify_aud": False}
 
-    if bool_map[vscode_debugger]:
+    if vscode_debugger and bool_map[vscode_debugger]:
         FLASK_UPLOAD_DIR = Path("../data/uploads/")
         FLASK_EXAMPLE_DIR = Path("../data/example_in/").resolve()
         FLASK_OUT_DIR = Path("../data/output/").resolve()
-
-    print(f"FLASK_UPLOAD_DIR: {FLASK_UPLOAD_DIR}")

@@ -1,13 +1,13 @@
 version: '3.3'
 services:
   api:
-    image: leistivo/convert-pheno-ui-server:latest
+    # image: leistivo/convert-pheno-ui-server:latest
     container_name: convert-pheno-api
-    # build:
-    #   context: ./convertPheno_server
-    #   target: prod
-    #   args:
-    #     - IGNORE_CACHE_FROM_HERE=${IGNORE_CACHE_FROM_HERE}
+    build:
+      context: ./convertPheno_server
+      target: prod
+      args:
+        - IGNORE_CACHE_FROM_HERE=${IGNORE_CACHE_FROM_HERE}
     depends_on:
       api-db:
         condition: service_healthy
@@ -25,14 +25,21 @@ services:
       KC_REALM: ${KC_REALM}
       UID: ${UID}
       GID: ${GID}
+      API_SECURITY: "false"
     restart: unless-stopped
     healthcheck:
       test: curl -f http://0.0.0.0:5000/api/curltest
       interval: 10s
       timeout: 10s
       retries: 5
-    # tty: true
-    # command: ["bash"]
+    command:
+      [
+        "gunicorn",
+        "--conf",
+        "server/config/gunicorn_conf.py",
+        "server.app:app"
+      ]
+    tty: true
 
   api-db:
     image: postgres:13-alpine
@@ -62,11 +69,11 @@ services:
     environment:
       NODE_ENV: production
       VITE_SECURITY: false
-      VITE_API_URL: https://localhost/
+      VITE_API_URL: http://localhost:5000/
       VITE_KC_CONFIG: "{}"
     restart: unless-stopped
     healthcheck:
-      test: curl -kf https://0.0.0.0:4173
+      test: curl -f http://0.0.0.0:4173
       interval: 10s
       timeout: 10s
       retries: 5

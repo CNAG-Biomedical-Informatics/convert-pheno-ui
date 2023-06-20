@@ -27,6 +27,7 @@ services:
       KC_REALM: ${KC_REALM}
       UID: ${UID}
       GID: ${GID}
+      API_SECURITY: true
     restart: unless-stopped
     healthcheck:
       test: curl -f http://0.0.0.0:5000/api/curltest
@@ -34,7 +35,7 @@ services:
       timeout: 10s
       retries: 5
     # tty: true
-    # command: ["bash"]
+    command: /entrypoint.sh
 
   api-db:
     image: postgres:13-alpine

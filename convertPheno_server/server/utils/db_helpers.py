@@ -32,8 +32,6 @@ def get_log_info(log_file):
     """
     Get the log info
     """
-    # TODO
-    # add error handling
     if not log_file.is_file():
         return {"error": "log file not found"}
     try:
@@ -45,16 +43,17 @@ def get_log_info(log_file):
 
 
 def update_job_status(
-    job_db_obj, target_format, new_status, log_file=None, error_msg=None
+    job_db_obj, target_format, new_status, log_file=None, error_msg=(None, None)
 ):
     """
     Update the job db object
     """
-    # TODO
-    # try and except
-    if job_db_obj.status[target_format] == new_status:
-        # whithout this check flag_modified fails
-        return None
+    try:
+        if job_db_obj.status[target_format] == new_status:
+            # whithout this check flag_modified fails
+            return None
+    except KeyError:
+        raise KeyError(f"target_format {target_format} not found in job_db_obj.status")
 
     flag_modified(job_db_obj, "status")
     job_db_obj.status[target_format] = new_status
@@ -63,10 +62,12 @@ def update_job_status(
         flag_modified(job_db_obj, "convert_pheno_logs")
         job_db_obj.convert_pheno_logs[target_format] = get_log_info(log_file)
 
-    if error_msg:
+    if error_msg != (None, None):
+        print("error_msg", error_msg)
         flag_modified(job_db_obj, "errors")
         if job_db_obj.errors is None:
             job_db_obj.errors = {}
+
         job_db_obj.errors[target_format] = error_msg
 
     db.session.commit()
