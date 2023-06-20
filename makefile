@@ -22,6 +22,9 @@ include .env
 run:
 	docker compose up -d
 
+prod:
+	docker compose -f docker-compose.prod.yml up -d
+
 stop:
 	docker compose down
 
