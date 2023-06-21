@@ -7,8 +7,9 @@
   answer_type: markdown
   answer: |
     At the moment, the following input formats are supported:
-      * REDCap
-      * Beacon v2 Models (BFF)
-      * Phenopackets v2 (PXF)
-      * OMOMP-CDM
-      * CDISC-CDM
+      * [REDCap](https://www.project-redcap.org/)
+        [![REDCap](./logos/out.svg)](https://www.project-redcap.org/)
+      * [Beacon v2 Models (BFF)](https://b2ri-documentation.readthedocs.io/en/latest/data-ingestion/)
+      * [Phenopackets v2 (PXF)](https://phenopacket-schema.readthedocs.io/en/latest/basics.html)
+      * [OMOMP-CDM](https://www.ohdsi.org/data-standardization/)
+      * [CDISC-ODM](https://www.cdisc.org/standards/data-exchange/odm)

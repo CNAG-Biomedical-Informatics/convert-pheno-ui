@@ -17,9 +17,9 @@ include .sonar.env
 install:
 	pip install --upgrade .
 
-.PHONY: venv
+.PHONY: .venv
 venv:
-	python3 -m venv venv && source venv/bin/activate && pip3 install -r requirements-mini.txt
+	python3 -m venv .venv && source venv/bin/activate && pip3 install -r requirements-mini.txt
 
 db-run:
 	docker run --name cp-pg -e POSTGRES_PASSWORD=postgres -d postgres
