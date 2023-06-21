@@ -3,8 +3,7 @@
 is a web-interface for [`Convert-Pheno`](https://cnag-biomedical-informatics.github.io/convert-pheno/), a software toolkit for the interconversion of standard data models for phenotypic data.
 
 <figure markdown>
- ![Convert-Pheno](img/convert-pheno-schema.png){width="500"}
- <figcaption>Convert-Pheno schematic view</figcaption>
+ ![Convert-Pheno-UI](https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui/raw/main/docs/ui.gif)
 </figure>
 
 <!-- add a gif -->
