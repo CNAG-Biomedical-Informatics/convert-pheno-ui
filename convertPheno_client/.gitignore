@@ -8,3 +8,5 @@ cypress/fixtures/users/*
 reports
 .sonar.env
 .scannerwork
+storybook-static
+```

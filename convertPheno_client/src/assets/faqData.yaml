@@ -1,0 +1,9 @@
+- question: "What is Convert-Pheno?"
+  answer: |
+    This tool facilitates the conversion of clinical data between commonly used formats,
+    such as GA4GH standards, to enable secure data sharing and discovery through semantic interoperability.
+
+- question: "How do I install React?"
+  answer: >
+    You can install React by running the command "npm install react"
+    or "yarn add react".

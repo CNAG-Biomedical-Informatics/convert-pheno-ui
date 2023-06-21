@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import istanbul from 'vite-plugin-istanbul';
+import ViteYaml from '@modyfi/vite-plugin-yaml';
 
 export default defineConfig({
   build: {
@@ -18,6 +19,7 @@ export default defineConfig({
       cypress: true,
       requireEnv: false,
     }),
+    ViteYaml(),
   ],
   // rollupOptions: {
   //   output: {

@@ -36,7 +36,11 @@ kc-key:
 cp:
 	docker compose up --build convert-pheno
 
+activate:
+	poetry shell
+
 run:
+	poetry shell && \
 	FLASK_APP=server.app.py FLASK_DEBUG=1 FLASK_RUN_PORT=5001 flask run
 
 stop:

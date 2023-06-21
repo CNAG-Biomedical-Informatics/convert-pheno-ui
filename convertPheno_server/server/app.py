@@ -87,7 +87,7 @@ if app.debug:  # pragma: no cover
     # migrate = Migrate(app, db)
 
     cors = CORS(app, resources={r"/*": {"origins": "*"}})
-    logging.getLogger("flask_cors").level = logging.DEBUG
+    # logging.getLogger("flask_cors").level = logging.DEBUG
 
     # from flask_debugtoolbar import DebugToolbarExtension
     # toolbar = DebugToolbarExtension(app)
