@@ -18,9 +18,10 @@ venv:
 	python3 -m venv .venv && source .venv/bin/activate && pip3 install -r requirements.txt
 
 serve:
-	# Serve the documentation locally
 	mkdocs serve -f ../mkdocs.yml
 
+stop:
+	fuser -k 8000/tcp
+
 build:
-	# Build the documentation
 	mkdocs build -f ../mkdocs.yml

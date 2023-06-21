@@ -51,11 +51,12 @@ markdown_extensions:
 nav:
   - Introduction:
       - What is Convert-Pheno-UI?: what-is-convert-pheno-ui.md
-      - Accepted input formats: supported-formats.md
-      - Supported output formats: supported-formats.md
+      - Accepted input formats: accepted-input-formats.md
+      - Supported output formats: supported-output-formats.md
   - Use:
-      - Web App: web-app.md
-      - API: api.md
+      - Playground: web-app.md
+      - Playground-API: api.md
+      - Run locally: run-locally.md
   - Self-hosting:
       - Prepare the host environment: host-environment.md
       - Deployment: deployment.md
