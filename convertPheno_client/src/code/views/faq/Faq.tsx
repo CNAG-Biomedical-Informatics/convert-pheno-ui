@@ -25,6 +25,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 import faqData from "../../../assets/faqData.yaml";
+console.log(faqData);
 
 const testMd = `A paragraph with *emphasis* and **strong importance**.
 
@@ -40,6 +41,9 @@ A table:
 | - | - |
 `;
 
+console.log(testMd);
+console.log(faqData[1].answer);
+
 export default function Faq() {
   const theme = useTheme();
 
@@ -52,7 +56,7 @@ export default function Faq() {
             <Typography variant="h5">{faq.question}</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            {faq.answer.startsWith("`") ? (
+            {faq.answer_type == "markdown" ? (
               <ReactMarkdown
                 children={faq.answer}
                 remarkPlugins={[remarkGfm]}
