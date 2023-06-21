@@ -15,14 +15,30 @@ import { useTheme } from "@mui/material/styles";
 import { NavLink } from "react-router-dom";
 import {
   Box,
-  Typography,
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 import faqData from "../../../assets/faqData.yaml";
+
+const testMd = `A paragraph with *emphasis* and **strong importance**.
+
+> A block quote with ~strikethrough~ and a URL: https://reactjs.org.
+
+* Lists
+* [ ] todo
+* [x] done
+
+A table:
+
+| a | b |
+| - | - |
+`;
 
 export default function Faq() {
   const theme = useTheme();
@@ -36,7 +52,15 @@ export default function Faq() {
             <Typography variant="h5">{faq.question}</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography>{faq.answer}</Typography>
+            {faq.answer.startsWith("`") ? (
+              <ReactMarkdown
+                children={faq.answer}
+                remarkPlugins={[remarkGfm]}
+              />
+            ) : (
+              <Typography>{faq.answer}</Typography>
+            )}
+            {faq.img && <img src={faq.img} alt="FAQ Image" />}
           </AccordionDetails>
         </Accordion>
       ))}
