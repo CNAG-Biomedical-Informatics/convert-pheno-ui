@@ -12,6 +12,6 @@ is a web-interface for [`Convert-Pheno`](https://cnag-biomedical-informatics.git
 
     `Convert-Pheno-UI` can be accessed in three ways:
 
-    * [Playground](use-the-playground.md)
-    * [Playground-API](use-as-an-api.md)
-    * [Run locally](use-as-an-api.md)
+    * [Playground](playground.md)
+    * [Playground-API](playground-api.md)
+    * [Run locally](run-locally.md)

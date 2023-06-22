@@ -1,6 +1,8 @@
 # What is Convert-Pheno?
 
-is a web-interface for [`Convert-Pheno`](https://cnag-biomedical-informatics.github.io/convert-pheno/), a software toolkit for the interconversion of standard data models for phenotypic data.
+A software toolkit for the interconversion of standard data models for phenotypic data.
+
+For more information please visit the [documentation](https://cnag-biomedical-informatics.github.io/convert-pheno/).
 
 <figure markdown>
  ![Convert-Pheno](img/convert-pheno-schema.png){width="500"}
@@ -13,6 +15,6 @@ is a web-interface for [`Convert-Pheno`](https://cnag-biomedical-informatics.git
 
     `Convert-Pheno` can be operated as a:
 
-    * [Command-line tool](https://cnag-biomedical-informatics.github.io/convert-pheno/use-as-a-command-line-tool/)
+    * [Command-line tool](https://cnag-biomedical-informatics.github.io/convert-pheno/use-as-a-command-line-interface/)
     * [Module](https://cnag-biomedical-informatics.github.io/convert-pheno/use-as-a-module/)
     * [API](https://cnag-biomedical-informatics.github.io/convert-pheno/use-as-an-api/)

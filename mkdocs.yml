@@ -42,25 +42,27 @@ markdown_extensions:
     # - pymdownx.emoji:
     #       emoji_index: !!python/name:materialx.emoji.twemoji
     #       emoji_generator: !!python/name:materialx.emoji.to_svg
-    # - pymdownx.superfences:
-    #     custom_fences:
-    #         - name: mermaid
-    #           class: mermaid
-    #           format: !!python/name:mermaid2.fence_mermaid
+    - pymdownx.superfences:
+        custom_fences:
+            - name: mermaid
+              class: mermaid
+              format: !!python/name:mermaid2.fence_mermaid
 
 nav:
   - Introduction:
       - What is Convert-Pheno-UI?: what-is-convert-pheno-ui.md
       - What is Convert-Pheno?: what-is-convert-pheno.md
-      - Accepted input formats: accepted-input-formats.md
-      - Supported output formats: supported-output-formats.md
+      - Supported formats: supported-formats.md
   - Use:
       - Playground: playground.md
       - Playground-API: playground-api.md
       - Run locally: run-locally.md
-  - Self-hosting:
-      - Prepare the host environment: host-environment.md
-      - Deployment: deployment.md
+  - Formats accepted:
+      - Beacon v2 Models (BFF): bff.md
+      - Phenopackets v2 (PXF): pxf.md
+      - REDCap: redcap.md
+      - OMOP-CDM: omop-cdm.md
+      - CDISC-ODM: cdisc-odm.md
   - Help:
       - Tutorial: tutorial.md
       - FAQs: faq.md

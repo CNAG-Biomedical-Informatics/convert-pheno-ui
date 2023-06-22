@@ -2,15 +2,15 @@
 
 ## Developers
 
-=== "Module"
+=== "Convert-Pheno"
 
     * [Manuel Rueda](https://github.com/mrueda)
 
-=== "Web User Interface"
+=== "Convert-Pheno-UI"
 
     * [Ivo C. Leist](https://github.com/IvoLeist)
 
-=== "Documentation"
+=== "Documentation (This site)"
 
     * [Ivo C. Leist](https://github.com/IvoLeist)
 
@@ -18,9 +18,9 @@
 
 === "CNAG"
 
-    * Group Leader [Ivo G. Gut](https://scholar.google.com/citations?user=YKdDEVYAAAAJ)
-    * Design [Sofia Chaves](https://scholar.google.com/citations?user=Q0wogt8AAAAJ)
-    * Developmental support [Davide Piscia](https://github.com/dpiscia) and his [team](https://www.cnag.crg.eu/teams/bioinformatics-unit/data-platforms-and-tools-development)
+    * Group Leader: [Ivo G. Gut](https://scholar.google.com/citations?user=YKdDEVYAAAAJ)
+    * Design: [Sofia Chaves](https://scholar.google.com/citations?user=Q0wogt8AAAAJ)
+    * Developmental support: [Davide Piscia](https://github.com/dpiscia) and his [team](https://www.cnag.crg.eu/teams/bioinformatics-unit/data-platforms-and-tools-development)
 
 === "External"
 

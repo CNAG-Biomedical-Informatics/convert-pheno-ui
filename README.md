@@ -43,7 +43,7 @@ The module will be uploaded to CPAN once the paper is submitted.
 **_no SSL and user authentication_**
 
 1. rename the file [example.env](example.env) to .env and fill in the variables
-2. Run `docker-compose up -d`
+2. Run `docker compose up -d`
 3. Open your browser and go to `https://localhost` most likely you will get a warning about the certificate, just accept it
 
 ### For self-hosters:
