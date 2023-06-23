@@ -22,7 +22,7 @@ import auth from "./Auth";
 
 import Home from "./views/home/Home";
 import Conversion from "./views/conversion/Conversion";
-import Faq from "./views/faq/Faq";
+import About from "./views/about/About";
 
 import Header from "./header/Header";
 
@@ -63,8 +63,8 @@ const routes = [
     security,
   },
   {
-    path: "/faq",
-    component: Faq,
+    path: "/about",
+    component: About,
     security: "false",
   },
 ];
