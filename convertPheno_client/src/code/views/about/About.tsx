@@ -28,7 +28,7 @@ import {
 
 const teamMembers = [
   {
-    name: "Dr. Manuel Rueda",
+    name: "Manuel Rueda, PhD",
     role: "Convert-Pheno Perl Module",
   },
   {
@@ -40,7 +40,7 @@ const teamMembers = [
     role: "Design and UX",
   },
   {
-    name: "Ivo Gut",
+    name: "Ivo Gut, PhD",
     role: "Biomedical Genomics Group Leader",
   },
 ];
