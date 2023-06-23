@@ -32,7 +32,7 @@ const teamMembers = [
     role: "Convert-Pheno Perl Module",
   },
   {
-    name: "Ivo Christopher Leist",
+    name: "Ivo C. Leist",
     role: "Convert-Pheno UI (this web application)",
   },
   {
@@ -40,7 +40,7 @@ const teamMembers = [
     role: "Design and UX",
   },
   {
-    name: "Ivo Gut, PhD",
+    name: "Ivo G. Gut, PhD",
     role: "Biomedical Genomics Group Leader",
   },
 ];
