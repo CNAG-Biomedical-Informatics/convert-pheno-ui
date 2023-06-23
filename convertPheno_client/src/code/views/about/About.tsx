@@ -61,7 +61,7 @@ const ImageComponent = ({ src, alt, href }) => (
   <Grid item>
     <a href={href}>
       <ButtonBase>
-        <Paper elevation={2}>
+        <Paper elevation={2} sx={{ backgroundColor: "white" }}>
           <img
             src={src}
             alt={alt}
@@ -77,7 +77,7 @@ const CenteredImageButtons = () => (
   <Box display="flex" justifyContent="center" alignItems="center">
     <Grid container spacing={2} justifyContent="center">
       <ImageComponent
-        src="https://lh4.googleusercontent.com/--THiaUxpKwM/AAAAAAAAAAI/AAAAAAAAAAA/FpbvQedtiXw/s44-p-k-no-ns-nd/photo.jpg"
+        src="https://solve-rd.eu/wp-content/uploads/2018/05/cnag-300x127.png"
         alt="Image 1"
         href="https://www.cnag.crg.eu/"
       />
