@@ -36,15 +36,20 @@ kc-key:
 cp:
 	docker compose up --build convert-pheno
 
+compose:
+	docker compose up
+
 activate:
 	poetry shell
 
 run:
-	poetry shell && \
-	FLASK_APP=server.app.py FLASK_DEBUG=1 FLASK_RUN_PORT=5001 flask run
+	export FLASK_APP=server.app.py && export FLASK_DEBUG=1 && \
+	export FLASK_RUN_PORT=5001 && poetry run flask run
 
 stop:
-	fuser -k 5001/tcp
+	fuser -k 5001/tcp && \
+	ps -ef | grep "poetry shell" | awk '{print $$2}'| xargs kill -9
+
 
 auth-test:
 	KC_PUBLIC_KEY=$(KC_PUBLIC_KEY) python3 -m pytest --junitxml=tests/reports/junit.xml tests/test_auth.py

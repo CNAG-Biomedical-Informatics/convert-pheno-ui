@@ -24,6 +24,7 @@ import {
 import { NavLink } from "react-router-dom";
 import { Brightness4, Brightness7 } from "@mui/icons-material";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
 import CP_LOGO from "./CP-logo.png";
 
 import auth from "../Auth";
@@ -36,10 +37,6 @@ const pages = [
   {
     name: "Convert Clinical Data",
     path: "conversion",
-  },
-  {
-    name: "FAQ",
-    path: "faq",
   },
   {
     name: "About",
@@ -172,21 +169,44 @@ export default function Header(props) {
         <Grid container>
           <Grid item xs={6}>
             {pages.map((page) => {
+              if (page.name === "Documentation") {
+                return (
+                  <Button
+                    key={page.path}
+                    href="https://cnag-biomedical-informatics.github.io/convert-pheno-ui/"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    {page.name}
+                  </Button>
+                );
+              }
               return renderNavLink(page);
             })}
           </Grid>
         </Grid>
         {renderChangeThemeToggle(toggleColorMode, currentTheme)}
-        {authenticated ? renderUserAvatar() : renderLoginButton(currentTheme)}
-        <Button
+        <IconButton
           variant="contained"
-          startIcon={<GitHubIcon />}
+          href="https://cnag-biomedical-informatics.github.io/convert-pheno-ui/"
+          target="_blank"
+          rel="noopener"
+          aria-label="Documentation"
+        >
+          <MenuBookIcon />
+        </IconButton>
+
+        <IconButton
+          variant="contained"
           href="https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui"
           target="_blank"
           rel="noopener"
+          aria-label="GitHub"
         >
-          Github
-        </Button>
+          <GitHubIcon />
+        </IconButton>
+
+        {authenticated ? renderUserAvatar() : renderLoginButton(currentTheme)}
       </Toolbar>
     </AppBar>
   );
