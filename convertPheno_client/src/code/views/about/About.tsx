@@ -23,6 +23,9 @@ import {
   Typography,
 } from "@mui/material";
 
+// Idea mouse over should show social media icons
+// eg. GitHub, Twitter, LinkedIn, ResearchGate, Google Scholar, ORCID etc.
+
 const teamMembers = [
   {
     name: "Dr. Manuel Rueda",
@@ -54,6 +57,12 @@ const logos = [
     url: "https://www.3tr-imi.eu/",
     image:
       "https://www.ihi.europa.eu/sites/default/files/styles/teaser_image_horizontal/public/projects/logos/3TR_logo_final.jpg?itok=fDmi4lFR",
+  },
+  {
+    name: "IMI",
+    url: "https://cnag-biomedical-informatics.github.io/convert-pheno/citation/",
+    image:
+      "https://cnag-biomedical-informatics.github.io/convert-pheno/img/3tr-funding.png",
   },
 ];
 
@@ -156,31 +165,6 @@ export default function About() {
       <Grid item xs={12} sm={12}>
         <CenteredImageButtons />
       </Grid>
-
-      {/* <Grid item xs={12} sm={12}>
-        <Grid container spacing={4}>
-          {logos.map((logo, index) => (
-            <Link key={index} href={logo.url}>
-              <Grid item xs={12} sm={5} key={index}>
-                <Card>
-                  <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    height="100%"
-                  >
-                    <CardMedia
-                      component="img"
-                      image={logo.image}
-                      title={logo.name}
-                    />
-                  </Box>
-                </Card>
-              </Grid>
-            </Link>
-          ))}
-        </Grid>
-      </Grid> */}
     </Box>
   );
 }
