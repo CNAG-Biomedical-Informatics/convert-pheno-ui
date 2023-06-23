@@ -78,13 +78,18 @@ const CenteredImageButtons = () => (
     <Grid container spacing={2} justifyContent="center">
       <ImageComponent
         src="https://solve-rd.eu/wp-content/uploads/2018/05/cnag-300x127.png"
-        alt="Image 1"
+        alt="CNAG"
         href="https://www.cnag.crg.eu/"
       />
       <ImageComponent
         src="https://www.ihi.europa.eu/sites/default/files/styles/teaser_image_horizontal/public/projects/logos/3TR_logo_final.jpg?itok=fDmi4lFR"
-        alt="Image 2"
+        alt="3TR"
         href="https://www.3tr-imi.eu/"
+      />
+      <ImageComponent
+        src="https://cnag-biomedical-informatics.github.io/convert-pheno/img/3tr-funding.png"
+        alt="IMI"
+        href="https://cnag-biomedical-informatics.github.io/convert-pheno/citation/"
       />
     </Grid>
   </Box>
