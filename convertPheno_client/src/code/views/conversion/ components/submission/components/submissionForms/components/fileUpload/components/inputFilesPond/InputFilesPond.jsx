@@ -227,7 +227,10 @@ export default function InputFilesPond ( props )
                 "application/x-yaml"
               ] }
             // better hand this over as a prop
-            fileValidateTypeLabelExpectedTypes={ "Expect .txt, .c/tsv, .y(a)ml" }
+            fileValidateTypeLabelExpectedTypes={ "Expect .txt, .c/tsv, .y(a)ml, .json" }
+
+            // better get this from the server
+            maxFileSize="1GB"
           />
         </Grid>
         <Grid item xs={ 1 }>
