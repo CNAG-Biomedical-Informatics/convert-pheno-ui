@@ -236,7 +236,11 @@ export default function InputFilesPond ( props )
             // } }
 
             // better get this from the server
+
+            // this should be a prop
+            // so large file are only expected for OMOP (sqls)
             maxFileSize="1000MB"
+            labelMaxFileSize="Maximum file size is 1GB"
           />
         </Grid>
         <Grid item xs={ 1 }>
