@@ -229,8 +229,14 @@ export default function InputFilesPond ( props )
             // better hand this over as a prop
             fileValidateTypeLabelExpectedTypes={ "Expect .txt, .c/tsv, .y(a)ml, .json" }
 
+            // fileValidateTypeDetectType={ ( source, type ) =>
+            // {
+            //   console.log( source, type );
+            //   resolve( type );
+            // } }
+
             // better get this from the server
-            maxFileSize="1GB"
+            maxFileSize="1000MB"
           />
         </Grid>
         <Grid item xs={ 1 }>
