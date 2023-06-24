@@ -213,16 +213,21 @@ export default function InputFilesPond ( props )
               // setSelectedFile(null);
             } }
 
+            // option provided by plugins
+
             // better hand this over as a prop
             acceptedFileTypes={
               [
                 "text/csv",
-                "text/tab-separated-values",
+                "text/tsv",
                 "text/plain",
                 "application/json",
                 "application/sql",
-                "application/x-sql"
+                "application/x-sql",
+                "application/x-yaml"
               ] }
+            // better hand this over as a prop
+            fileValidateTypeLabelExpectedTypes={ "Expect .txt, .c/tsv, .y(a)ml" }
           />
         </Grid>
         <Grid item xs={ 1 }>
