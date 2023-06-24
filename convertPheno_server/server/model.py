@@ -32,6 +32,19 @@ class User(db.Model):
     name = Column(String(120), nullable=False)  # keycloak username
 
 
+class Upload(db.Model):
+    """
+    Schema and functions for the table uploads
+    """
+
+    __tablename__ = "uploads"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    owner = Column(ForeignKey("users.id"), nullable=False)
+    filename = Column(String, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+
+
 class Job(db.Model):
     """
     Schema and functions for the table jobs

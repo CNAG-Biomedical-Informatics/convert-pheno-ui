@@ -8,6 +8,14 @@
       "runOptions": {
         "runOn": "folderOpen"
       }
+    },
+    {
+      "label": "vite",
+      "type": "shell",
+      "command": "cd convertPheno_client && npm run dev",
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
     }
   ]
 }

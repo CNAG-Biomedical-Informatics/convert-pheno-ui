@@ -17,7 +17,9 @@
         "DEBUGGER": "true"
       },
       "envFile": "${workspaceFolder}/convertPheno_server/.env",
-      "args": ["run"],
+      "args": [
+        "run"
+      ],
       "jinja": true,
       "justMyCode": true
     }

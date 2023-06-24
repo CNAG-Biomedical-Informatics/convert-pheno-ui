@@ -26,7 +26,7 @@ from flask_cors import cross_origin
 from werkzeug.datastructures import FileStorage
 
 from server.app import app, api, db
-from server.model import Job, Output, User
+from server.model import Job, Output, Upload, User
 from server.security import login
 
 from server.utils.db_helpers import (
@@ -66,15 +66,6 @@ class UploadFile(Resource):
     API to upload files
     """
 
-    # TODO
-    # add a delete endpoint to allow the user
-    # to delete a wrong uploaded file
-    # this endpoint should be only available
-    # when the job has not been submitted yet
-
-    # error messag from frontend
-    # DELETE http://...:5001/api/submission/upload 405 (METHOD NOT ALLOWED)
-
     @login(login_required)
     def post(self, userid):
         """
@@ -82,6 +73,9 @@ class UploadFile(Resource):
         """
         args = upload_parser.parse_args()
         uploaded_file = args["files"]
+
+        # get logged in userid
+        user_id = get_or_create_user(userid)
 
         # get the file extension
         ext = uploaded_file.filename.rsplit(".", 1)[1]
@@ -100,6 +94,14 @@ class UploadFile(Resource):
             print(err)
             return {"message": "File not uploaded"}, 500
 
+        # store the filename in the database
+        upload = Upload(
+            owner=user_id.id,
+            filename=fn,
+        )
+        db.session.add(upload)
+        db.session.commit()
+
         # the filename is used to trigger the next API (convertFile)
         return {"tempFilename": fn}
 
@@ -108,25 +110,35 @@ class UploadFile(Resource):
         """
         Delete uploaded file
         """
-        data = request.get_json()
+        data = json.loads(request.data)
         fn = data.get("tempFilename")
         if fn is None:
             return {"message": "tempFilename not found"}, 404
 
-        # TODO
-        # check if the to be deleted file is from the same user
-        # as the one who is logged in
+        user_id = db.session.query(User).filter_by(name=userid).one_or_none()
+        if user_id is None:
+            return {"message": "User does not exist"}, 404
 
-        # TODO
-        # for this to work the filename should be stored in the database
+        # check if the file is in the database
+        upload = (
+            db.session.query(Upload)
+            .filter_by(owner=user_id.id, filename=fn)
+            .one_or_none()
+        )
+        if upload is None:
+            return {"message": "File not found"}, 404
 
-        # try:
-        #     (cfg["FLASK_UPLOAD_DIR"] / fn).unlink()
-        # except FileNotFoundError as err:
-        #     print(err)
-        #     return {"message": "File not found"}, 404
+        try:
+            (cfg["FLASK_UPLOAD_DIR"] / fn).unlink()
+        except FileNotFoundError as err:
+            print(err)
+            return {"message": "File not found"}, 404
+        except Exception as err:
+            print(err)
+            return {"message": "File not deleted"}, 500
 
-        return {"message": "File is deleted"}, 501
+        db.session.delete(upload)
+        return {"message": "File is deleted"}, 200
 
 
 @api.expect(parser)
@@ -141,13 +153,26 @@ class ConvertFile(Resource):
         """
         Convert file
         """
-
         data = request.get_json()
         runExample = data["runExampleData"]
         print("data", data)
 
-        # TODO
-        # make sure that only 3 file have been uploaded
+        if runExample:
+            user_id = get_or_create_user(userid).id
+        else:
+            user = (
+                db.session.query(User)
+                .filter_by(name=userid)
+                .with_entities(User.id)
+                .one_or_none()
+            )
+            if user is None:
+                return {"message": "User does not exist"}, 404
+
+            user_id = user[0]
+
+            # TODO
+            # make sure that only 3 file have been uploaded
 
         # TODO
         # missing the real filename
@@ -198,7 +223,7 @@ class ConvertFile(Resource):
         status = {target_format: "pending" for target_format in target_formats}
         job = Job(
             job_id=job_id,
-            owner=get_or_create_user(userid).id,
+            owner=user_id,
             input_name=input_file,  # should not include the full path to the file
             input_format=input_format,
             target_formats=target_formats,
