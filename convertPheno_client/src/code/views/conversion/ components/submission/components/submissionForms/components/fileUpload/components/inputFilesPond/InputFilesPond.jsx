@@ -11,9 +11,6 @@
 */
 
 import React, { useState } from "react";
-import { FilePond } from "react-filepond";
-import "filepond/dist/filepond.min.css";
-
 import auth from "../../../../../../../../../../Auth";
 import
 {
@@ -29,8 +26,13 @@ import
   DialogTitle,
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
+import { FilePond, registerPlugin } from "react-filepond";
+import "filepond/dist/filepond.min.css";
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 
-// const api_endpoint = import.meta.env.VITE_API_URL;
+registerPlugin( FilePondPluginFileValidateType );
+registerPlugin( FilePondPluginFileValidateSize );
 
 const api_endpoint =
   process.env.NODE_ENV === "production"
@@ -210,6 +212,17 @@ export default function InputFilesPond ( props )
               // remove file from list of uploaded files
               // setSelectedFile(null);
             } }
+
+            // better hand this over as a prop
+            acceptedFileTypes={
+              [
+                "text/csv",
+                "text/tab-separated-values",
+                "text/plain",
+                "application/json",
+                "application/sql",
+                "application/x-sql"
+              ] }
           />
         </Grid>
         <Grid item xs={ 1 }>
