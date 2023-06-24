@@ -11,7 +11,7 @@
 */
 
 import React, { useEffect, useContext, useMemo, useState } from "react";
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
 import { Box, Grid } from "@mui/material";
 import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
@@ -99,14 +99,26 @@ function renderRoutes() {
   ));
 }
 
-const AuthenticatedRoute = ({ element: Component, path, security }) => {
+function AuthenticatedRoute ({ element: Component, path, security }) {
   const navigate = useNavigate();
   const isAuthenticated = security === "false" || auth.user.authenticated;
   console.log("security", security);
   console.log("isAuthenticated", isAuthenticated);
+  const params = useParams();
 
   useEffect(() => {
     if (!isAuthenticated) {
+      console.log("in use effect")
+      console.log("params", params)
+
+      if ("jobId" in params) {
+        path = `${ path }/${ params.jobId }`;
+      }
+      console.log("path", path)
+
+      //! BUG the login should not redirect to the toplevel path
+      //! BUT to the whole path including the jobId
+
       navigate("/login", { state: { redirect: path } });
     }
   }, [auth.user.authenticated, navigate]);
