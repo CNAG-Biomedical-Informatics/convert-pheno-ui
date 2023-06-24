@@ -30,6 +30,12 @@ export default {
   getUser() {
     return this.user;
   },
+  getUserName() {
+    if (this.user.keycloak !== undefined) {
+      console.log(this.user.keycloak.idTokenParsed);
+      return this.user.keycloak.idTokenParsed.preferred_username;
+    }
+  },
   getUserGroups() {
     // if (window.Cypress) {
     //   return [localStorage.getItem('kcGroup')]

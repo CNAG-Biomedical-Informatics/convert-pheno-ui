@@ -15,6 +15,77 @@ import { Grid, Box, Button, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { NavLink } from "react-router-dom";
 
+import auth from "../../Auth";
+
+const buttonStyle = {
+  backgroundColor: "#FFA500",
+  margin: "20px 20px 20px 20px",
+  fontSize: { xs: "12px", sm: "16px", md: "20px" },
+  padding: {
+    xs: "20px 8px 20px 8px",
+    sm: "20px 20px 20px 20px",
+    md: "20px 100px 20px 100px",
+  },
+};
+
+function StyledTypography(props: any) {
+  return (
+    <Typography
+      variant={"body2"}
+      style={{
+        margin: "0px 0px 20px 0px",
+        fontSize: "16px",
+      }}
+    >
+      {props.text}
+    </Typography>
+  );
+}
+
+function StyledButtonTypography(props: any) {
+  return (
+    <Typography
+      variant={"body2"}
+      style={{
+        color: "#1E1E1E",
+        fontWeight: "bold",
+      }}
+    >
+      {props.text}
+    </Typography>
+  );
+}
+
+const InfoBox = ({ label, value }) => {
+  return (
+    <Box
+      display="flex"
+      gap="0.5rem"
+      alignItems="center"
+      justifyContent="center"
+    >
+      <Typography
+        variant="body2"
+        style={{ fontWeight: 'bold', fontSize: '16px' }}
+      >
+        {label}:
+      </Typography>
+      <Typography variant="body2" style={{ fontSize: '16px' }}>
+        {value}
+      </Typography>
+    </Box>
+  );
+};
+
+const UserInfo = () => {
+  return (
+    <>
+      <InfoBox label="User" value="convert" />
+      <InfoBox label="Password" value="pheno" />
+    </>
+  );
+};
+
 export default function Home() {
   const theme = useTheme();
 
@@ -50,85 +121,40 @@ export default function Home() {
             },
           }}
         >
-          <Typography
-            variant={"body2"}
-            style={{
-              margin: "0px 0px 20px 0px",
-              fontSize: "16px",
-            }}
-          >
-            Playground Version
-          </Typography>
-          <Typography
-            variant={"body2"}
-            style={{
-              margin: "0px 0px 20px 0px",
-              fontSize: "16px",
-            }}
-          >
-            {" "}
-            To log in, use the following credentials:
-          </Typography>
-          <Box
-            display="flex"
-            gap="0.5rem"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Typography
-              variant={"body2"}
-              style={{ fontWeight: "bold", fontSize: "16px" }}
-            >
-              User:
-            </Typography>
-            <Typography variant={"body2"} style={{ fontSize: "16px" }}>
-              convert{" "}
-            </Typography>
-          </Box>
-          <Box
-            display="flex"
-            gap="0.6rem"
-            alignItems="center"
-            justifyContent={"center"}
-          >
-            <Typography
-              variant={"body2"}
-              style={{ fontWeight: "bold", fontSize: "16px" }}
-            >
-              Password:
-            </Typography>
-            <Typography variant={"body2"} style={{ fontSize: "16px" }}>
-              pheno
-            </Typography>
-          </Box>
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "#FFA500",
-              margin: "20px 20px 20px 20px",
-              fontSize: { xs: "12px", sm: "16px", md: "20px" },
-              padding: {
-                xs: "20px 8px 20px 8px",
-                sm: "20px 20px 20px 20px",
-                md: "20px 100px 20px 100px",
-              },
-            }}
-          >
-            <NavLink
-              to={{ pathname: "/conversion/" }}
-              style={{ textDecoration: "none" }}
-            >
-              <Typography
-                variant={"body2"}
-                style={{
-                  color: "#1E1E1E",
-                  fontWeight: "bold",
-                }}
+          <StyledTypography text="Playground Version" />
+          {auth.user.authenticated ? (
+            <>
+              <StyledTypography
+                text={`You are logged in with the user: ${auth.getUserName()}`}
+              />
+              <Button
+                variant="contained"
+                sx={buttonStyle}
+                onClick={() => auth.user.keycloak.logout()}
+                >
+                <StyledButtonTypography text="Logout" />
+              </Button>
+            </>
+            ):(
+            <>
+              <StyledTypography
+                text="To log in, use the following credentials:"
+              />
+              <UserInfo />
+              <Button
+                variant="contained"
+                sx={buttonStyle}
               >
-                Login
-              </Typography>
-            </NavLink>
-          </Button>
+                <NavLink
+                  to={{ pathname: "/conversion/" }}
+                  style={{ textDecoration: "none" }}
+                >
+                  <StyledButtonTypography text="Login" />
+                </NavLink>
+              </Button>
+            </>
+            )
+          }
         </Box>
       </Grid>
     </Grid>
