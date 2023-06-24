@@ -108,12 +108,25 @@ class UploadFile(Resource):
         """
         Delete uploaded file
         """
+        data = request.get_json()
+        fn = data.get("tempFilename")
+        if fn is None:
+            return {"message": "tempFilename not found"}, 404
+
         # TODO
-        # add a delete endpoint to allow the user
-        # to delete a wrong uploaded file
-        # this endpoint should be only available
-        # when the job has not been submitted yet
-        return {"message": "Not implemented yet"}, 501
+        # check if the to be deleted file is from the same user
+        # as the one who is logged in
+
+        # TODO
+        # for this to work the filename should be stored in the database
+
+        # try:
+        #     (cfg["FLASK_UPLOAD_DIR"] / fn).unlink()
+        # except FileNotFoundError as err:
+        #     print(err)
+        #     return {"message": "File not found"}, 404
+
+        return {"message": "File is deleted"}, 501
 
 
 @api.expect(parser)
