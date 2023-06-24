@@ -60,7 +60,7 @@ upload_parser.add_argument("files", location="files", type=FileStorage, required
 
 @api.expect(parser)
 @api.expect(upload_parser)
-@ns.route("/", methods=("POST",))
+@ns.route("/", methods=("POST", "DELETE"))
 class UploadFile(Resource):
     """
     API to upload files
@@ -102,6 +102,18 @@ class UploadFile(Resource):
 
         # the filename is used to trigger the next API (convertFile)
         return {"tempFilename": fn}
+
+    @login(login_required)
+    def delete(self, userid):
+        """
+        Delete uploaded file
+        """
+        # TODO
+        # add a delete endpoint to allow the user
+        # to delete a wrong uploaded file
+        # this endpoint should be only available
+        # when the job has not been submitted yet
+        return {"message": "Not implemented yet"}, 501
 
 
 @api.expect(parser)

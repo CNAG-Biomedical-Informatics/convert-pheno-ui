@@ -38,7 +38,7 @@ export default function fileUpload(props) {
 
   const triggerFileDownload = async ({ inputFormat }) => {
     const inputFormatToFileNameMapping = {
-      redcap: "recap.zip",
+      redcap: "redcap.zip",
       bff: "individuals.bff.json",
       pxf: "all.pxf.json",
       omop: "omop_cdm_eunomia.sql.gz",
