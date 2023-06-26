@@ -7,6 +7,7 @@ repo_url: https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui
 edit_uri: edit/main/docs/
 
 extra_css: [css/theme_overrides.css]
+extra_javascript: [js/theme_overrides.js]
 
 plugins:
   - search
@@ -99,5 +100,7 @@ extra:
 #      link: https://twitter.com/genomebeacons
     - icon: fontawesome/brands/github
       link: https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui
+
+
 
 # https://pypi.org/project/mkdocs-with-pdf/ for more PDF configuration ...
