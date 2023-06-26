@@ -25,7 +25,7 @@ headerSource.addEventListener('click', (event) => {
   // if clicked on any child element of githubLink do nothing
   if (event.target !== githubLink && !githubLink.contains(event.target)) {
     window.open(
-      "https://www.cnag.crg.eu",
+      "https://www.cnag.eu",
       '_blank'
     );
   }

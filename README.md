@@ -12,6 +12,7 @@
 [![codecov](https://codecov.io/gh/CNAG-Biomedical-Informatics/convert-pheno-ui/branch/main/graph/badge.svg?token=VJB5TM9LQW)](https://codecov.io/gh/CNAG-Biomedical-Informatics/convert-pheno-ui)
 ![version](https://img.shields.io/badge/version-0.0.0_beta-orange)
 [![License: GPL-3.0](https://img.shields.io/pypi/l/fpvgcc.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+[![Documentation Status](https://github.com/cnag-biomedical-informatics/convert-pheno-ui/actions/workflows/documentation.yml/badge.svg)](https://github.com/cnag-biomedical-informatics/convert-pheno-ui/actions/workflows/documentation.yml)
 
 **Documentation**: <a href="https://cnag-biomedical-informatics.github.io/convert-pheno-ui" target="_blank">https://cnag-biomedical-informatics.github.io/convert-pheno-ui</a>
 
