@@ -19,7 +19,7 @@ githubLink.addEventListener('click', (event) => {
   );
 });
 
-headerSource.addEventListener('click', function (event) {
+headerSource.addEventListener('click', (event) => {
   event.preventDefault();
 
   // if clicked on any child element of githubLink do nothing

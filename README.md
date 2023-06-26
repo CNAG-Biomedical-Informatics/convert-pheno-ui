@@ -13,7 +13,7 @@
 ![version](https://img.shields.io/badge/version-0.0.0_beta-orange)
 [![License: GPL-3.0](https://img.shields.io/pypi/l/fpvgcc.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
-**Documentation**: <a href="https://cnag-biomedical-informatics.github.io/convert-pheno" target="_blank">https://cnag-biomedical-informatics.github.io/convert-pheno</a>
+**Documentation**: <a href="https://cnag-biomedical-informatics.github.io/convert-pheno-ui" target="_blank">https://cnag-biomedical-informatics.github.io/convert-pheno</a>
 
 **Web APP Playground**: <a href="https://convert-pheno.cnag.cat" target="_blank">https://convert-pheno.cnag.cat</a>
 
