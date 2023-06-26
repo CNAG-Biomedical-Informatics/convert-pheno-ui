@@ -51,25 +51,16 @@ markdown_extensions:
 nav:
   - Introduction:
       - What is Convert-Pheno-UI?: what-is-convert-pheno-ui.md
-      - What is Convert-Pheno?: what-is-convert-pheno.md
       - Supported formats: supported-formats.md
   - Use:
       - Playground: playground.md
-      - Playground-API: playground-api.md
       - Run locally: run-locally.md
-  - Formats accepted:
-      - Beacon v2 Models (BFF): bff.md
-      - Phenopackets v2 (PXF): pxf.md
-      - REDCap: redcap.md
-      - OMOP-CDM: omop-cdm.md
-      - CDISC-ODM: cdisc-odm.md
   - Help:
       - Tutorial: tutorial.md
       - FAQs: faq.md
-      - Future plans: future-plans.md
   - About:
-      - About: about.md
-      - Citation: citation.md
+      - About: https://cnag-biomedical-informatics.github.io/convert-pheno/about/
+      - Citation: https://cnag-biomedical-informatics.github.io/convert-pheno/citation/
 
 theme:
   name: material

@@ -39,10 +39,6 @@ const teamMembers = [
     name: "Sofia Chavez",
     role: "Design and UX",
   },
-  {
-    name: "Ivo G. Gut, PhD",
-    role: "Biomedical Genomics Group Leader",
-  },
 ];
 
 const logos = [
