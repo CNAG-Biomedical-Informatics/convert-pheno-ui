@@ -8,25 +8,27 @@
  *
  * @param {Object} event - The click event object.
  */
-const headerSource = document.querySelector('.md-header__source');
-const githubLink = document.querySelector('.md-source__repository.md-source__repository--active');
 
-githubLink.addEventListener('click', (event) => {
-  event.preventDefault();
-  window.open(
-    "https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui",
-    '_blank'
-  );
-});
+window.addEventListener('load', () => {
+  const headerSource = document.querySelector('.md-header__source');
+  const githubLink = document.querySelector('.md-source__repository.md-source__repository--active');
 
-headerSource.addEventListener('click', (event) => {
-  event.preventDefault();
-
-  // if clicked on any child element of githubLink do nothing
-  if (event.target !== githubLink && !githubLink.contains(event.target)) {
+  githubLink.addEventListener('click', (event) => {
+    event.preventDefault();
     window.open(
-      "https://www.cnag.eu",
+      "https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui",
       '_blank'
     );
-  }
+  });
+  headerSource.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    // if clicked on any child element of githubLink do nothing
+    if (event.target !== githubLink && !githubLink.contains(event.target)) {
+      window.open(
+        "https://www.cnag.eu",
+        '_blank'
+      );
+    }
+  });
 });
