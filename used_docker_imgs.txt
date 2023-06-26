@@ -1,0 +1,5 @@
+leistivo/convert-pheno-ui-client:latest
+leistivo/convert-pheno-ui-server:latest
+manuelrueda/convert-pheno:latest
+postgres:13-alpine
+quay.io/keycloak/keycloak:20.0.1

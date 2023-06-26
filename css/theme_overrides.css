@@ -1,0 +1,28 @@
+.md-header__source {
+  background-image: url("../img/cnag-logo-white.png");
+  background-size: 50px 15px;
+  background-repeat: no-repeat;
+  background-position: right;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0); /* Transparent background */
+  cursor: pointer;
+  /* Add any other necessary styles for .overlay */
+}
+
+h2 {
+  color: #2980b9;
+  border-top: #2980b9 thin solid;
+  border-bottom: #2980b9 thin solid;
+}
+
+h3 {
+  color: #888;
+  text-decoration: underline;
+}
