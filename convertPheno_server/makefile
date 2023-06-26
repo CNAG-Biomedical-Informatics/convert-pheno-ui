@@ -59,10 +59,15 @@ unit-test:
 	python3 -m pytest --junitxml=tests/reports/junit.xml tests/test_auth.py::TestAuthClass::test_decorator_login_required
 
 .PHONY: test
+
 test:
-	KC_PUBLIC_KEY=$(KC_PUBLIC_KEY) python3 -m pytest --junitxml=tests/reports/junit.xml tests/
+	KC_PUBLIC_KEY=$(KC_PUBLIC_KEY) poetry run pytest --junitxml=tests/reports/junit.xml
+
 
 test2:
+	KC_PUBLIC_KEY=$(KC_PUBLIC_KEY) python3 -m pytest --junitxml=tests/reports/junit.xml tests/
+
+test3:
 	KC_PUBLIC_KEY=$(KC_PUBLIC_KEY) poetry run pytest --junitxml=tests/reports/junit.xml
 
 debug-test:
