@@ -1,4 +1,5 @@
 {
+  "python.defaultInterpreterPath": "${workspaceFolder}/convertPheno_server/.venv/bin/python3",
   "python.testing.pytestPath": "${workspaceFolder}/convertPheno_server/.venv/bin/pytest",
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
