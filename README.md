@@ -35,7 +35,7 @@ The module will be uploaded to CPAN once the paper is submitted.
 
 - Ideally a unix (GNU/Linux, MacOS) based distribution.
   Windows with [WSL (Windows Subsystem for Linux)](https://learn.microsoft.com/en-us/windows/wsl)
-  enabled should work as well - not tested
+  enabled should work as well or [Docker Deskop](https://docs.docker.com/desktop/install/windows-install/) - not tested
 
 - [Docker](https://docs.docker.com/get-docker/) and [Docker compose](https://docs.docker.com/compose/install/) installed
 
@@ -45,7 +45,7 @@ The module will be uploaded to CPAN once the paper is submitted.
 0. git clone this repo and then navigate into the folder convert-pheno-ui
 1. rename the file [example.env](example.env) to .env and fill in the variables
 2. Run `docker compose up -d`
-3. Open your browser and go to `https://localhost` most likely you will get a warning about the certificate, just accept it
+3. Open your browser and go to `http://localhost:4173`
 
 ### For self-hosters:
 
