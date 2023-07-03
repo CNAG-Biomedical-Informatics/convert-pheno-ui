@@ -158,8 +158,10 @@ class ConvertFile(Resource):
         print("data", data)
 
         if runExample:
+            ns.logger.info("run /w example data")
             user_id = get_or_create_user(userid).id
         else:
+            ns.logger.info("run /w uploaded data")
             user = (
                 db.session.query(User)
                 .filter_by(name=userid)

@@ -57,7 +57,7 @@ def run_convert_pheno(
     log_file,
     uploaded_files=None,
 ):
-    logger(f"job_id:{job_id} - Create Convert-Pheno command")
+    logger(f"job_id:{job_id} - run_convert_pheno")
     cli_args_mapping.update(
         {
             "target": [
@@ -103,6 +103,11 @@ def run_convert_pheno(
     print("result", result)
 
     status = "success" if result == 0 else "failed"
+
+    if error_msg != (None, None):
+        error_msg = error_msg[0].decode("utf-8")
+        logger(f"job_id:{job_id} - The following bash command errored out: {cmd}")
+        logger(f"job_id:{job_id} - Convert-Pheno failed with error message: {error_msg}")
 
     # TODO
     # test errors
