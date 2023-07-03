@@ -35,7 +35,7 @@ The module will be uploaded to CPAN once the paper is submitted.
 
 - Ideally a unix (GNU/Linux, MacOS) based distribution.
   Windows with [WSL (Windows Subsystem for Linux)](https://learn.microsoft.com/en-us/windows/wsl)
-  enabled should work as well or [Docker Deskop](https://docs.docker.com/desktop/install/windows-install/) - not tested
+  enabled or [Docker Deskop](https://docs.docker.com/desktop/install/windows-install/) should work as well - not tested
 
 - [Docker](https://docs.docker.com/get-docker/) and [Docker compose](https://docs.docker.com/compose/install/) installed
 
