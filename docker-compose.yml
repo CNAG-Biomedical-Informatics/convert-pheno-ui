@@ -69,7 +69,7 @@ services:
     environment:
       NODE_ENV: production
       VITE_SECURITY: false
-      VITE_API_URL: http://localhost:5000/
+      VITE_API_URL: http://${DOMAIN}:5000/
       VITE_KC_CONFIG: "{}"
     restart: unless-stopped
     healthcheck:
