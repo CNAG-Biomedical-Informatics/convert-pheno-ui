@@ -3,5 +3,6 @@
 *.log
 .ruff_cache
 .pytest_cache
-data/output/*
-data/uploads/*
+data/output/*.json
+data/uploads/*.json
+
