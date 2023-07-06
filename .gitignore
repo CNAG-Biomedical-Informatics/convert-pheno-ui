@@ -4,5 +4,5 @@
 .ruff_cache
 .pytest_cache
 data/output/*.json
-data/uploads/*.json
+data/uploads/*.csv
 

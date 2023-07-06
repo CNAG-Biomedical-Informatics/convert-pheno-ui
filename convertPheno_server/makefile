@@ -12,7 +12,7 @@
 
 SHELL := /bin/bash
 include .env
-include .sonar.env
+# include .sonar.env
 
 install:
 	pip install --upgrade .

@@ -50,6 +50,10 @@ class DevelopmentConfig:
     convertPheno_mountpoint = environ.get("CONVERTPHENO_DATA_MOUNTPOINT")
     if convertPheno_mountpoint == "convert-pheno-ui":
         data_dir = Path.cwd().parent / "data"
+
+        # for testing with the vscode pytest runner
+        if Path.cwd().name == "tests":
+            data_dir = Path.cwd().parent.parent / "data"
     else:
         data_dir = Path.cwd() / "data"
 
