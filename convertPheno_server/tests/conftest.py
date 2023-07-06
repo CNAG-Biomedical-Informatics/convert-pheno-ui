@@ -69,17 +69,20 @@ def client():
 
 
 @pytest.fixture()
-def mock_client(mocker):
+def dev_client(mocker):
     app.testing = True  # propagate exceptions to the test client
-    app.config.from_object(DevelopmentConfig)
+    cfg = {k: v for k, v in vars(DevelopmentConfig).items() if not k.startswith("_")}
+    cfg["SECURITY"] = False
+    app.config.from_mapping(cfg)
 
-    mocker.patch("server.security.get_public_key", return_value=FAKE_PUBLIC_KEY)
-    mocker.patch("jwt.decode", return_value=FAKE_PAYLOAD)
+    # mocker is no longer needed because here we no longer use keycloak
+    # mocker.patch("server.security.get_public_key", return_value=FAKE_PUBLIC_KEY)
+    # mocker.patch("jwt.decode", return_value=FAKE_PAYLOAD)
 
     yield app.test_client()
 
 
-@pytest.fixture(params=["mock_client", "client"])
+@pytest.fixture(params=["dev_client", "client"])
 def test_client(request):
     client_fixture = request.getfixturevalue(request.param)
     yield client_fixture

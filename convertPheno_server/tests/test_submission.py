@@ -20,7 +20,7 @@ convert_url_suffix = f"{api_path}/convert"
 
 
 class TestSubmissionClass:
-    @pytest.mark.parametrize("test_client", ["mock_client", "client"], indirect=True)
+    @pytest.mark.parametrize("test_client", ["dev_client", "client"], indirect=True)
     def test_upload(self, test_client, header):
         data = dict(
             files=(BytesIO(b"my file contents"), "test.csv"),
