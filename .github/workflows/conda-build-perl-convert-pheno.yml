@@ -1,10 +1,10 @@
-name: bioconda-build-perl-convert-pheno
+name: conda-build-perl-convert-pheno
 on:
   workflow_dispatch:
 
 jobs:
   ubuntu:
-    name: Ex6 Mamba
+    name: ubuntu
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v2
@@ -23,4 +23,5 @@ jobs:
           conda config --show
           printenv | sort
       - shell: bash -el {0}
-        run: mamba install bioconda-utils
+        run: mamba build conda_recipe
+        
