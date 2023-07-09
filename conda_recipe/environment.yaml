@@ -1,0 +1,6 @@
+name: build-linux-env
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - conda-build

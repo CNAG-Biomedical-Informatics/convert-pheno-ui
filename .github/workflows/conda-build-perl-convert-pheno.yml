@@ -11,10 +11,8 @@ jobs:
       - uses: conda-incubator/setup-miniconda@v2
         with:
           mamba-version: "*"
-          channels: conda-forge,bioconda
-          channel-priority: true
           activate-environment: build-linux-env
-          #environment-file: etc/example-environment.yml
+          environment-file: conda_recipe/environment.yaml
       - shell: bash -el {0}
         run: |
           mamba info
@@ -25,6 +23,5 @@ jobs:
       - name: Run mamba build 
         shell: bash -el {0}
         run: |
-          mamba install conda-build
           mamba build conda_recipe
         
