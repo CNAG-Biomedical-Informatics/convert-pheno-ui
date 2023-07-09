@@ -17,11 +17,14 @@ jobs:
           #environment-file: etc/example-environment.yml
       - shell: bash -el {0}
         run: |
-          conda info
-          conda list
-          conda config --show-sources
-          conda config --show
+          mamba info
+          mamba list
+          mamba config --show-sources
+          mamba config --show
           printenv | sort
-      - shell: bash -el {0}
-        run: mamba build conda_recipe
+      - name: Run mamba build 
+        shell: bash -el {0}
+        run: |
+          mamba install conda-build
+          mamba build conda_recipe
         
