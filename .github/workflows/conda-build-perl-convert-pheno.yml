@@ -15,7 +15,7 @@ jobs:
         with:
           mamba-version: "*"  
           channels: conda-forge
-          activate-environment: build-linux-env
+          activate-environment: build-env
 
       - name: Get Date
         id: get-date
@@ -34,6 +34,12 @@ jobs:
           # Increase this value to reset cache if conda_recipe/environment.yaml has not changed
           CACHE_NUMBER: 0
         id: cache
+
+      - name: Update environment
+        run:
+          mamba env update -n build-env -f
+          conda_recipe/environment.yaml
+        if: steps.cache.outputs.cache-hit != 'true'
 
       - shell: bash -el {0}
         run: |
