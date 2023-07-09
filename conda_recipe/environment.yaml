@@ -1,4 +1,4 @@
-name: build-linux-env
+name: build-env
 channels:
   - conda-forge
   - bioconda
