@@ -1,4 +1,4 @@
-name: build-perl-conver-pheno
+name: bioconda-build-perl-convert-pheno
 on:
   workflow_dispatch:
 
@@ -14,7 +14,7 @@ jobs:
           channels: conda-forge,bioconda
           channel-priority: true
           activate-environment: build-linux-env
-          environment-file: etc/example-environment.yml
+          #environment-file: etc/example-environment.yml
       - shell: bash -el {0}
         run: |
           conda info
