@@ -1,0 +1,26 @@
+name: build-perl-conver-pheno
+on:
+  workflow_dispatch:
+
+jobs:
+  ubuntu:
+    name: Ex6 Mamba
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          mamba-version: "*"
+          channels: conda-forge,bioconda
+          channel-priority: true
+          activate-environment: build-linux-env
+          environment-file: etc/example-environment.yml
+      - shell: bash -el {0}
+        run: |
+          conda info
+          conda list
+          conda config --show-sources
+          conda config --show
+          printenv | sort
+      - shell: bash -el {0}
+        run: mamba install bioconda-utils
