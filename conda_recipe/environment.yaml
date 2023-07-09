@@ -1,7 +1,6 @@
 name: build-env
 channels:
   - conda-forge
-  - bioconda
 dependencies:
   - conda-build
   - conda-verify
