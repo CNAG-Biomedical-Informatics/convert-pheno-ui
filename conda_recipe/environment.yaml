@@ -4,3 +4,4 @@ channels:
   - bioconda
 dependencies:
   - conda-build
+  - conda-verify
