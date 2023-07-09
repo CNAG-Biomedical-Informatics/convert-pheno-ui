@@ -54,4 +54,11 @@ jobs:
         shell: bash -el {0}
         run: |
           mamba build conda_recipe
+
+      - name: Archive CPAN logs
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: cpan_log
+          path: .cpanm/work/*/build.log
       
