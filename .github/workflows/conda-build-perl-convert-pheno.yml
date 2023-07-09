@@ -2,21 +2,19 @@ name: conda-build-perl-convert-pheno
 on:
   workflow_dispatch:
 
-
-
-
-
-
-
 jobs:
-  ubuntu:
-    name: ubuntu
-    runs-on: "ubuntu-latest"
+  build:
+    strategy:
+      matrix:
+        os: ["ubuntu-latest", "macos-latest" ]
+
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
       - uses: conda-incubator/setup-miniconda@v2
         with:
-          mamba-version: "*"
+          mamba-version: "*"  
+          channels: conda-forge
           activate-environment: build-linux-env
 
       - name: Get Date
@@ -49,4 +47,4 @@ jobs:
         shell: bash -el {0}
         run: |
           mamba build conda_recipe
-        
+      
