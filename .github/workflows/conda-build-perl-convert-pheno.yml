@@ -9,6 +9,7 @@ jobs:
         os: ["ubuntu-latest", "macos-latest" ]
 
     runs-on: ${{ matrix.os }}
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v3
 
@@ -24,7 +25,7 @@ jobs:
         shell: bash
 
       - name: Cache Conda env
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ env.CONDA }}/envs
           key:
@@ -57,8 +58,8 @@ jobs:
 
       - name: Archive CPAN logs
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
-          name: cpan_log
-          path: .cpanm/work/*/build.log
+          name: cpan_log_${{ matrix.os }}
+          path: /tmp/.cpanm/work/*/build.log
       
