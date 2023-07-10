@@ -7,6 +7,7 @@
 </p>
 
 [![Uptime Robot status](https://img.shields.io/uptimerobot/status/m794601507-a686af3c42ebb3ff3f2673b2)](https://stats.uptimerobot.com/4nrjwuYQPm)
+[![ssl-cert-check](https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui/actions/workflows/ssl-cert-check.yml/badge.svg)](https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui/actions/workflows/ssl-cert-check.yml)
 [![Docker build server](https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui/actions/workflows/docker-build-server.yml/badge.svg)](https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui/actions/workflows/docker-build-server.yml)
 [![Docker build client](https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui/actions/workflows/docker-build-client.yml/badge.svg)](https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui/actions/workflows/docker-build-client.yml)
 [![codecov](https://codecov.io/gh/CNAG-Biomedical-Informatics/convert-pheno-ui/branch/main/graph/badge.svg?token=VJB5TM9LQW)](https://codecov.io/gh/CNAG-Biomedical-Informatics/convert-pheno-ui)
