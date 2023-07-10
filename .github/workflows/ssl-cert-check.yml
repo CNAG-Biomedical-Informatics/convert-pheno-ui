@@ -1,0 +1,27 @@
+name: ssl-cert-check
+
+on:
+  workflow_dispatch:
+
+# on:
+#   # Triggers the workflow every day at 8.00 UTC minutes
+#   schedule:
+#     - cron:  '0 8 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        domain:
+          - https://codex.so
+
+    steps:
+      - name: Check domain SSL and registry expire date
+        id: check-domain
+        uses: codex-team/action-check-domain@v1
+        with:
+          url: https://convert-pheno.cnag.cat/
+
+      - run: echo 'SSL cert has ${{ steps.check-domain.outputs.ssl-expire-days-left }} days left'
+        if: ${{ steps.check-domain.outputs.ssl-expire-days-left }}
