@@ -8,16 +8,16 @@ on:
 #   schedule:
 #     - cron:  '0 8 * * *'
 
+env:
+  NODE_VERSION: 12.x
+
 jobs:
-  build:
+  check:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Check domain SSL and registry expire date
-        id: check-domain
-        uses: codex-team/action-check-domain@v1
+      - name: Check the health and certificate date for the specified URL(s)
+        uses: padurean/https-certificate-expiry-health-check-action@v1.0.0
         with:
+          # Check the following URLs
           url: https://convert-pheno.cnag.cat/
-
-      - run: echo 'SSL cert has ${{ steps.check-domain.outputs.ssl-expire-days-left }} days left'
-        if: ${{ steps.check-domain.outputs.ssl-expire-days-left }}
