@@ -60,6 +60,6 @@ jobs:
         if: ${{ failure() }}
         uses: actions/upload-artifact@v3
         with:
-          name: cpan_log ${{ matrix.os }}
+          name: cpan_log_${{ matrix.os }}
           path: /tmp/.cpanm/work/*/build.log
       
