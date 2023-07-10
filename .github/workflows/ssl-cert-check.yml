@@ -11,11 +11,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        domain:
-          - https://codex.so
-
+    
     steps:
       - name: Check domain SSL and registry expire date
         id: check-domain
