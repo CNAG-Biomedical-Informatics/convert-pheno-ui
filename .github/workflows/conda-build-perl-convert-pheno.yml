@@ -20,7 +20,7 @@ jobs:
           channels: conda-forge,bioconda
           activate-environment: build-env
           auto-activate-base: false
-          channel-priority: strict
+          channel-priority: true
           use-only-tar-bz2: true
           auto-update-conda: true
           python-version: ${{ matrix.python-version }}
