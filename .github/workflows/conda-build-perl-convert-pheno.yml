@@ -50,6 +50,7 @@ jobs:
       - shell: bash -el {0}
         run: |
           conda info
+          conda update --all
           conda list
           conda config --show-sources
           conda config --show
