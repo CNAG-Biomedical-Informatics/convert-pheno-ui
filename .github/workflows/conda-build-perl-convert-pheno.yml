@@ -47,6 +47,7 @@ jobs:
         run: |
           mamba info
           mamba list
+          mamba config --set channel_priority strict
           mamba config --show-sources
           mamba config --show
           printenv | sort
