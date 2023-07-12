@@ -1,4 +1,4 @@
-{% set version = "0.10" %}
+{% set version = "0.11" %}
 
 package:
   name: perl-convert-pheno
@@ -6,13 +6,13 @@ package:
 
 source:
   url: https://cpan.metacpan.org/authors/id/M/MR/MRUEDA/Convert-Pheno-{{version}}.tar.gz
-  sha256: 3560cdaed857196bc2520c79cbe73c6e0e6d370eda6b5cc2270fd5bfe4b52b6f
+  sha256: 3d3c6067513b7dc85fb414c93bf2194487dfcd45894a3d8c8b0ce0f27a8d4a22
 
 build:
   number: 0
-  
+
 requirements:
-  build: 
+  build:
     - {{ compiler('c') }}
     - make
   host:
@@ -33,7 +33,7 @@ requirements:
     - perl-json-xs
     - perl-perlio-gzip
     - perl-sort-naturally
-  
+
 test:
   # Perl 'use' tests
   imports:
