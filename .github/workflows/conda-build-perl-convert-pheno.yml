@@ -19,7 +19,7 @@ jobs:
           #mamba-version: "*"  
           channels: conda-forge,bioconda
           activate-environment: build-env
-          channel-priority: true
+          channel-priority: strict
           use-only-tar-bz2: true
           auto-update-conda: true
           python-version: ${{ matrix.python-version }}
