@@ -19,7 +19,7 @@ jobs:
           #mamba-version: "*"  
           channels: conda-forge,bioconda
           activate-environment: build-env
-          channel-priority: strict
+          channel-priority: true
           use-only-tar-bz2: true
           auto-update-conda: true
           python-version: ${{ matrix.python-version }}
@@ -44,7 +44,7 @@ jobs:
 
       - name: Update environment
         run: |
-          conda install -n build-env conda-libmamba-solver
+          conda install -n base conda-libmamba-solver
           conda config --set solver libmamba
           conda env update -n build-env -f conda_recipe/environment.yaml
         if: steps.cache.outputs.cache-hit != 'true'
