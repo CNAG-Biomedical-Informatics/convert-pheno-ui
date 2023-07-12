@@ -16,15 +16,14 @@ jobs:
 
       - uses: conda-incubator/setup-miniconda@v2
         with:
-          mamba-version: "*"  
+          #mamba-version: "*"  
           channels: conda-forge,bioconda
           activate-environment: build-env
-          auto-activate-base: false
           channel-priority: true
           use-only-tar-bz2: true
           auto-update-conda: true
           python-version: ${{ matrix.python-version }}
-
+         
       - name: Get Date
         id: get-date
         run: echo "today=$(/bin/date -u '+%Y%m%d')" >> $GITHUB_OUTPUT
@@ -44,23 +43,25 @@ jobs:
         id: cache
 
       - name: Update environment
-        run:
-          mamba env update -n build-env -f
+        run: |
+          conda install -n base conda-libmamba-solver
+          conda config --set solver libmamba
+          conda env update -n build-env -f
           conda_recipe/environment.yaml
         if: steps.cache.outputs.cache-hit != 'true'
 
       - shell: bash -el {0}
         run: |
-          mamba info
-          mamba list
-          mamba config --show-sources
-          mamba config --show
+          conda info
+          conda list
+          conda config --show-sources
+          conda config --show
           printenv | sort
 
-      - name: Run mamba build 
+      - name: Run conda build 
         shell: bash -el {0}
         run: |
-          mamba build conda_recipe
+          conda build conda_recipe
 
       - name: Archive CPAN logs
         if: ${{ failure() }}
