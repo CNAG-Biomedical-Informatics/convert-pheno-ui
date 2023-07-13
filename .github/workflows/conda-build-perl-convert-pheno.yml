@@ -35,7 +35,7 @@ jobs:
           path: ${{ env.CONDA }}/envs
           key: conda-${{ runner.os }}--${{ runner.arch }}--${{
             steps.get-date.outputs.today }}-${{
-            hashFiles('conda_recipe/environment.yaml') }}-${{ env.CACHE_NUMBER }}
+            hashFiles('conda_recipe/bioconda_utils-requirements.txt') }}-${{ env.CACHE_NUMBER }}
         env:
           # Increase this value to reset cache if conda_recipe/environment.yaml has not changed
           CACHE_NUMBER: 0
@@ -45,7 +45,8 @@ jobs:
         run: |
           # conda install -n base conda-libmamba-solver
           # conda config --set solver libmamba
-          conda env update -n build-env -f conda_recipe/environment.yaml
+          # conda env update -n build-env -f conda_recipe/environment.yaml
+          conda env update -n build-env -f conda_recipe/bioconda_utils-requirements.txt
         if: steps.cache.outputs.cache-hit != 'true'
 
       - shell: bash -el {0}
@@ -55,17 +56,23 @@ jobs:
           # conda list
           # conda config --show-sources
           # conda config --show
-          mamba config --set unsatisfiable_hints True
+          conda config --set always_yes yes
+          conda config --add channels defaults
+          conda config --add channels bioconda
+          conda config --add channels conda-forge
+          conda config --set channel_priority strict
+          conda config --set unsatisfiable_hints True
           mamba info
           mamba list
-          mamba config --show-sources
-          mamba config --show
+          conda config --show-sources
+          conda config --show
           printenv | sort
 
       - name: Run conda build
         shell: bash -el {0}
         run: |
           # mamba build conda_recipe
+          # conda mambabuild needs boa
           conda mambabuild conda_recipe
           # conda build conda_recipe
 
