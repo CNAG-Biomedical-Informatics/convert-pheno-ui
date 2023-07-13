@@ -6,8 +6,27 @@ jobs:
   build:
     strategy:
       matrix:
-        # os: ["ubuntu-latest", "macos-latest"]
-        os: ["ubuntu-latest"]
+        os: ["ubuntu-latest", "macos-latest"]
+        # os: ["ubuntu-latest"]
+        include:
+          - os : ubuntu-latest
+            bash: |
+              set -e
+              eval "$(conda shell.bash hook)"
+              conda activate build-env
+              docker pull quay.io/dpryan79/mulled_container:latest
+              export OSTYPE="linux-gnu"
+              export CI="true"
+              bioconda-utils build conda_recipe conda_recipe/config.yml --docker --mulled-test
+              docker rmi quay.io/dpryan79/mulled_container:latest
+          - os : macos-latest
+            bash: |
+              eval "$(conda shell.bash hook)"
+              conda activate build-env
+              export OSTYPE="darwin"
+              export CI="true"
+              export HOME=`pwd`
+              bioconda-utils build conda_recipe conda_recipe/config.yml
 
     runs-on: ${{ matrix.os }}
     continue-on-error: true
@@ -16,7 +35,6 @@ jobs:
 
       - uses: conda-incubator/setup-miniconda@v2
         with:
-          #mamba-version: "*"
           miniforge-variant: Mambaforge
           miniforge-version: 23.1.0-1
           channels: conda-forge,bioconda
@@ -71,17 +89,7 @@ jobs:
 
       - name: Run conda build
         shell: bash -el {0}
-        run: |
-          # conda mambabuild conda_recipe
-          # conda build conda_recipe
-          set -e
-          eval "$(conda shell.bash hook)"
-          conda activate build-env
-          docker pull quay.io/dpryan79/mulled_container:latest
-          export OSTYPE="linux-gnu"
-          export CI="true"
-          bioconda-utils build conda_recipe conda_recipe/config.yml --docker --mulled-test
-          docker rmi quay.io/dpryan79/mulled_container:latest
+        run: ${{ matrix.bash }}
 
       - name: Archive CPAN logs
         if: ${{ failure() }}
