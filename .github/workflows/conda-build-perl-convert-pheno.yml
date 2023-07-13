@@ -80,10 +80,8 @@ jobs:
           docker pull quay.io/dpryan79/mulled_container:latest
           export OSTYPE="linux-gnu"
           export CI="true"
-          bioconda-utils build conda_recipe conda_recipe/config.yml \
-            --docker --mulled-test \
+          bioconda-utils build conda_recipe conda_recipe/config.yml --docker --mulled-test
           docker rmi quay.io/dpryan79/mulled_container:latest
-          displayName: Test
 
       - name: Archive CPAN logs
         if: ${{ failure() }}
