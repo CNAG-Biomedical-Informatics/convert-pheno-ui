@@ -16,6 +16,8 @@ jobs:
       - uses: conda-incubator/setup-miniconda@v2
         with:
           #mamba-version: "*"
+          miniforge-variant: Mambaforge
+          miniforge-version: 23.1.0-1
           channels: conda-forge,bioconda
           activate-environment: build-env
           channel-priority: true
@@ -41,8 +43,8 @@ jobs:
 
       - name: Update environment
         run: |
-          conda install -n base conda-libmamba-solver
-          conda config --set solver libmamba
+          # conda install -n base conda-libmamba-solver
+          # conda config --set solver libmamba
           conda env update -n build-env -f conda_recipe/environment.yaml
         if: steps.cache.outputs.cache-hit != 'true'
 
