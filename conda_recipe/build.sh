@@ -25,14 +25,17 @@ install_deps() {
 
 if [[ "$(uname)" == Darwin ]]; then
     # potential fix for the compilation errors
-    conda install -c conda-forge perl'>=5.32.1,<5.33.0a0' -y
+    # conda install -c conda-forge perl'>=5.32.1,<5.33.0a0' -y
     conda install -c bioconda perl-test-leaktrace -y
     conda install -c bioconda perl-params-util -y
     conda install -c conda-forge perl-data-optlist -y
     conda install -c bioconda perl-sub-exporter -y
     conda install -c bioconda perl-mac-systemdirectory -y
+    #perl-mac-system directory needs perl 5.26.2
+
     conda install -c bioconda perl-file-homedir -y
-    conda install -v -c conda-forge perl-yaml-libyaml=0.85 -y
+    # conda install -v -c conda-forge perl-yaml-libyaml=0.85 -y
+    #perl-yaml-libyaml=0.85 needs perl 5.32.1
 fi
 
 cpanm File::ShareDir::Install
