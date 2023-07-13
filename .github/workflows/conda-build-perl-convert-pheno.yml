@@ -76,7 +76,7 @@ jobs:
           # conda build conda_recipe
           set -e
           eval "$(conda shell.bash hook)"
-          conda activate bioconda
+          conda activate build-env
           docker pull quay.io/dpryan79/mulled_container:latest
           export OSTYPE="linux-gnu"
           export CI="true"
