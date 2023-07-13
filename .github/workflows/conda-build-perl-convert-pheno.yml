@@ -71,10 +71,18 @@ jobs:
       - name: Run conda build
         shell: bash -el {0}
         run: |
-          # mamba build conda_recipe
-          # conda mambabuild needs boa
-          conda mambabuild conda_recipe
+          # conda mambabuild conda_recipe
           # conda build conda_recipe
+          set -e
+          eval "$(conda shell.bash hook)"
+          conda activate bioconda
+          docker pull quay.io/dpryan79/mulled_container:latest
+          export OSTYPE="linux-gnu"
+          export CI="true"
+          bioconda-utils build conda_recipe conda_recipe/config.yml \
+            --docker --mulled-test \
+          docker rmi quay.io/dpryan79/mulled_container:latest
+          displayName: Test
 
       - name: Archive CPAN logs
         if: ${{ failure() }}
