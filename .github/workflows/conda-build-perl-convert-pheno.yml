@@ -65,7 +65,8 @@ jobs:
       - name: Run conda build
         shell: bash -el {0}
         run: |
-          mamba build conda_recipe
+          # mamba build conda_recipe
+          conda mambabuild conda_recipe
           # conda build conda_recipe
 
       - name: Archive CPAN logs
