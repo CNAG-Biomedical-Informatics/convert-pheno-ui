@@ -18,9 +18,14 @@ mamba env update -n build-env -f conda_recipe/bioconda_utils-requirements.txt
 mamba install python=3.7
 ```
 
-## build package
+## build & test package in docker container
+```bash
+mamba activate build-env
+bioconda-utils build . ./config.yml --docker --mulled-test > ./build.docker.log 2>&1
+```
+
+## build package on local machine and test in docker container
 
 ```bash
 mamba activate build-env
-bioconda-utils build conda_recipe conda_recipe/config.yml --docker --mulled-test > conda_recipe/build.log 2>&1
-```
+bioconda-utils build . ./config.yml --mulled-test > ./build.local.log 2>&1
