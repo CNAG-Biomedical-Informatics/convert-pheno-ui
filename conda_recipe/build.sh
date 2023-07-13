@@ -25,7 +25,7 @@ install_deps() {
 
 if [[ "$(uname)" == Darwin ]]; then
     # potential fix for the compilation errors
-    conda install -c conda-forge perl='>=5.32.1,<5.33.0a0' -y
+    conda install -c conda-forge perl'>=5.32.1,<5.33.0a0' -y
     conda install -c bioconda perl-test-leaktrace -y
     conda install -c bioconda perl-params-util -y
     conda install -c conda-forge perl-data-optlist -y
