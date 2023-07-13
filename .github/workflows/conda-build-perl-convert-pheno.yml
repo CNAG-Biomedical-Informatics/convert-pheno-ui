@@ -21,7 +21,7 @@ jobs:
           channels: conda-forge,bioconda
           activate-environment: build-env
           channel-priority: true
-          use-only-tar-bz2: true
+          use-only-tar-bz2: false # might break caching
           auto-update-conda: true
 
       - name: Get Date
