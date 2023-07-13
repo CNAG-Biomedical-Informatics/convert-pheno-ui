@@ -42,9 +42,6 @@ jobs:
 
       - name: Update environment
         run: |
-          conda update --all
-          conda clean -a
-          conda search perl-yaml-libyaml
           conda install -n base conda-libmamba-solver
           conda config --set solver libmamba
           conda env update -n build-env -f conda_recipe/environment.yaml
