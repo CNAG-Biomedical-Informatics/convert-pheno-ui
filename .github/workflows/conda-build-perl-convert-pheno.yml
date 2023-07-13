@@ -50,17 +50,23 @@ jobs:
 
       - shell: bash -el {0}
         run: |
-          conda config --set unsatisfiable_hints True
-          conda info
-          conda list
-          conda config --show-sources
-          conda config --show
+          # conda config --set unsatisfiable_hints True
+          # conda info
+          # conda list
+          # conda config --show-sources
+          # conda config --show
+          mamba config --set unsatisfiable_hints True
+          mamba info
+          mamba list
+          mamba config --show-sources
+          mamba config --show
           printenv | sort
 
       - name: Run conda build
         shell: bash -el {0}
         run: |
-          conda build conda_recipe
+          mamba build conda_recipe
+          # conda build conda_recipe
 
       - name: Archive CPAN logs
         if: ${{ failure() }}
