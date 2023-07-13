@@ -21,6 +21,7 @@ jobs:
               docker rmi quay.io/dpryan79/mulled_container:latest
           - os : macos-latest
             bash: |
+              set -e
               eval "$(conda shell.bash hook)"
               conda activate build-env
               export OSTYPE="darwin"
