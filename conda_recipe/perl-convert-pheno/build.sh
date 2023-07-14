@@ -3,8 +3,8 @@
 # install dependencies not found in conda channels
 install_deps() {
     deps=(
-        "File::ShareDir::ProjectDistDir"
         "JSON::Validator"
+        "File::ShareDir::ProjectDistDir"
         "Moo"
         "Path::Tiny"
         "Test::Deep"
@@ -24,7 +24,7 @@ install_deps() {
 }
 
 if [[ "$(uname)" == Darwin ]]; then
-    export HOME=`pwd`
+    # export HOME=`pwd`
     # potential fix for the compilation errors
     # conda install -c conda-forge perl'>=5.32.1,<5.33.0a0' -y
     conda install -c bioconda perl-test-leaktrace -y
