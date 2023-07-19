@@ -14,10 +14,18 @@ env:
 jobs:
   check:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Check the health and certificate date for the specified URL(s)
-        uses: padurean/https-certificate-expiry-health-check-action@v1.0.0
-        with:
-          # Check the following URLs
-          url: https://convert-pheno.cnag.cat/
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install sslscan
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sslscan
+
+      - name: Verify SSL certificate
+        run: |
+          DOMAIN="convert-pheno.cnag.cat"
+          PORT="443"
+          sslscan --no-heartbleed --no-compression --no-fallback --no-renegotiation "$DOMAIN:$PORT"
