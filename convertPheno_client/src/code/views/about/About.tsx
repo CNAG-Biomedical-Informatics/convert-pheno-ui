@@ -36,7 +36,7 @@ const teamMembers = [
     role: "Convert-Pheno UI (this web application)",
   },
   {
-    name: "Sofia Chavez",
+    name: "Sofia Chaves",
     role: "Design and UX",
   },
 ];
