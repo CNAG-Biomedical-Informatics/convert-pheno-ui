@@ -11,7 +11,7 @@
 */
 
 import React, { useState } from "react";
-import { Button, Popover, Typography } from "@mui/material";
+import { Button, Popover, Tooltip, Typography } from "@mui/material";
 
 const UnstyledButton = ({ onClick, children }) => {
   return (
@@ -45,6 +45,18 @@ const getValue = (props) => {
   const { data, colDef } = props;
   const field = colDef.field;
 
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+  const [tooltipValue, setTooltipValue] = useState("");
+
+  const handleMouseOver = (value) => {
+    setTooltipValue(value);
+    setIsTooltipOpen(true);
+  };
+
+  const handleMouseOut = () => {
+    setIsTooltipOpen(false);
+  };
+
   return checkKeyExists(data[field], "count") ? (
     <a
       href={`#${location.pathname}`}
@@ -55,7 +67,18 @@ const getValue = (props) => {
         event.preventDefault();
       }}
     >
-      {data[field]["values"].join(", ")}
+      {data[field]["values"].map((value, index) => (
+        <Tooltip key={index} open={isTooltipOpen} title={tooltipValue}>
+          <span
+            onMouseOver={() => handleMouseOver(value)}
+            onMouseOut={handleMouseOut}
+          >
+            {value}
+            {index === data[field]["values"].length - 1 ? "" : ", "}
+          </span>
+        </Tooltip>
+      ))}
+      {/* {data[field]["values"].join(", ")} */}
     </a>
   ) : (
     data[field]
