@@ -50,6 +50,16 @@ const getValue = (props) => {
       ? data[field]["values"]
       : [];
 
+  const urls =
+    data[field] && Array.isArray(data[field]["urls"])
+      ? data[field]["urls"]
+      : [];
+
+  const ontology_ids =
+    data[field] && Array.isArray(data[field]["ontology_ids"])
+      ? data[field]["ontology_ids"]
+      : [];
+
   return checkKeyExists(data[field], "count") ? (
     <a
       href={`#${location.pathname}`}
@@ -61,7 +71,12 @@ const getValue = (props) => {
       }}
     >
       {values.map((value, index) => (
-        <ValueWithTooltip key={index} value={value} />
+        <ValueWithTooltip
+          key={index}
+          value={value}
+          ontology_id={ontology_ids[index]}
+          url={urls[index]}
+        />
       ))}
     </a>
   ) : (
@@ -69,7 +84,7 @@ const getValue = (props) => {
   );
 };
 
-const ValueWithTooltip = ({ value }) => {
+const ValueWithTooltip = ({ value, ontology_id, url }) => {
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
   const tooltipTimeout = useRef({ current: null });
 
@@ -86,7 +101,7 @@ const ValueWithTooltip = ({ value }) => {
 
   const handleLinkClick = () => {
     clearTimeout(tooltipTimeout.current);
-    window.open(`https://google.com`, "_blank");
+    window.open(url, "_blank");
   };
 
   return (
@@ -96,12 +111,12 @@ const ValueWithTooltip = ({ value }) => {
         <span>
           Click to open{" "}
           <a
-            href={`https://google.com`}
+            href={url}
             target="_blank"
             rel="noopener noreferrer"
             onClick={handleLinkClick}
           >
-            {value} link
+            {ontology_id}
           </a>
         </span>
       }

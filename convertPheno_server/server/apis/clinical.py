@@ -170,6 +170,26 @@ def recursive_search(dictionary, key):
     return None
 
 
+def generate_url(ontology_id):
+    if (
+        ontology_id is not None
+        and "NCIT" in ontology_id
+        and ontology_id != "NCIT:NA0000"
+    ):
+        ont_query = ontology_id.split(":")[1]
+
+        # TODO
+        # The NCIT base url should be in a config file
+
+        ncit_base = "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp"
+        ncit_query = f"?dictionary=NCI_Thesaurus&code={ont_query}"
+        ncit_url = f"{ncit_base}{ncit_query}"
+
+        return ncit_url
+
+    return "NA"
+
+
 def parse_meta_info(meta, field):
     """
     Parse the meta info from the json array
@@ -177,14 +197,22 @@ def parse_meta_info(meta, field):
     data = []
     nested_info = ["value", "status"]
     values = []
+    ontology_ids = []
+    urls = []
     for meta_data in meta:
         meta_row = {}
         for key in meta_data:
             if isinstance(meta_data[key], dict):
                 value = recursive_search(meta_data[key], "label")
+                ontology_id = recursive_search(meta_data[key], "id")
+                ncit_url = generate_url(ontology_id)
+
                 meta_row[key] = value
                 if key == field[0] or key in field[0]:
                     values.append(value)
+                    ontology_ids.append(ontology_id)
+                    urls.append(ncit_url)
+
                 for info in nested_info:
                     nested_info_val = recursive_search(meta_data[key], info)
                     if nested_info_val is not None:
@@ -192,7 +220,7 @@ def parse_meta_info(meta, field):
             else:
                 meta_row[key] = meta_data[key]
         data.append(meta_row)
-    return data, values
+    return data, values, ontology_ids, urls
 
 
 def catch_errors(func):
@@ -231,8 +259,14 @@ def get_basic_row(row, key, selected_fields):
         row_data[key] = row[key]
         return row_data
 
-    data, values = parse_meta_info(row[key], selected_fields[key])
-    row_data[key] = {"data": data, "count": len(row[key]), "values": values}
+    data, values, ontology_ids, urls = parse_meta_info(row[key], selected_fields[key])
+    row_data[key] = {
+        "data": data,
+        "count": len(row[key]),
+        "values": values,
+        "ontology_ids": ontology_ids,
+        "urls": urls,
+    }
     return row_data
 
 
@@ -559,6 +593,7 @@ class ClinicalDataView(Resource):
             "shownColumns": selected_cols,
             "nodeToSelected": node_to_selected,
         }
+        # print(response)
         return make_response(response)
 
 
