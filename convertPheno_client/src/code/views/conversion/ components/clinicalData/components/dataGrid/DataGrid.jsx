@@ -122,27 +122,6 @@ export default function DataGrid(props) {
     return false;
   };
 
-  const getValue = (props) => {
-    const { data, colDef } = props;
-    const field = colDef.field;
-
-    return checkKeyExists(data[field], "count") ? (
-      <a
-        href={`#${location.pathname}`}
-        onClick={(event) => {
-          event.preventDefault();
-        }}
-        onContextMenu={(event) => {
-          event.preventDefault();
-        }}
-      >
-        {data[field]["values"].join(", ")}
-      </a>
-    ) : (
-      data[field]
-    );
-  };
-
   const getDialogTableRows = (data) => {
     const { id, field } = clickedCellInfo;
 
