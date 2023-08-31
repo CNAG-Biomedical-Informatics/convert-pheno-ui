@@ -45,16 +45,19 @@ const getValue = (props) => {
   const { data, colDef } = props;
   const field = colDef.field;
 
-  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+  // const [isTooltipOpen, setIsTooltipOpen] = useState(false);
   const [tooltipValue, setTooltipValue] = useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleMouseOver = (value) => {
+  const handleMouseOver = (event, value) => {
     setTooltipValue(value);
-    setIsTooltipOpen(true);
+    console.log(event.currentTarget);
+    setAnchorEl(event.currentTarget);
   };
 
   const handleMouseOut = () => {
-    setIsTooltipOpen(false);
+    setTooltipValue("");
+    setAnchorEl(null);
   };
 
   return checkKeyExists(data[field], "count") ? (
@@ -68,20 +71,55 @@ const getValue = (props) => {
       }}
     >
       {data[field]["values"].map((value, index) => (
-        <Tooltip key={index} open={isTooltipOpen} title={tooltipValue}>
-          <span
-            onMouseOver={() => handleMouseOver(value)}
-            onMouseOut={handleMouseOut}
-          >
-            {value}
-            {index === data[field]["values"].length - 1 ? "" : ", "}
-          </span>
-        </Tooltip>
+        <ValueWithTooltip key={index} value={value} />
+        // <Tooltip key={index} open={isTooltipOpen} title={tooltipValue}>
+        // <span
+        //   onMouseOver={(event) => handleMouseOver(event, value)}
+        //   onMouseOut={handleMouseOut}
+        // >
+        //   {value}
+        //   {index === data[field]["values"].length - 1 ? "" : ", "}
+        // </span>
+        // </Tooltip>
       ))}
+
+      {/* <Tooltip
+        open={tooltipValue !== ""}
+        title={tooltipValue}
+        anchorEl={anchorEl}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        transformOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <span style={{ display: "none" }}>Hidden span for the Tooltip</span>
+      </Tooltip> */}
       {/* {data[field]["values"].join(", ")} */}
     </a>
   ) : (
     data[field]
+  );
+};
+
+const ValueWithTooltip = ({ value }) => {
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+
+  const handleMouseOver = () => {
+    setIsTooltipOpen(true);
+  };
+
+  const handleMouseOut = () => {
+    setIsTooltipOpen(false);
+  };
+
+  return (
+    <Tooltip open={isTooltipOpen} title={value} placement="bottom">
+      <span
+        onMouseOver={handleMouseOver}
+        onMouseOut={handleMouseOut}
+        style={{ marginRight: "5px", cursor: "pointer" }}
+      >
+        {value}
+      </span>
+    </Tooltip>
   );
 };
 
