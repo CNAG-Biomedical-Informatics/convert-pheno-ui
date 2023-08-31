@@ -16,5 +16,17 @@
     "**/.git/objects/**": true,
     "**/.git/subtree-cache/**": true,
     "**/node_modules/*/**": true
-  }
+  },
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "10.10.0.3",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "CP",
+      "password": "postgres",
+      "database": "postgres",
+      "username": "postgres"
+    }
+  ]
 }
