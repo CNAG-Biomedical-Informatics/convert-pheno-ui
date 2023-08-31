@@ -10,7 +10,7 @@
   License: GPL-3.0 license
 */
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Button, Popover, Tooltip, Typography } from "@mui/material";
 
 const UnstyledButton = ({ onClick, children }) => {
@@ -45,20 +45,10 @@ const getValue = (props) => {
   const { data, colDef } = props;
   const field = colDef.field;
 
-  // const [isTooltipOpen, setIsTooltipOpen] = useState(false);
-  const [tooltipValue, setTooltipValue] = useState("");
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleMouseOver = (event, value) => {
-    setTooltipValue(value);
-    console.log(event.currentTarget);
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMouseOut = () => {
-    setTooltipValue("");
-    setAnchorEl(null);
-  };
+  const values =
+    data[field] && Array.isArray(data[field]["values"])
+      ? data[field]["values"]
+      : [];
 
   return checkKeyExists(data[field], "count") ? (
     <a
@@ -70,29 +60,9 @@ const getValue = (props) => {
         event.preventDefault();
       }}
     >
-      {data[field]["values"].map((value, index) => (
+      {values.map((value, index) => (
         <ValueWithTooltip key={index} value={value} />
-        // <Tooltip key={index} open={isTooltipOpen} title={tooltipValue}>
-        // <span
-        //   onMouseOver={(event) => handleMouseOver(event, value)}
-        //   onMouseOut={handleMouseOut}
-        // >
-        //   {value}
-        //   {index === data[field]["values"].length - 1 ? "" : ", "}
-        // </span>
-        // </Tooltip>
       ))}
-
-      {/* <Tooltip
-        open={tooltipValue !== ""}
-        title={tooltipValue}
-        anchorEl={anchorEl}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        transformOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <span style={{ display: "none" }}>Hidden span for the Tooltip</span>
-      </Tooltip> */}
-      {/* {data[field]["values"].join(", ")} */}
     </a>
   ) : (
     data[field]
@@ -101,17 +71,42 @@ const getValue = (props) => {
 
 const ValueWithTooltip = ({ value }) => {
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+  const tooltipTimeout = useRef({ current: null });
 
   const handleMouseOver = () => {
     setIsTooltipOpen(true);
+    clearTimeout(tooltipTimeout.current);
   };
 
   const handleMouseOut = () => {
-    setIsTooltipOpen(false);
+    tooltipTimeout.current = setTimeout(() => {
+      setIsTooltipOpen(false);
+    }, 1000);
+  };
+
+  const handleLinkClick = () => {
+    clearTimeout(tooltipTimeout.current);
+    window.open(`https://google.com`, "_blank");
   };
 
   return (
-    <Tooltip open={isTooltipOpen} title={value} placement="bottom">
+    <Tooltip
+      open={isTooltipOpen}
+      title={
+        <span>
+          Click to open{" "}
+          <a
+            href={`https://google.com`}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={handleLinkClick}
+          >
+            {value} link
+          </a>
+        </span>
+      }
+      placement="bottom"
+    >
       <span
         onMouseOver={handleMouseOver}
         onMouseOut={handleMouseOut}
