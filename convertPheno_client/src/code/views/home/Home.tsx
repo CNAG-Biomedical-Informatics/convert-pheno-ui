@@ -5,7 +5,7 @@
 
   Last Modified: Apr/28/2023
 
-  Copyright (C) 2022-2023 Ivo Christopher Leist - CNAG (Ivo.leist@cnag.crg.eu)
+  Copyright (C) 2022-2023 Ivo Christopher Leist - CNAG (Ivo.leist@cnag.eu)
 
   License: GPL-3.0 license
 */
@@ -66,11 +66,11 @@ const InfoBox = ({ label, value }) => {
     >
       <Typography
         variant="body2"
-        style={{ fontWeight: 'bold', fontSize: '16px' }}
+        style={{ fontWeight: "bold", fontSize: "16px" }}
       >
         {label}:
       </Typography>
-      <Typography variant="body2" style={{ fontSize: '16px' }}>
+      <Typography variant="body2" style={{ fontSize: "16px" }}>
         {value}
       </Typography>
     </Box>
@@ -131,20 +131,15 @@ export default function Home() {
                 variant="contained"
                 sx={buttonStyle}
                 onClick={() => auth.user.keycloak.logout()}
-                >
+              >
                 <StyledButtonTypography text="Logout" />
               </Button>
             </>
-            ):(
+          ) : (
             <>
-              <StyledTypography
-                text="To log in, use the following credentials:"
-              />
+              <StyledTypography text="To log in, use the following credentials:" />
               <UserInfo />
-              <Button
-                variant="contained"
-                sx={buttonStyle}
-              >
+              <Button variant="contained" sx={buttonStyle}>
                 <NavLink
                   to={{ pathname: "/conversion/" }}
                   style={{ textDecoration: "none" }}
@@ -153,8 +148,7 @@ export default function Home() {
                 </NavLink>
               </Button>
             </>
-            )
-          }
+          )}
         </Box>
       </Grid>
     </Grid>

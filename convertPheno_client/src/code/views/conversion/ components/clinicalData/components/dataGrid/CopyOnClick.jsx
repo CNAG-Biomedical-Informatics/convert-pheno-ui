@@ -5,13 +5,14 @@
 
   Last Modified: Apr/28/2023
 
-  Copyright (C) 2022-2023 Ivo Christopher Leist - CNAG (Ivo.leist@cnag.crg.eu)
+  Copyright (C) 2022-2023 Ivo Christopher Leist - CNAG (Ivo.leist@cnag.eu)
 
   License: GPL-3.0 license
 */
 
 import React, { useState, useRef } from "react";
 import { Button, Popover, Tooltip, Typography } from "@mui/material";
+import ValueWithTooltip from "./ValueWithTooltip";
 
 const UnstyledButton = ({ onClick, children }) => {
   return (
@@ -81,62 +82,6 @@ const getValue = (props) => {
       url={urls[0]}
     />
     // data[field]
-  );
-};
-
-const ValueWithTooltip = ({ value, ontology_id, url }) => {
-  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
-  const tooltipTimeout = useRef({ current: null });
-
-  console.log("value", value);
-  console.log("ontology_id", ontology_id);
-  console.log("url", url);
-
-  const handleMouseOver = (value) => {
-    if (value === "NA") {
-      return;
-    }
-    setIsTooltipOpen(true);
-    clearTimeout(tooltipTimeout.current);
-  };
-
-  const handleMouseOut = () => {
-    tooltipTimeout.current = setTimeout(() => {
-      setIsTooltipOpen(false);
-    }, 1000);
-  };
-
-  const handleLinkClick = () => {
-    clearTimeout(tooltipTimeout.current);
-    window.open(url, "_blank");
-  };
-
-  return (
-    <Tooltip
-      open={isTooltipOpen}
-      title={
-        <span>
-          Click to open{" "}
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={handleLinkClick}
-          >
-            {ontology_id}
-          </a>
-        </span>
-      }
-      placement="bottom"
-    >
-      <span
-        onMouseOver={() => handleMouseOver(value)}
-        onMouseOut={handleMouseOut}
-        style={{ marginRight: "5px", cursor: "pointer" }}
-      >
-        {value}
-      </span>
-    </Tooltip>
   );
 };
 
