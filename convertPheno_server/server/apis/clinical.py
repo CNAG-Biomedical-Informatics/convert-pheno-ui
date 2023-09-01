@@ -480,7 +480,9 @@ class ClinicalDataView(Resource):
                 "id",
                 "label",
             }:
-                child = find_node_by_node_name(top_level_node, "id")
+                # below commented out because the child variable
+                # is assigned but never used
+                # child = find_node_by_node_name(top_level_node, "id")
                 interesting_tree_data.append(new_node)
                 if col_is_selected:
                     selected_fields[field_of_interest] = ["id", "label"]
