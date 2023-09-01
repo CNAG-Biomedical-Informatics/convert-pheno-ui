@@ -23,7 +23,6 @@ import { useTheme } from "@mui/material/styles";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
-import { useLocation } from "react-router-dom";
 
 import { ErrorBoundary } from "react-error-boundary";
 import TableChartIcon from "@mui/icons-material/TableChart";
@@ -53,8 +52,6 @@ export default function DataGrid(props) {
     colTreeNodeSelected,
     tabValue,
   } = props;
-
-  const location = useLocation();
 
   const defaultColDef = {
     editable: false,
@@ -190,14 +187,7 @@ export default function DataGrid(props) {
         cellRenderer: CopyOnClick,
       });
     });
-    // for (const key in data) {
-    //   cols.push({
-    //     field: key,
-    //     headerName: key,
-    //     flex: 1,
-    //     cellRenderer: CopyOnClick,
-    //   });
-    // }
+
     cols.sort(
       (a, b) => colHeaders.indexOf(a.field) - colHeaders.indexOf(b.field)
     );
