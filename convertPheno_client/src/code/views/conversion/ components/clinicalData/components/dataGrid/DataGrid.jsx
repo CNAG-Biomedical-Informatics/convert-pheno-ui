@@ -31,6 +31,7 @@ import ColumnsTreeViewModal from "../columnsTreeViewModal/ColumnsTreeViewModal";
 
 import auth from "../../../../../../Auth";
 import CopyOnClick from "./CopyOnClick";
+import ValueWithTooltip from "./ValueWithTooltip";
 
 const ErrorFallback = ({ error, resetErrorBoundary }) => (
   <div role="alert">
@@ -146,7 +147,9 @@ export default function DataGrid(props) {
     if (value === undefined || value === []) {
       return "";
     }
-    return value;
+
+    return <ValueWithTooltip value={value} />;
+    // return value;
   };
 
   const getDialogTableColumns = (data) => {
