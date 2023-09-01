@@ -227,6 +227,16 @@ def generate_url(ontology_id):
         snomed_url = f"{snomed_base}{snomed_query}{snomed_suffix}"
         return snomed_url
 
+    # TODO
+    # OMOP-CDM to BFF/PXF
+    # Treatments rendering is not working as expected
+
+    # + clicking on it returns:
+    # Something went wrong:
+    # data[field].data is undefined
+
+    # same for PhenotypicFeatures
+
     if "RxNorm" in ontology_id:
         rxnorm_base = "https://mor.nlm.nih.gov/RxNav/"
         rxnorm_url = f"{rxnorm_base}search?searchBy=RXCUI&searchTerm={ont_query}"
