@@ -199,6 +199,16 @@ def parse_meta_info(meta, field):
     values = []
     ontology_ids = []
     urls = []
+
+    ontology_ids_mapping = {}
+    urls_mapping = {}
+
+    # TODO
+    # create an ontology ids mapping dictionary
+
+    # so it not only gets the ontology ids for the basic table
+    # but also for the pop-over tables
+
     for meta_data in meta:
         meta_row = {}
         for key in meta_data:
@@ -212,6 +222,13 @@ def parse_meta_info(meta, field):
                     values.append(value)
                     ontology_ids.append(ontology_id)
                     urls.append(ncit_url)
+
+                if key in ontology_ids_mapping:
+                    ontology_ids_mapping[key].append(ontology_id)
+                    urls_mapping[key].append(ncit_url)
+                else:
+                    ontology_ids_mapping[key] = [ontology_id]
+                    urls_mapping[key] = [ncit_url]
 
                 for info in nested_info:
                     nested_info_val = recursive_search(meta_data[key], info)
