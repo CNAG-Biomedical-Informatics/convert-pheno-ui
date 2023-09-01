@@ -171,21 +171,41 @@ def recursive_search(dictionary, key):
 
 
 def generate_url(ontology_id):
-    if (
-        ontology_id is not None
-        and "NCIT" in ontology_id
-        and ontology_id != "NCIT:NA0000"
-    ):
-        ont_query = ontology_id.split(":")[1]
+
+    if ontology_id is None:
+        return "NA"
+
+    ont_query = ontology_id.split(":")[1]
+    if "NCIT" in ontology_id and ontology_id != "NCIT:NA0000":
 
         # TODO
         # The NCIT base url should be in a config file
-
         ncit_base = "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp"
         ncit_query = f"?dictionary=NCI_Thesaurus&code={ont_query}"
         ncit_url = f"{ncit_base}{ncit_query}"
-
         return ncit_url
+
+    if "ICD10" in ontology_id:
+        icd10_url = f"https://icd.who.int/browse10/2019/en#/{ont_query}"
+        return icd10_url
+
+    if "LOINC" in ontology_id:
+        pass
+
+    # if (
+    #     ontology_id is not None
+    #     and "NCIT" in ontology_id
+    #     and ontology_id != "NCIT:NA0000"
+    # ):
+    #     ont_query = ontology_id.split(":")[1]
+
+    #     # TODO
+    #     # The NCIT base url should be in a config file
+    #     ncit_base = "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp"
+    #     ncit_query = f"?dictionary=NCI_Thesaurus&code={ont_query}"
+    #     ncit_url = f"{ncit_base}{ncit_query}"
+
+    #     return ncit_url
 
     return "NA"
 
@@ -237,7 +257,7 @@ def parse_meta_info(meta, field):
             else:
                 meta_row[key] = meta_data[key]
         data.append(meta_row)
-    return data, values, ontology_ids, urls
+    return data, values, ontology_ids, urls, ontology_ids_mapping, urls_mapping
 
 
 def catch_errors(func):
@@ -282,13 +302,18 @@ def get_basic_row(row, key, selected_fields):
         row_data[key] = row[key]
         return row_data
 
-    data, values, ontology_ids, urls = parse_meta_info(row[key], selected_fields[key])
+    data, values, ontology_ids, urls, onts_mapping, urls_mapping = parse_meta_info(
+        row[key], selected_fields[key]
+    )
+
     row_data[key] = {
         "data": data,
         "count": len(row[key]),
         "values": values,
         "ontology_ids": ontology_ids,
         "urls": urls,
+        "ontology_ids_mapping": onts_mapping,
+        "urls_mapping": urls_mapping,
     }
     return row_data
 

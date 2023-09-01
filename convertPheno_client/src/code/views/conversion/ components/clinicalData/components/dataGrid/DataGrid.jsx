@@ -135,46 +135,40 @@ export default function DataGrid(props) {
         id: parseInt(idx) + 1,
       };
       for (const [key, value] of Object.entries(row)) {
-        rowData[key] = value;
+        let ontology_ids = cellData.ontology_ids_mapping[key];
+        let urls = cellData.urls_mapping[key];
+
+        if (ontology_ids === undefined) {
+          ontology_ids = [];
+          urls = [];
+        }
+
+        rowData[key] =
+          ontology_ids.length > 0 ? (
+            <ValueWithTooltip
+              value={value}
+              ontology_id={ontology_ids[idx]}
+              url={urls[idx]}
+            />
+          ) : (
+            value
+          );
       }
       rows.push(rowData);
     }
+
+    console.log("rows", rows);
     return rows;
   };
 
-  const getFieldAndToolTipValues = (data, field) => {
-    console.log("data", data);
-    console.log("field", field);
-
-    return {
-      values: data[field]?.values || [],
-      urls: data[field]?.urls || [],
-      ontology_ids: data[field]?.ontology_ids || [],
-    };
-  };
-
   const getDialogTableValue = (params) => {
-    const { value, data, colDef } = params;
-    const field = colDef.field;
+    const { value, colDef } = params;
 
     console.log("params", params);
     if (value === undefined || value === []) {
       return "";
     }
-
-    const { urls, ontology_ids } = getFieldAndToolTipValues(data, field);
-
-    console.log("urls", urls);
-    console.log("ontology_ids", ontology_ids);
-
-    return (
-      <ValueWithTooltip
-        value={value}
-        ontology_id={ontology_ids[0]}
-        url={urls[0]}
-      />
-    );
-    // return value;
+    return value;
   };
 
   const getDialogTableColumns = (data) => {
@@ -301,6 +295,18 @@ export default function DataGrid(props) {
     setOpenTreeView(false);
   };
 
+  // const getOntologyMappings = (data) => {
+  //   console.log("getOntologyMappings data", data);
+
+  //   const ontologyMapping = {};
+  //   for (const [key, value] of Object.entries(data)) {
+  //     if (key === "exposures") {
+  //       ontologyMapping[key] = value.ontology_ids_mapping;
+  //     }
+  //   }
+  //   return ontologyMapping;
+  // };
+
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <ColumnsTreeViewModal
@@ -327,6 +333,7 @@ export default function DataGrid(props) {
             getRows(jsonData),
             getColumns(colHeaders),
             handleCellClick
+            // getOntologyMappings(jsonData)
           )}
         </Grid>
         <Dialog
