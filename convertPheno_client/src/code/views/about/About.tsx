@@ -5,7 +5,7 @@
 
   Last Modified: Jun/21/2023
 
-  Copyright (C) 2022-2023 Ivo Christopher Leist - CNAG (Ivo.leist@cnag.crg.eu)
+  Copyright (C) 2022-2023 Ivo Christopher Leist - CNAG (Ivo.leist@cnag.eu)
 
   License: GPL-3.0 license
 */
