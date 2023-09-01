@@ -222,10 +222,15 @@ def generate_url(ontology_id):
 
     if "SNOMED" in ontology_id:
         snomed_base = "https://browser.ihtsdotools.org/"
-        snomed_query = "?perspective=full&conceptId1={ont_query}"
+        snomed_query = f"?perspective=full&conceptId1={ont_query}"
         snomed_suffix = "&edition=MAIN&release=&languages=en"
-        snomedct_url = f"{snomed_base}{snomed_query}{snomed_suffix}"
-        return snomedct_url
+        snomed_url = f"{snomed_base}{snomed_query}{snomed_suffix}"
+        return snomed_url
+
+    if "RxNorm" in ontology_id:
+        rxnorm_base = "https://mor.nlm.nih.gov/RxNav/"
+        rxnorm_url = f"{rxnorm_base}search?searchBy=RXCUI&searchTerm={ont_query}"
+        return rxnorm_url
 
     return "NA"
 
