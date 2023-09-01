@@ -242,7 +242,13 @@ def get_basic_row(row, key, selected_fields):
 
     contains_dict = any(isinstance(field, dict) for field in selected_fields[key])
     if not contains_dict and set(selected_fields[key]) == {"id", "label"}:
-        row_data[key] = f"{row[key]['label']} ({row[key]['id']})"
+        row_data[key] = {
+            "data": row[key]["label"],
+            "count": 1,
+            "values": [row[key]["label"]],
+            "ontology_ids": [row[key]["id"]],
+            "urls": [generate_url(row[key]["id"])],
+        }
         return row_data
 
     if isinstance(row[key], dict):

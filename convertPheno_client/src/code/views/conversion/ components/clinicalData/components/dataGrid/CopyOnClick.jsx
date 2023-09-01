@@ -75,13 +75,22 @@ const getValue = (props) => {
       ))}
     </a>
   ) : (
-    data[field]
+    <ValueWithTooltip
+      value={data[field]}
+      ontology_id={ontology_ids[0]}
+      url={urls[0]}
+    />
+    // data[field]
   );
 };
 
 const ValueWithTooltip = ({ value, ontology_id, url }) => {
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
   const tooltipTimeout = useRef({ current: null });
+
+  console.log("value", value);
+  console.log("ontology_id", ontology_id);
+  console.log("url", url);
 
   const handleMouseOver = (value) => {
     if (value === "NA") {
@@ -181,10 +190,8 @@ export default function CopyOnClick(props) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
-    let newValue = value;
-    if (typeof value === "object") {
-      newValue = data[colDef.field]["values"].join(", ");
-    }
+    const newValue =
+      typeof value === "object" ? data[colDef.field].values.join(", ") : value;
     copyOnClick(newValue);
     setAnchorEl(event.currentTarget);
     setTimeout(() => {
