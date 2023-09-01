@@ -12,6 +12,10 @@
 
 from copy import deepcopy
 
+import urllib.parse
+import base64
+import requests
+
 from flask import request, make_response
 from flask_restx import Resource, Namespace, fields
 from flask_cors import cross_origin
@@ -170,33 +174,6 @@ def recursive_search(dictionary, key):
     return None
 
 
-def string_to_hash(string):
-    hash_val = 0
-
-    for char in string:
-        char_code = ord(char)
-        hash_val = ((hash_val << 5) - hash_val) + char_code
-        # hash_val = hash_val & hash_val
-
-    return hash_val
-
-
-# function stringToHash(string) {
-
-#     var hash = 0;
-
-#     if (string.length == 0) return hash;
-
-#     for (i = 0; i < string.length; i++) {
-#         char = string.charCodeAt(i);
-#         hash = ((hash << 5) - hash) + char;
-#         hash = hash & hash;
-#     }
-
-#     return hash;
-# }
-
-
 def generate_url(ontology_id):
 
     if ontology_id is None:
@@ -221,43 +198,26 @@ def generate_url(ontology_id):
         return loinc_url
 
     if "OPCS4" in ontology_id:
+        book_version = "OPCS-4.10"
 
-        # TODO
-        # not so trivial to get the correct url
-
-        branch_str = ""
-        current_book_version = "OPCS-4.10"
-        search_text = ont_query
-
-        # DO NOT remove any spaces from the search_json_str below
         search_json_str = (
-            f'{{      "branches": [{branch_str}]  , '
-            f'"releaseVersions": [       "{current_book_version}"'
-            f'     ]  ,  "searchContent": "{search_text}"  }}'
+            f'{{"branches": [],'
+            f'"releaseVersions": ["{book_version}"], '
+            f'"searchContent": "{ont_query}"}}'
         )
-        import urllib.parse
-        import base64
-        import requests
-
         encoded_url = urllib.parse.quote(search_json_str)
         search_arg_base64 = base64.b64encode(encoded_url.encode()).decode()
 
-        hashed_string = string_to_hash(search_arg_base64)
-
-        search_url = (
-            f"https://classbrowser.nhs.uk/bookdoc/search/OPCS-4.10/{hashed_string}/"
-        )
-
-        # get request to the search url with the request headers searchArg-base64
         response = requests.get(
-            search_url, headers={"searchArg-base64": search_arg_base64}
+            f"https://classbrowser.nhs.uk/bookdoc/search/{book_version}",
+            headers={"searchArg-base64": search_arg_base64},
         )
         response_json = response.json()
         print(response_json)
 
-        opcs4_url = ""
-        # opcs4_url =
-        # f"https://classbrowser.nhs.uk/#/book/OPCS-4.10/volume1-p2-4.html+{ont_query}"
+        opcs_id = response_json["children"][0]["children"][0]["children"][0]["id"]
+        url_suffix = opcs_id.replace("#", "+")
+        opcs4_url = f"https://classbrowser.nhs.uk/#/book/{url_suffix}"
         return opcs4_url
 
     return "NA"
