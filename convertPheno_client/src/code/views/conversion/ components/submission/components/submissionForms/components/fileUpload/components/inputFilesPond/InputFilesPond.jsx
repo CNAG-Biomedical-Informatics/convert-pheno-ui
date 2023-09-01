@@ -5,15 +5,14 @@
 
   Last Modified: Apr/28/2023
 
-  Copyright (C) 2022-2023 Ivo Christopher Leist - CNAG (Ivo.leist@cnag.crg.eu)
+  Copyright (C) 2022-2023 Ivo Christopher Leist - CNAG (Ivo.leist@cnag.eu)
 
   License: GPL-3.0 license
 */
 
 import React, { useState } from "react";
 import auth from "../../../../../../../../../../Auth";
-import
-{
+import {
   Button,
   Grid,
   Typography,
@@ -28,59 +27,55 @@ import
 import InfoIcon from "@mui/icons-material/Info";
 import { FilePond, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
-import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
-import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
+import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 
-registerPlugin( FilePondPluginFileValidateType );
-registerPlugin( FilePondPluginFileValidateSize );
+registerPlugin(FilePondPluginFileValidateType);
+registerPlugin(FilePondPluginFileValidateSize);
 
 const api_endpoint =
   process.env.NODE_ENV === "production"
     ? window.REACT_APP_API_URL
     : import.meta.env.VITE_API_URL;
 
-function CustomAlert ( props )
-{
+function CustomAlert(props) {
   const { info } = props;
 
-  const [ open, setOpen ] = useState( false );
+  const [open, setOpen] = useState(false);
 
-  const handleClick = () =>
-  {
-    setOpen( true );
+  const handleClick = () => {
+    setOpen(true);
   };
 
-  const handleClose = () =>
-  {
-    setOpen( false );
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
     <div>
       <Tooltip title="">
-        <IconButton onClick={ handleClick }>
+        <IconButton onClick={handleClick}>
           <InfoIcon />
         </IconButton>
       </Tooltip>
-      <Dialog open={ open } onClose={ handleClose }>
-        <DialogTitle>{ "Info" }</DialogTitle>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>{"Info"}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            { info.map( ( item ) => (
-              <Typography key={ `${ item }-text` }>{ item }</Typography>
-            ) ) }
+            {info.map((item) => (
+              <Typography key={`${item}-text`}>{item}</Typography>
+            ))}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={ handleClose }>OK</Button>
+          <Button onClick={handleClose}>OK</Button>
         </DialogActions>
       </Dialog>
     </div>
   );
 }
 
-export default function InputFilesPond ( props )
-{
+export default function InputFilesPond(props) {
   const {
     setUploadedFiles,
     setFilesUploadFinished,
@@ -88,10 +83,9 @@ export default function InputFilesPond ( props )
     inputFormat,
   } = props;
 
-  const [ files, setFiles ] = useState( [] );
+  const [files, setFiles] = useState([]);
 
-  const handleFileUploadFinished = ( _, file ) =>
-  {
+  const handleFileUploadFinished = (_, file) => {
     /*
     handleFileUploadFinished function
 
@@ -105,45 +99,40 @@ export default function InputFilesPond ( props )
         Purpose:
         - To update the state uploadedFiles with the file that was uploaded
     */
-    const returnedFileName = JSON.parse( file.serverId ).tempFilename;
+    const returnedFileName = JSON.parse(file.serverId).tempFilename;
 
     const fileName = file.filename;
-    const extension = fileName.split( "." ).pop();
+    const extension = fileName.split(".").pop();
 
     let fileType = "input-file";
-    if ( fileName.includes( "dictionary" ) && extension === "csv" )
-    {
+    if (fileName.includes("dictionary") && extension === "csv") {
       fileType = "redcap-dictionary";
     } else if (
-      fileName.includes( "mapping" ) &&
-      [ "yaml", "yml", "json" ].includes( extension )
-    )
-    {
+      fileName.includes("mapping") &&
+      ["yaml", "yml", "json"].includes(extension)
+    ) {
       fileType = "mapping-file";
     }
 
-    setUploadedFiles( ( prev ) =>
-    {
+    setUploadedFiles((prev) => {
       return {
         ...prev,
-        [ fileName ]: [ fileType, returnedFileName ],
+        [fileName]: [fileType, returnedFileName],
       };
-    } );
+    });
   };
 
-  const handleAllFilesUploadFinished = () =>
-  {
-    setFilesUploadFinished( true );
+  const handleAllFilesUploadFinished = () => {
+    setFilesUploadFinished(true);
   };
 
-  const getFileUploadInfo = ( inputFormat ) =>
-  {
+  const getFileUploadInfo = (inputFormat) => {
     // better get that config from a config file
     const fileTypeToExpected = {
       redcap: {
         fileCount: 3,
-        files: [ "Input", "Dictionary", "Mapping" ],
-        fileExtensions: [ "csv", "tsv", "txt" ],
+        files: ["Input", "Dictionary", "Mapping"],
+        fileExtensions: ["csv", "tsv", "txt"],
         info: [
           "The input-file & dictionary can be a .csv, .tsv or .txt",
           "Make sure that the input and the dictionary have the same separator",
@@ -152,32 +141,32 @@ export default function InputFilesPond ( props )
       },
       bff: {
         fileCount: 1,
-        files: [ "Input-file" ],
-        fileExtensions: [ "json" ],
-        info: [ "input has to be a .json" ],
+        files: ["Input-file"],
+        fileExtensions: ["json"],
+        info: ["input has to be a .json"],
       },
       omop: {
         fileCount: 1,
-        files: [ "Input-file" ],
-        fileExtensions: [ "sql", "sql.gz" ],
-        info: [ "input has to be a .sql or sql.gz" ],
+        files: ["Input-file"],
+        fileExtensions: ["sql", "sql.gz"],
+        info: ["input has to be a .sql or sql.gz"],
       },
     };
     fileTypeToExpected.cdisc = fileTypeToExpected.redcap;
     fileTypeToExpected.pxf = fileTypeToExpected.bff;
 
-    const text = [ fileTypeToExpected[ inputFormat ].info.join( ", " ) ];
+    const text = [fileTypeToExpected[inputFormat].info.join(", ")];
 
-    fileTypeToExpected[ inputFormat ].infoText = text;
-    fileTypeToExpected[ inputFormat ].label = [
+    fileTypeToExpected[inputFormat].infoText = text;
+    fileTypeToExpected[inputFormat].label = [
       "Drag/Drop or <span class='filepond--label-action'>Browse</span>: <br />",
-      `${ fileTypeToExpected[ inputFormat ].files.join( " & " ) }`,
+      `${fileTypeToExpected[inputFormat].files.join(" & ")}`,
     ];
-    return fileTypeToExpected[ inputFormat ];
+    return fileTypeToExpected[inputFormat];
   };
 
   const serverConfig = {
-    url: `${ api_endpoint }api/submission/upload`,
+    url: `${api_endpoint}api/submission/upload`,
     process: {
       headers: { Authorization: auth.getToken() },
     },
@@ -188,47 +177,44 @@ export default function InputFilesPond ( props )
 
   return (
     <>
-      {/* info icon clickable  */ }
+      {/* info icon clickable  */}
       <Grid container>
-        <Grid item xs={ 11 }>
+        <Grid item xs={11}>
           <FilePond
-            files={ files }
-            onupdatefiles={ setFiles }
-            allowMultiple={ true }
-            maxFiles={ getFileUploadInfo( inputFormat ).fileCount }
-            server={ serverConfig }
+            files={files}
+            onupdatefiles={setFiles}
+            allowMultiple={true}
+            maxFiles={getFileUploadInfo(inputFormat).fileCount}
+            server={serverConfig}
             name="files"
-            labelIdle={ getFileUploadInfo( inputFormat ).label.join( "" ) }
-            onaddfile={ () =>
-            {
-              setRunExampleData( false );
-            } }
-            onprocessfile={ handleFileUploadFinished }
-            onprocessfiles={ handleAllFilesUploadFinished }
-            onremovefile={ ( _, file ) =>
-            {
-              setFilesUploadFinished( false );
+            labelIdle={getFileUploadInfo(inputFormat).label.join("")}
+            onaddfile={() => {
+              setRunExampleData(false);
+            }}
+            onprocessfile={handleFileUploadFinished}
+            onprocessfiles={handleAllFilesUploadFinished}
+            onremovefile={(_, file) => {
+              setFilesUploadFinished(false);
               // TODO
               // remove file from list of uploaded files
               // setSelectedFile(null);
-            } }
-
+            }}
             // option provided by plugins
 
             // better hand this over as a prop
-            acceptedFileTypes={
-              [
-                "text/csv",
-                "text/tsv",
-                "text/plain",
-                "application/json",
-                "application/sql",
-                "application/x-sql",
-                "application/x-yaml"
-              ] }
+            acceptedFileTypes={[
+              "text/csv",
+              "text/tsv",
+              "text/plain",
+              "application/json",
+              "application/sql",
+              "application/x-sql",
+              "application/x-yaml",
+            ]}
             // better hand this over as a prop
-            fileValidateTypeLabelExpectedTypes={ "Expect .txt, .c/tsv, .y(a)ml, .json" }
-
+            fileValidateTypeLabelExpectedTypes={
+              "Expect .txt, .c/tsv, .y(a)ml, .json"
+            }
             // fileValidateTypeDetectType={ ( source, type ) =>
             // {
             //   console.log( source, type );
@@ -243,8 +229,8 @@ export default function InputFilesPond ( props )
             labelMaxFileSize="Maximum file size is 1GB"
           />
         </Grid>
-        <Grid item xs={ 1 }>
-          <CustomAlert info={ getFileUploadInfo( inputFormat ).info } />
+        <Grid item xs={1}>
+          <CustomAlert info={getFileUploadInfo(inputFormat).info} />
         </Grid>
       </Grid>
     </>

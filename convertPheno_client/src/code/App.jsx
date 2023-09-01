@@ -5,13 +5,19 @@
 
   Last Modified: Apr/28/2023
 
-  Copyright (C) 2022-2023 Ivo Christopher Leist - CNAG (Ivo.leist@cnag.crg.eu)
+  Copyright (C) 2022-2023 Ivo Christopher Leist - CNAG (Ivo.leist@cnag.eu)
 
   License: GPL-3.0 license
 */
 
 import React, { useEffect, useContext, useMemo, useState } from "react";
-import { Navigate, Route, Routes, useNavigate, useParams } from "react-router-dom";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
 import { Box, Grid } from "@mui/material";
 import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
@@ -99,7 +105,7 @@ function renderRoutes() {
   ));
 }
 
-function AuthenticatedRoute ({ element: Component, path, security }) {
+function AuthenticatedRoute({ element: Component, path, security }) {
   const navigate = useNavigate();
   const isAuthenticated = security === "false" || auth.user.authenticated;
   const params = useParams();
@@ -107,14 +113,14 @@ function AuthenticatedRoute ({ element: Component, path, security }) {
   useEffect(() => {
     if (!isAuthenticated) {
       if ("jobId" in params) {
-        path = `${ path }/${ params.jobId }`;
+        path = `${path}/${params.jobId}`;
       }
       navigate("/login", { state: { redirect: path } });
     }
   }, [auth.user.authenticated, navigate]);
 
   return isAuthenticated ? <Component /> : null;
-};
+}
 
 function App() {
   const theme = useTheme();
