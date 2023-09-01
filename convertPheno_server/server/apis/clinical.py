@@ -220,6 +220,13 @@ def generate_url(ontology_id):
         opcs4_url = f"https://classbrowser.nhs.uk/#/book/{url_suffix}"
         return opcs4_url
 
+    if "SNOMED" in ontology_id:
+        snomed_base = "https://browser.ihtsdotools.org/"
+        snomed_query = "?perspective=full&conceptId1={ont_query}"
+        snomed_suffix = "&edition=MAIN&release=&languages=en"
+        snomedct_url = f"{snomed_base}{snomed_query}{snomed_suffix}"
+        return snomedct_url
+
     return "NA"
 
 
