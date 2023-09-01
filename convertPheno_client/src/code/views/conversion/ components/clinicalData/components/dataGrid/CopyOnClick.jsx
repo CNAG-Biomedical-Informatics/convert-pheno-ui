@@ -41,24 +41,19 @@ const checkKeyExists = (obj, key) => {
   return false;
 };
 
+const getFieldAndToolTipValues = (data, field) => {
+  return {
+    values: data[field]?.values || [],
+    urls: data[field]?.urls || [],
+    ontology_ids: data[field]?.ontology_ids || [],
+  };
+};
+
 const getValue = (props) => {
   const { data, colDef } = props;
   const field = colDef.field;
 
-  const values =
-    data[field] && Array.isArray(data[field]["values"])
-      ? data[field]["values"]
-      : [];
-
-  const urls =
-    data[field] && Array.isArray(data[field]["urls"])
-      ? data[field]["urls"]
-      : [];
-
-  const ontology_ids =
-    data[field] && Array.isArray(data[field]["ontology_ids"])
-      ? data[field]["ontology_ids"]
-      : [];
+  const { values, urls, ontology_ids } = getFieldAndToolTipValues(data, field);
 
   return checkKeyExists(data[field], "count") ? (
     <a
@@ -88,7 +83,10 @@ const ValueWithTooltip = ({ value, ontology_id, url }) => {
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
   const tooltipTimeout = useRef({ current: null });
 
-  const handleMouseOver = () => {
+  const handleMouseOver = (value) => {
+    if (value === "NA") {
+      return;
+    }
     setIsTooltipOpen(true);
     clearTimeout(tooltipTimeout.current);
   };
@@ -123,7 +121,7 @@ const ValueWithTooltip = ({ value, ontology_id, url }) => {
       placement="bottom"
     >
       <span
-        onMouseOver={handleMouseOver}
+        onMouseOver={() => handleMouseOver(value)}
         onMouseOut={handleMouseOut}
         style={{ marginRight: "5px", cursor: "pointer" }}
       >
