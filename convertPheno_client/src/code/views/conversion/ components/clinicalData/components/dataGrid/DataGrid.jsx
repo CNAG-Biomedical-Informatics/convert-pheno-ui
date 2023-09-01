@@ -142,13 +142,38 @@ export default function DataGrid(props) {
     return rows;
   };
 
+  const getFieldAndToolTipValues = (data, field) => {
+    console.log("data", data);
+    console.log("field", field);
+
+    return {
+      values: data[field]?.values || [],
+      urls: data[field]?.urls || [],
+      ontology_ids: data[field]?.ontology_ids || [],
+    };
+  };
+
   const getDialogTableValue = (params) => {
-    const { value } = params;
+    const { value, data, colDef } = params;
+    const field = colDef.field;
+
+    console.log("params", params);
     if (value === undefined || value === []) {
       return "";
     }
 
-    return <ValueWithTooltip value={value} />;
+    const { urls, ontology_ids } = getFieldAndToolTipValues(data, field);
+
+    console.log("urls", urls);
+    console.log("ontology_ids", ontology_ids);
+
+    return (
+      <ValueWithTooltip
+        value={value}
+        ontology_id={ontology_ids[0]}
+        url={urls[0]}
+      />
+    );
     // return value;
   };
 
