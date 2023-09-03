@@ -40,7 +40,6 @@ export default function ValueWithTooltip(props) {
 
   let explanationText = ""
   let ontologyIdHyperlink = ""
-  // if URL ends with "NA", then the ontology id could not be matched to an ontology term
   if (url && url.endsWith("NA")) {
     explanationText = "could not be matched to an ontology term"
   } else {

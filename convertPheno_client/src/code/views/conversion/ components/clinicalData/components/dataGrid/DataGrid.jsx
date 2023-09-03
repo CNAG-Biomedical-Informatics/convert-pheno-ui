@@ -129,6 +129,9 @@ export default function DataGrid(props) {
     }
 
     const cellData = data[id][field];
+    if (cellData.data === undefined) {
+      return rows;
+    }
 
     for (const [idx, row] of cellData.data.entries()) {
       const rowData = {
@@ -329,13 +332,12 @@ export default function DataGrid(props) {
             getRows(jsonData),
             getColumns(colHeaders),
             handleCellClick
-            // getOntologyMappings(jsonData)
           )}
         </Grid>
         <Dialog
           fullWidth={true}
           maxWidth={"md"}
-          open={open}
+          open={open && getDialogTableRows(jsonData).length > 0}
           onClose={handleClose}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
