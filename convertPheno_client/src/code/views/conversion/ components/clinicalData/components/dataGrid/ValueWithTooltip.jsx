@@ -38,19 +38,35 @@ export default function ValueWithTooltip(props) {
     window.open(url, "_blank");
   };
 
+  let explanationText = ""
+  let ontologyIdHyperlink = ""
+  // if URL ends with "NA", then the ontology id could not be matched to an ontology term
+  if (url && url.endsWith("NA")) {
+    explanationText = "could not be matched to an ontology term"
+  } else {
+    explanationText = "learn more about the corresponding ontology id here"
+    ontologyIdHyperlink = ontology_id
+  }
+
   return (
     <Tooltip
       open={isTooltipOpen}
       title={
         <span>
-          Click to open{" "}
+          <div>
+            {value}
+            <br />
+            <br />
+            {explanationText}
+          </div>
           <a
             href={url}
             target="_blank"
             rel="noopener noreferrer"
             onClick={handleLinkClick}
+            style={{ color: "white" }}
           >
-            {ontology_id}
+            {ontologyIdHyperlink}
           </a>
         </span>
       }
