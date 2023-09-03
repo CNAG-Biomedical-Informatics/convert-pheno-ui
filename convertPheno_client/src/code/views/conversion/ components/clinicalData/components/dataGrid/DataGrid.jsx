@@ -171,7 +171,7 @@ export default function DataGrid(props) {
     return value;
   };
 
-  const getDialogTableColumns = (data) => {
+  const getDialogTableColumns = (allRows) => {
     const { field } = clickedCellInfo;
     const cols = [{ field: "id", headerName: "#" }];
 
@@ -179,7 +179,15 @@ export default function DataGrid(props) {
       return cols;
     }
 
-    const cellData = data[field].data[0];
+    let rowWithFieldData = null;
+    for (const row of allRows) {
+      if (typeof row[field] === "object" && !Array.isArray(row[field])) {
+        rowWithFieldData = row;
+        break;
+      }
+    }
+
+    const cellData = rowWithFieldData[field].data[0];
     for (const key in cellData) {
       cols.push({
         field: key,
@@ -295,18 +303,6 @@ export default function DataGrid(props) {
     setOpenTreeView(false);
   };
 
-  // const getOntologyMappings = (data) => {
-  //   console.log("getOntologyMappings data", data);
-
-  //   const ontologyMapping = {};
-  //   for (const [key, value] of Object.entries(data)) {
-  //     if (key === "exposures") {
-  //       ontologyMapping[key] = value.ontology_ids_mapping;
-  //     }
-  //   }
-  //   return ontologyMapping;
-  // };
-
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <ColumnsTreeViewModal
@@ -351,7 +347,7 @@ export default function DataGrid(props) {
             {renderDataGrid(
               `${tabValue}-dialogGrid`,
               getDialogTableRows(jsonData),
-              getDialogTableColumns(jsonData[0])
+              getDialogTableColumns(jsonData)
             )}
           </DialogContent>
           <DialogActions>

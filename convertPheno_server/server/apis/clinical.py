@@ -179,6 +179,9 @@ def generate_url(ontology_id):
     if ontology_id is None:
         return "NA"
 
+    if ":" not in ontology_id:
+        return "NA"
+
     ont_query = ontology_id.split(":")[1]
     if "NCIT" in ontology_id and ontology_id != "NCIT:NA0000":
 
@@ -270,6 +273,7 @@ def parse_meta_info(meta, field):
             if isinstance(meta_data[key], dict):
                 value = recursive_search(meta_data[key], "label")
                 ontology_id = recursive_search(meta_data[key], "id")
+
                 ncit_url = generate_url(ontology_id)
 
                 meta_row[key] = value
@@ -336,6 +340,11 @@ def get_basic_row(row, key, selected_fields):
     if len(selected_fields[key]) == 0:
         row_data[key] = row[key]
         return row_data
+
+    # TODO
+    # when OMOP -> BFF/PXF
+    # parse_meta_info fails for the key phenotypicFeatures
+    # -> list index out of range
 
     data, values, ontology_ids, urls, onts_mapping, urls_mapping = parse_meta_info(
         row[key], selected_fields[key]
