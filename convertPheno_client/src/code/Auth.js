@@ -32,7 +32,6 @@ export default {
   },
   getUserName() {
     if (this.user.keycloak !== undefined) {
-      console.log(this.user.keycloak.idTokenParsed);
       return this.user.keycloak.idTokenParsed.preferred_username;
     }
   },

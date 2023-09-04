@@ -216,7 +216,6 @@ def generate_url(ontology_id):
             headers={"searchArg-base64": search_arg_base64},
         )
         response_json = response.json()
-        print(response_json)
 
         opcs_id = response_json["children"][0]["children"][0]["children"][0]["id"]
         url_suffix = opcs_id.replace("#", "+")
@@ -687,7 +686,6 @@ class ClinicalDataView(Resource):
             "shownColumns": selected_cols,
             "nodeToSelected": node_to_selected,
         }
-        # print(response)
         return make_response(response)
 
 
