@@ -10,9 +10,9 @@ packages = []
 [tool.poetry.dependencies]
 python = "3.10.6"
 anytree = "^2.8.0"
-cryptography = "^41.0.1"
+cryptography = "^41.0.3"
 flask-restx = "^1.1.0"
-flask = "2.2.3"
+flask = "2.2.5"
 flask-cors = "^3.0.10"
 flask-sqlalchemy = "^3.0.3"
 genson = "^1.2.2"
