@@ -57,6 +57,10 @@ class DevelopmentConfig:
     else:
         data_dir = Path.cwd() / "data"
 
+        # for testing with the vscode pytest runner
+        if Path.cwd().name == "tests":
+            data_dir = Path.cwd().parent / "data"
+
     FLASK_UPLOAD_DIR = data_dir / "uploads"
     FLASK_EXAMPLE_DIR = data_dir / "example_in"
     FLASK_OUT_DIR = data_dir / "output"

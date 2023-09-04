@@ -164,11 +164,12 @@ def filter_by_criteria(
 
     if criteria == "inclusion":
         assert all(
-            row[field] == expected_or_disallowed_val for row in rows_after_filter
+            expected_or_disallowed_val in row[field]["values"]
+            for row in rows_after_filter
         )
     else:
-        assert not any(
-            row.get(field) == expected_or_disallowed_val for row in rows_after_filter
+        assert not any(field in row for row in rows_after_filter) or not any(
+            expected_or_disallowed_val in row[field] for row in rows_after_filter
         )
 
 

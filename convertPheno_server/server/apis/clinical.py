@@ -175,7 +175,6 @@ def recursive_search(dictionary, key):
 
 
 def generate_url(ontology_id):
-
     if ontology_id is None:
         return "NA"
 
@@ -184,7 +183,6 @@ def generate_url(ontology_id):
 
     ont_query = ontology_id.split(":")[1]
     if "NCIT" in ontology_id and ontology_id != "NCIT:NA0000":
-
         # TODO
         # The NCIT base url should be in a config file
         ncit_base = "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp"
@@ -473,7 +471,6 @@ class ClinicalDataView(Resource):
     @api.expect(resource_fields, validate=True)
     @api.doc(responses={200: "Success", 400: "Validation Error"})
     def post(self, userid):
-
         user = db.session.query(User).filter_by(name=userid).one_or_none()
         if user is None:
             return {"message": "User not found"}, 404
