@@ -159,15 +159,11 @@ export default function DataGrid(props) {
       }
       rows.push(rowData);
     }
-
-    console.log("rows", rows);
     return rows;
   };
 
   const getDialogTableValue = (params) => {
-    const { value, colDef } = params;
-
-    console.log("params", params);
+    const { value } = params;
     if (value === undefined || value === []) {
       return "";
     }

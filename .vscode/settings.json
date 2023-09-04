@@ -8,7 +8,7 @@
   "python.linting.pylintEnabled": false,
   "python.linting.flake8Enabled": true,
   "python.linting.enabled": true,
-  "python.formatting.provider": "black",
+  "python.formatting.provider": "none",
   "coverage-gutters.manualCoverageFilePaths": [
     "${workspaceFolder}/convertPheno_server/tests/reports/coverage/coverage.xml"
   ],
@@ -28,5 +28,8 @@
       "database": "postgres",
       "username": "postgres"
     }
-  ]
+  ],
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  }
 }
