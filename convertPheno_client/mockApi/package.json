@@ -11,9 +11,9 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "json-server": "^0.16.1"
+    "json-server": "^0.17.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "nodemon": "^3.0.1"
   }
 }
