@@ -66,18 +66,11 @@ unit-test:
 test:
 	KC_PUBLIC_KEY=$(KC_PUBLIC_KEY) poetry run pytest --junitxml=tests/reports/junit.xml
 
-
-test2:
-	KC_PUBLIC_KEY=$(KC_PUBLIC_KEY) python3 -m pytest --junitxml=tests/reports/junit.xml tests/
-
-test3:
-	KC_PUBLIC_KEY=$(KC_PUBLIC_KEY) poetry run pytest --junitxml=tests/reports/junit.xml
-
 debug-test:
 	KC_PUBLIC_KEY=$(KC_PUBLIC_KEY) python3 -m pytest --pdb --junitxml=tests/reports/junit.xml tests/
 
 debug-test2:
-	KC_PUBLIC_KEY=$(KC_PUBLIC_KEY) python3 -m pytest --pdb tests/test_clinical.py::TestClinicalClass::test_conversion_results
+	KC_PUBLIC_KEY=$(KC_PUBLIC_KEY) python3 -m pytest --pdb tests/test_submission.py::TestSubmissionClass::test_upload[dev_client]
 
 debug-test3:
 	KC_PUBLIC_KEY=$(KC_PUBLIC_KEY) python3 -m pytest --pdb tests/test_clinical.py::TestClinicalFilteringClass
