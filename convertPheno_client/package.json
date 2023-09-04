@@ -138,7 +138,7 @@
     "@types/react-dom": "^18.2.3",
     "@vitejs/plugin-react": "^4.0.0",
     "@wixc3/react-board": "^2.2.0",
-    "cypress": "^12.11.0",
+    "cypress": "^13.1.0",
     "cypress-file-upload": "^5.0.8",
     "cypress-keycloak-commands": "1.2.0",
     "cypress-multi-reporters": "^1.5.0",
