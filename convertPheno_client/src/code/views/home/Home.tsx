@@ -139,14 +139,14 @@ export default function Home() {
             <>
               <StyledTypography text="To log in, use the following credentials:" />
               <UserInfo />
-              <Button variant="contained" sx={buttonStyle}>
-                <NavLink
-                  to={{ pathname: "/conversion/" }}
-                  style={{ textDecoration: "none" }}
-                >
+              <NavLink
+                to={{ pathname: "/conversion/" }}
+                style={{ textDecoration: "none" }}
+              >
+                <Button variant="contained" sx={buttonStyle}>
                   <StyledButtonTypography text="Login" />
-                </NavLink>
-              </Button>
+                </Button>
+              </NavLink>
             </>
           )}
         </Box>
