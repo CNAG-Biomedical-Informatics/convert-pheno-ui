@@ -78,21 +78,24 @@ export default function Header(props) {
     const defaultStyle = {
       textDecoration: "none",
       color: "inherit",
+      fontFamily: "Roboto, Helvetica, Arial, sans-serif",
       fontWeight: "bold",
+      fontSize: "14px",
+      display: "inline-block",
+      padding: "6px",
+      textTransform: "uppercase",
     };
 
     return (
-      <Button key={page.path}>
-        <NavLink
-          to={page.path}
-          style={({ isActive }) => {
-            const color = isActive ? "orange" : "white";
-            return { ...defaultStyle, color };
-          }}
-        >
-          {page.name}
-        </NavLink>
-      </Button>
+      <NavLink
+        to={page.path}
+        style={({ isActive }) => {
+          const color = isActive ? "orange" : "white";
+          return { ...defaultStyle, color };
+        }}
+      >
+        {page.name}
+      </NavLink>
     );
   };
 
