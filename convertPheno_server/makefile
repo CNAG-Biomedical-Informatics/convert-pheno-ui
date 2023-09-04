@@ -42,6 +42,9 @@ compose:
 activate:
 	poetry shell
 
+export_reqs:
+	poetry export -f requirements.txt --output requirements.txt
+
 run:
 	export FLASK_APP=server.app.py && export FLASK_DEBUG=1 && \
 	export FLASK_RUN_PORT=5001 \
