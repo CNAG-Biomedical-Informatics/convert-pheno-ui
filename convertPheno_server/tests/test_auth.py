@@ -36,8 +36,11 @@ class TestAuthClass:
         def dummy_function(*args, **kwargs):
             return "Success!"
 
+        # Get the actual decorator by calling login with required arguments
+        decorator = login(login_required=True)
+
         # Decorate the dummy function with login
-        protected_function = login(dummy_function)
+        protected_function = decorator(dummy_function)
 
         # Test with a valid token
         token = "a_valid_token"
