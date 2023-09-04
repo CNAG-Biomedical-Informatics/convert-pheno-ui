@@ -44,7 +44,7 @@ const teamMembers = [
 const logos = [
   {
     name: "CNAG",
-    url: "https://www.cnag.crg.eu/",
+    url: "https://www.cnag.eu/",
     image:
       "https://lh4.googleusercontent.com/--THiaUxpKwM/AAAAAAAAAAI/AAAAAAAAAAA/FpbvQedtiXw/s44-p-k-no-ns-nd/photo.jpg",
   },
@@ -64,7 +64,7 @@ const logos = [
 
 const ImageComponent = ({ src, alt, href }) => (
   <Grid item>
-    <a href={href}>
+    <a href={href} target="_blank" rel="noopener noreferrer">
       <ButtonBase>
         <Paper elevation={2} sx={{ backgroundColor: "white" }}>
           <img
@@ -84,7 +84,7 @@ const CenteredImageButtons = () => (
       <ImageComponent
         src="https://solve-rd.eu/wp-content/uploads/2018/05/cnag-300x127.png"
         alt="CNAG"
-        href="https://www.cnag.crg.eu/"
+        href="https://www.cnag.eu/"
       />
       <ImageComponent
         src="https://www.ihi.europa.eu/sites/default/files/styles/teaser_image_horizontal/public/projects/logos/3TR_logo_final.jpg?itok=fDmi4lFR"
@@ -110,7 +110,7 @@ export default function About() {
       </Typography>
       <Typography variant="h5">Please cite</Typography>
       <Typography variant="body1" style={{ marginBottom: "2em" }}>
-        Rueda, M; Leist, IC et al., "Convert-Pheno: A software toolkit for the
+        Rueda, M; Leist, IC; Gut, IG; "Convert-Pheno: A software toolkit for the
         interconversion of standard data models for phenotypic data". Manuscript
         in preparation.
       </Typography>
