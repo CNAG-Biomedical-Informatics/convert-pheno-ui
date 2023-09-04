@@ -145,17 +145,15 @@ export default function Header(props) {
 
   const renderLoginButton = (theme) => {
     return (
-      <Button>
-        <NavLink
-          to={{ pathname: "/conversion/" }}
-          style={{
-            textDecoration: "none",
-            color: theme === "dark" ? "inherit" : "white",
-          }}
-        >
-          login
-        </NavLink>
-      </Button>
+      <NavLink
+        to={{ pathname: "/conversion/" }}
+        className={"nav-link-login"}
+        style={{
+          color: theme === "dark" ? "#90CAF9" : "white",
+        }}
+      >
+        login
+      </NavLink>
     );
   };
 

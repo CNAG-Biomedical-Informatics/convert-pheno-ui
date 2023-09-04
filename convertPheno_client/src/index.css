@@ -2,3 +2,16 @@ html,
 body {
   margin: 0;
 }
+
+.nav-link-login {
+  text-decoration: none;
+  color: #90caf9; /* Set your theme colors */
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-size: 14px;
+  transition: background 0.3s ease;
+  text-transform: uppercase;
+}
+
+.nav-link-login:hover {
+  background: rgba(144, 202, 249, 0.2);
+}
