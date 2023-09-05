@@ -49,5 +49,6 @@ class TokenTest(Resource):
     """
 
     @login(login_required)
+    @api.expect(parser)
     def get(self, userid):
         return {"user": userid}
