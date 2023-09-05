@@ -66,10 +66,12 @@ class TestDownloadClass:
     def test_download_all_results(self, client, header):
         data = {
             "runExampleData": True,
+            "uploadedFiles": [],
             "inputFormat": "redcap",
             "outputFormats": {
                 "bff": True,
                 "pxf": True,
+                "omop": False,
             },
         }
         job_id = convert_clinical_data(client, header, data)

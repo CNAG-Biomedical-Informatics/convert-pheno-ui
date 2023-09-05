@@ -21,7 +21,7 @@ import zipfile
 from time import time, localtime
 
 from flask import request, send_file
-from flask_restx import Resource, Namespace
+from flask_restx import Resource, Namespace, fields
 from flask_cors import cross_origin
 from werkzeug.datastructures import FileStorage
 
@@ -141,6 +141,31 @@ class UploadFile(Resource):
         return {"message": "File is deleted"}, 200
 
 
+output_formats_schema = api.schema_model(
+    "OutputFormats",
+    {
+        "type": "object",
+        "properties": {
+            "bff": {"type": "boolean"},
+            "pxf": {"type": "boolean"},
+            "omop": {"type": "boolean"},
+        },
+        "required": ["bff", "pxf", "omop"],
+    },
+)
+
+resource_fields = api.model(
+    "ConvertFile",
+    {
+        "runExampleData": fields.Boolean(required=True),
+        "uploadedFiles": fields.List(fields.String, required=True),
+        "inputFormat": fields.String(required=True),
+        "outputFormats": fields.Nested(output_formats_schema, required=True),
+    },
+    strict=True,
+)
+
+
 @api.expect(parser)
 @ns.route("/", methods=("POST",))
 class ConvertFile(Resource):
@@ -149,6 +174,8 @@ class ConvertFile(Resource):
     """
 
     @login(login_required)
+    @api.expect(resource_fields, validate=True)
+    @api.doc(responses={200: "Success", 400: "Validation Error"})
     def post(self, userid):
         """
         Convert file
@@ -156,6 +183,9 @@ class ConvertFile(Resource):
         data = request.get_json()
         runExample = data["runExampleData"]
         print("data", data)
+
+        # TODO
+        # jsonSchema validation is missing
 
         if runExample:
             ns.logger.info("run /w example data")
