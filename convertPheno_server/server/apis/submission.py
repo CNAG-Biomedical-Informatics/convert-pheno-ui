@@ -58,15 +58,14 @@ upload_parser.add_argument("files", location="files", type=FileStorage, required
 # output
 
 
-@api.expect(parser)
-@api.expect(upload_parser)
-@ns.route("/", methods=("POST", "DELETE"))
+@ns.route("/upload", methods=("POST", "DELETE"))
 class UploadFile(Resource):
     """
     API to upload files
     """
 
     @login(login_required)
+    @api.expect(parser, upload_parser)
     def post(self, userid):
         """
         Upload file
@@ -82,6 +81,22 @@ class UploadFile(Resource):
 
         # TODO
         # add allowed file exensions in the config
+
+        # TODO
+        # depending on the selected mode different
+        # file extensions are allowed
+
+        # TODO
+        # depending on the input format
+        # a different number of file uploads should be possible
+
+        # TODO
+        # .sql.gz is not supported yet
+
+        allowed_extensions = ["csv", "tsv", "txt", "yml", "yaml", "json", "sql"]
+
+        if ext not in allowed_extensions:
+            return {"message": "File extension not allowed"}, 400
 
         fn = f"{str(uuid4())}.{ext}"
         try:
@@ -106,6 +121,7 @@ class UploadFile(Resource):
         return {"tempFilename": fn}
 
     @login(login_required)
+    @api.expect(parser)
     def delete(self, userid):
         """
         Delete uploaded file
@@ -166,7 +182,7 @@ resource_fields = api.model(
 )
 
 
-@ns.route("/", methods=("POST",))
+@ns.route("/convert", methods=("POST",))
 class ConvertFile(Resource):
     """
     API to convert uploaded file
@@ -367,7 +383,7 @@ def downloadAllFiles(data, job_id):
     return mem_zip
 
 
-@ns.route("/", methods=("POST",))
+@ns.route("/download", methods=("POST",))
 class DownloadFile(Resource):
     """
     API to download the converted file
@@ -412,7 +428,7 @@ class DownloadFile(Resource):
         )
 
 
-@ns.route("/", methods=("POST",))
+@ns.route("/download/example", methods=("POST",))
 class DownloadExampleFile(Resource):
     """
     API to download example input

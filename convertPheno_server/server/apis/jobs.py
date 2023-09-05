@@ -32,12 +32,14 @@ parser = api.parser()
 parser.add_argument("Authorization", type=str, location="headers", required=True)
 
 
+@ns.route("/job", methods=("POST",))
 class JobView(Resource):
     """
     Returns the job data of a specific job id
     """
 
     @login(login_required)
+    @api.expect(parser)
     def post(self, userid):
         user = db.session.query(User).filter_by(name=userid).one_or_none()
         if user is None:

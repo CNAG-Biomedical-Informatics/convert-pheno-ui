@@ -470,7 +470,7 @@ resource_fields = api.model(
 # only the POST request is allowed
 
 
-@ns.route("/", methods=("POST",))
+@ns.route("/json", methods=("POST",))
 class ClinicalDataView(Resource):
     @login(login_required)
     @api.expect(parser, resource_fields, validate=True)
