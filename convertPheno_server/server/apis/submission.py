@@ -108,6 +108,7 @@ class UploadFile(Resource):
             "redcap": ["csv", "tsv", "txt", "yml", "yaml", "json"],
             "bff": ["json"],
             "pxf": ["json"],
+            "omop": ["sql"],
             "cdisc": ["xml", "csv", "tsv", "txt", "yml", "yaml", "json"],
         }
         print(allowed_extensions_mapping[input_format])
