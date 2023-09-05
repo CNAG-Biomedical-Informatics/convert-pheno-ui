@@ -468,7 +468,7 @@ resource_fields = api.model(
 
 class ClinicalDataView(Resource):
     @login(login_required)
-    @api.expect(resource_fields, validate=True)
+    @api.expect(parser, resource_fields, validate=True)
     @api.doc(responses={200: "Success", 400: "Validation Error"})
     def post(self, userid):
         user = db.session.query(User).filter_by(name=userid).one_or_none()
