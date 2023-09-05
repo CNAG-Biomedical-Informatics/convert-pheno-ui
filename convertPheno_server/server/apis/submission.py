@@ -166,7 +166,6 @@ resource_fields = api.model(
 )
 
 
-@api.expect(parser)
 @ns.route("/", methods=("POST",))
 class ConvertFile(Resource):
     """
@@ -368,7 +367,6 @@ def downloadAllFiles(data, job_id):
     return mem_zip
 
 
-@api.expect(parser)
 @ns.route("/", methods=("POST",))
 class DownloadFile(Resource):
     """
@@ -376,6 +374,7 @@ class DownloadFile(Resource):
     """
 
     @login(login_required)
+    @api.expect(parser)
     def post(self, userid):
         """
         Flask send_file
@@ -413,7 +412,6 @@ class DownloadFile(Resource):
         )
 
 
-@api.expect(parser)
 @ns.route("/", methods=("POST",))
 class DownloadExampleFile(Resource):
     """
@@ -421,6 +419,7 @@ class DownloadExampleFile(Resource):
     """
 
     @login(login_required)
+    @api.expect(parser)
     def post(self, userid):
         """
         Flask send_file
