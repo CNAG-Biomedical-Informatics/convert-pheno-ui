@@ -69,3 +69,23 @@ class TestSubmissionClass:
         data["inputFormat"] = "bff"
         job_id = convert_clinical_data(client, header, data=data)
         assert job_id
+
+    def test_convert_pxf_example(self, client, header):
+        data = deepcopy(default_data)
+        data["inputFormat"] = "pxf"
+        data["outputFormats"]["pxf"] = False
+        job_id = convert_clinical_data(client, header, data=data)
+        assert job_id
+
+    def test_convert_omop_example(self, client, header):
+        data = deepcopy(default_data)
+        data["inputFormat"] = "omop"
+        data["outputFormats"]["omop"] = False
+        job_id = convert_clinical_data(client, header, data=data)
+        assert job_id
+
+    def test_convert_cdisc_example(self, client, header):
+        data = deepcopy(default_data)
+        data["inputFormat"] = "cdisc"
+        job_id = convert_clinical_data(client, header, data=data)
+        assert job_id

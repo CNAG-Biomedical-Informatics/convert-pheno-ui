@@ -174,7 +174,7 @@ class ConvertFile(Resource):
     """
 
     @login(login_required)
-    @api.expect(resource_fields, validate=True)
+    @api.expect(parser, resource_fields, validate=True)
     @api.doc(responses={200: "Success", 400: "Validation Error"})
     def post(self, userid):
         """
@@ -183,9 +183,6 @@ class ConvertFile(Resource):
         data = request.get_json()
         runExample = data["runExampleData"]
         print("data", data)
-
-        # TODO
-        # jsonSchema validation is missing
 
         if runExample:
             ns.logger.info("run /w example data")
