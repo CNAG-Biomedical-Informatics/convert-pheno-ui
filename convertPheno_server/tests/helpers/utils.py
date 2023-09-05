@@ -112,11 +112,9 @@ def convert_clinical_data(client, header, data=None):
     if not data:
         data = {
             "runExampleData": True,
+            "uploadedFiles": [],
             "inputFormat": "redcap",
-            "outputFormats": {
-                "bff": True,
-                "pxf": False,
-            },
+            "outputFormats": {"bff": True, "pxf": False, "omop": False},
         }
     res = req_post(client, header, "submission/convert", data=data)
     assert res.status_code == 200
