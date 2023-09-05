@@ -175,13 +175,23 @@ export default function InputFilesPond(props) {
     },
   };
 
+  // TODO
+  // should be in a config file
+  const allowMultipleMapping = {
+    redcap: true,
+    bff: false,
+    pxf: false,
+    omop: false,
+    cdisc: true,
+  };
+
   return (
     <Grid container>
       <Grid item xs={11}>
         <FilePond
           files={files}
           onupdatefiles={setFiles}
-          allowMultiple={true}
+          allowMultiple={allowMultipleMapping[inputFormat]}
           maxFiles={getFileUploadInfo(inputFormat).fileCount}
           server={serverConfig}
           name="files"
