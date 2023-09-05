@@ -176,63 +176,65 @@ export default function InputFilesPond(props) {
   };
 
   return (
-    <>
-      {/* info icon clickable  */}
-      <Grid container>
-        <Grid item xs={11}>
-          <FilePond
-            files={files}
-            onupdatefiles={setFiles}
-            allowMultiple={true}
-            maxFiles={getFileUploadInfo(inputFormat).fileCount}
-            server={serverConfig}
-            name="files"
-            labelIdle={getFileUploadInfo(inputFormat).label.join("")}
-            onaddfile={() => {
-              setRunExampleData(false);
-            }}
-            onprocessfile={handleFileUploadFinished}
-            onprocessfiles={handleAllFilesUploadFinished}
-            onremovefile={(_, file) => {
-              setFilesUploadFinished(false);
-              // TODO
-              // remove file from list of uploaded files
-              // setSelectedFile(null);
-            }}
-            // option provided by plugins
+    <Grid container>
+      <Grid item xs={11}>
+        <FilePond
+          files={files}
+          onupdatefiles={setFiles}
+          allowMultiple={true}
+          maxFiles={getFileUploadInfo(inputFormat).fileCount}
+          server={serverConfig}
+          name="files"
+          labelIdle={getFileUploadInfo(inputFormat).label.join("")}
+          onaddfile={() => {
+            setRunExampleData(false);
+          }}
+          onprocessfile={handleFileUploadFinished}
+          onprocessfiles={handleAllFilesUploadFinished}
+          onremovefile={(_, file) => {
+            setFilesUploadFinished(false);
+            // TODO
+            // remove file from list of uploaded files
+            // setSelectedFile(null);
+          }}
+          // option provided by plugins
 
-            // better hand this over as a prop
-            acceptedFileTypes={[
-              "text/csv",
-              "text/tsv",
-              "text/plain",
-              "application/json",
-              "application/sql",
-              "application/x-sql",
-              "application/x-yaml",
-            ]}
-            // better hand this over as a prop
-            fileValidateTypeLabelExpectedTypes={
-              "Expect .txt, .c/tsv, .y(a)ml, .json"
-            }
-            // fileValidateTypeDetectType={ ( source, type ) =>
-            // {
-            //   console.log( source, type );
-            //   resolve( type );
-            // } }
+          // better hand this over as a prop
+          acceptedFileTypes={[
+            "text/csv",
+            "text/tsv",
+            "text/plain",
+            "application/json",
+            "application/sql",
+            "application/x-sql",
+            "application/x-yaml",
+            "application/x-gzip",
+            "application/gzip",
+          ]}
+          // better hand this over as a prop
+          fileValidateTypeLabelExpectedTypes={
+            "Expect .txt, .c/tsv, .y(a)ml, .json, .sql(.gz)"
+          }
+          // TODO
+          // when showing an error message increase the size of the filepond component
 
-            // better get this from the server
+          // fileValidateTypeDetectType={ ( source, type ) =>
+          // {
+          //   console.log( source, type );
+          //   resolve( type );
+          // } }
 
-            // this should be a prop
-            // so large file are only expected for OMOP (sqls)
-            maxFileSize="1000MB"
-            labelMaxFileSize="Maximum file size is 1GB"
-          />
-        </Grid>
-        <Grid item xs={1}>
-          <CustomAlert info={getFileUploadInfo(inputFormat).info} />
-        </Grid>
+          // better get this from the server
+
+          // this should be a prop
+          // so large file are only expected for OMOP (sqls)
+          maxFileSize="1000MB"
+          labelMaxFileSize="Maximum file size is 1GB"
+        />
       </Grid>
-    </>
+      <Grid item xs={1}>
+        <CustomAlert info={getFileUploadInfo(inputFormat).info} />
+      </Grid>
+    </Grid>
   );
 }

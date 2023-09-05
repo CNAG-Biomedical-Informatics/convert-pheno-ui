@@ -80,9 +80,6 @@ class UploadFile(Resource):
         ext = uploaded_file.filename.rsplit(".", 1)[1]
 
         # TODO
-        # add allowed file exensions in the config
-
-        # TODO
         # depending on the selected mode different
         # file extensions are allowed
 
@@ -90,13 +87,20 @@ class UploadFile(Resource):
         # depending on the input format
         # a different number of file uploads should be possible
 
-        # TODO
-        # .sql.gz is not supported yet
+        extension_allowed = False
 
+        # TODO
+        # add allowed file exensions in the config
         allowed_extensions = ["csv", "tsv", "txt", "yml", "yaml", "json", "sql"]
 
-        if ext not in allowed_extensions:
-            return {"message": "File extension not allowed"}, 400
+        if ext == "gz" and uploaded_file.filename.rsplit(".", 2)[1] == "sql":
+            extension_allowed = True
+        else:
+            if ext in allowed_extensions:
+                extension_allowed = True
+
+        if not extension_allowed:
+            return {"message": f"File extension {ext} is not allowed"}, 400
 
         fn = f"{str(uuid4())}.{ext}"
         try:
