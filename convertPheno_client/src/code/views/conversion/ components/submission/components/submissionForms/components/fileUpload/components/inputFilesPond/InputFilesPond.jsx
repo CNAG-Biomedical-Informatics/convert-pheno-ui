@@ -165,16 +165,6 @@ export default function InputFilesPond(props) {
     return fileTypeToExpected[inputFormat];
   };
 
-  const serverConfig = {
-    url: `${api_endpoint}api/submission/upload`,
-    process: {
-      headers: { Authorization: auth.getToken() },
-    },
-    revert: {
-      headers: { Authorization: auth.getToken() },
-    },
-  };
-
   // TODO
   // should be in a config file
   const allowMultipleMapping = {
@@ -193,7 +183,24 @@ export default function InputFilesPond(props) {
           onupdatefiles={setFiles}
           allowMultiple={allowMultipleMapping[inputFormat]}
           maxFiles={getFileUploadInfo(inputFormat).fileCount}
-          server={serverConfig}
+          // modify below
+          // to be able to pass file meta data
+          // how to suggestion by ChatGPT
+          // https://chat.openai.com/share/5e7342b9-75e3-4dd3-bbca-f06e4032cf69
+          // server={serverConfig}
+
+          server={{
+            url: `${api_endpoint}api/submission/upload`,
+            process: {
+              headers: {
+                Authorization: auth.getToken(),
+                "X-Custom-InputFormat": inputFormat,
+              },
+            },
+            revert: {
+              headers: { Authorization: auth.getToken() },
+            },
+          }}
           name="files"
           labelIdle={getFileUploadInfo(inputFormat).label.join("")}
           onaddfile={() => {
@@ -209,15 +216,22 @@ export default function InputFilesPond(props) {
           }}
           // option provided by plugins
 
+          // TODO
+          // the expected file types should be provided by a function
+          // depending on the input format
+
           // better hand this over as a prop
           acceptedFileTypes={[
             "text/csv",
             "text/tsv",
             "text/plain",
+            "text/xml",
+            "text/yaml",
             "application/json",
             "application/sql",
             "application/x-sql",
             "application/x-yaml",
+            "application/yaml",
             "application/x-gzip",
             "application/gzip",
           ]}
