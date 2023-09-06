@@ -132,7 +132,7 @@ export default function InputFilesPond(props) {
       redcap: {
         fileCount: 3,
         files: ["Input", "Dictionary", "Mapping"],
-        fileExtensions: ["csv", "tsv", "txt"],
+        fileExtensions: ["csv", "tsv", "txt", "yaml", "yml", "json"],
         info: [
           "The input-file & dictionary can be a .csv, .tsv or .txt",
           "Make sure that the input and the dictionary have the same separator",
@@ -154,7 +154,7 @@ export default function InputFilesPond(props) {
       cdisc: {
         fileCount: 3,
         files: ["Input", "Dictionary", "Mapping"],
-        fileExtensions: ["csv", "tsv", "txt"],
+        fileExtensions: ["xml", "csv", "tsv", "txt", "yaml", "yml", "json"],
         info: [
           "The input-file has to be a .xml",
           "The dictionary can be a .csv, .tsv or .txt",
@@ -190,6 +190,7 @@ export default function InputFilesPond(props) {
       "text/csv",
       "text/tsv",
       "text/plain",
+      "application/x-yaml",
       ".yaml",
       ".yml",
     ],
@@ -198,6 +199,7 @@ export default function InputFilesPond(props) {
     omop: ["application/sql", "application/x-sql", "application/x-gzip"],
     cdisc: [
       "application/json",
+      "aaplication/x-yaml",
       "application/zip",
       "text/csv",
       "text/plain",
