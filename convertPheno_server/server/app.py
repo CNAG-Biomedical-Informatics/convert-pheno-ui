@@ -22,12 +22,21 @@ from flask_restx import Api
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+
 from server.utils.error_handler import ApiException
 
 # configure root logger
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=["200 per day", "50 per hour"],
+    storage_uri="memory://",
+)
 
 app.config.from_object("server.config.general_config.GeneralConfig")
 app.config.from_object("server.config.config.Config")

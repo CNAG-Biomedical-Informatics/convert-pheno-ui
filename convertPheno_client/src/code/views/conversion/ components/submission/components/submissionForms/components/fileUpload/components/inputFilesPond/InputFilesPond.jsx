@@ -151,8 +151,17 @@ export default function InputFilesPond(props) {
         fileExtensions: ["sql", "sql.gz"],
         info: ["input has to be a .sql or sql.gz"],
       },
+      cdisc: {
+        fileCount: 3,
+        files: ["Input", "Dictionary", "Mapping"],
+        fileExtensions: ["csv", "tsv", "txt"],
+        info: [
+          "The input-file has to be a .xml",
+          "The dictionary can be a .csv, .tsv or .txt",
+          "mapping-file can be .yaml, .yml or .json",
+        ],
+      },
     };
-    fileTypeToExpected.cdisc = fileTypeToExpected.redcap;
     fileTypeToExpected.pxf = fileTypeToExpected.bff;
 
     const text = [fileTypeToExpected[inputFormat].info.join(", ")];
@@ -165,16 +174,6 @@ export default function InputFilesPond(props) {
     return fileTypeToExpected[inputFormat];
   };
 
-  const serverConfig = {
-    url: `${api_endpoint}api/submission/upload`,
-    process: {
-      headers: { Authorization: auth.getToken() },
-    },
-    revert: {
-      headers: { Authorization: auth.getToken() },
-    },
-  };
-
   // TODO
   // should be in a config file
   const allowMultipleMapping = {
@@ -185,6 +184,38 @@ export default function InputFilesPond(props) {
     cdisc: true,
   };
 
+  const acceptedFileTypesMapping = {
+    redcap: [
+      "application/json",
+      "text/csv",
+      "text/tsv",
+      "text/plain",
+      ".yaml",
+      ".yml",
+    ],
+    bff: ["application/json"],
+    pxf: ["application/json"],
+    omop: ["application/sql", "application/x-sql", "application/x-gzip"],
+    cdisc: [
+      "application/json",
+      "application/zip",
+      "text/csv",
+      "text/plain",
+      "text/tsv",
+      "text/xml",
+      ".yaml",
+      ".yml",
+    ],
+  };
+
+  const expectedFileExtensionsMapping = {
+    redcap: "Expect .txt, .c/tsv, .y(a)ml, .json",
+    bff: "Expect .json",
+    pxf: "Expect .json",
+    omop: "Expect .sql(.gz)",
+    cdisc: "Expect .txt, .c/tsv, .y(a)ml, .json, .xml",
+  };
+
   return (
     <Grid container>
       <Grid item xs={11}>
@@ -193,7 +224,24 @@ export default function InputFilesPond(props) {
           onupdatefiles={setFiles}
           allowMultiple={allowMultipleMapping[inputFormat]}
           maxFiles={getFileUploadInfo(inputFormat).fileCount}
-          server={serverConfig}
+          // modify below
+          // to be able to pass file meta data
+          // how to suggestion by ChatGPT
+          // https://chat.openai.com/share/5e7342b9-75e3-4dd3-bbca-f06e4032cf69
+          // server={serverConfig}
+
+          server={{
+            url: `${api_endpoint}api/submission/upload`,
+            process: {
+              headers: {
+                Authorization: auth.getToken(),
+                "X-Custom-InputFormat": inputFormat,
+              },
+            },
+            revert: {
+              headers: { Authorization: auth.getToken() },
+            },
+          }}
           name="files"
           labelIdle={getFileUploadInfo(inputFormat).label.join("")}
           onaddfile={() => {
@@ -208,22 +256,9 @@ export default function InputFilesPond(props) {
             // setSelectedFile(null);
           }}
           // option provided by plugins
-
-          // better hand this over as a prop
-          acceptedFileTypes={[
-            "text/csv",
-            "text/tsv",
-            "text/plain",
-            "application/json",
-            "application/sql",
-            "application/x-sql",
-            "application/x-yaml",
-            "application/x-gzip",
-            "application/gzip",
-          ]}
-          // better hand this over as a prop
+          acceptedFileTypes={acceptedFileTypesMapping[inputFormat]}
           fileValidateTypeLabelExpectedTypes={
-            "Expect .txt, .c/tsv, .y(a)ml, .json, .sql(.gz)"
+            expectedFileExtensionsMapping[inputFormat]
           }
           // TODO
           // when showing an error message increase the size of the filepond component

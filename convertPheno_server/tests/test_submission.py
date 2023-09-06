@@ -38,7 +38,11 @@ class TestSubmissionClass:
         data = dict(
             files=(BytesIO(b"my file contents"), "test.csv"),
         )
-        res = req_post_file(test_client, header, upload_url_suffix, data)
+
+        header_modified = deepcopy(header)
+        header_modified["X-Custom-InputFormat"] = "redcap"
+
+        res = req_post_file(test_client, header_modified, upload_url_suffix, data)
         assert res.status_code == 200
         assert "tempFilename" in res.json
 

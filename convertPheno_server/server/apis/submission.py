@@ -25,7 +25,7 @@ from flask_restx import Resource, Namespace, fields
 from flask_cors import cross_origin
 from werkzeug.datastructures import FileStorage
 
-from server.app import app, api, db
+from server.app import app, api, db, limiter
 from server.model import Job, Output, Upload, User
 from server.security import login
 
@@ -49,6 +49,11 @@ ns = Namespace(
 parser = api.parser()
 parser.add_argument("Authorization", type=str, location="headers", required=True)
 
+file_meta_data_parser = api.parser()
+file_meta_data_parser.add_argument(
+    "X-Custom-InputFormat", type=str, location="headers", required=True
+)
+
 upload_parser = api.parser()
 upload_parser.add_argument("files", location="files", type=FileStorage, required=True)
 
@@ -65,13 +70,17 @@ class UploadFile(Resource):
     """
 
     @login(login_required)
-    @api.expect(parser, upload_parser)
+    @limiter.limit("1 per day")
+    @api.expect(parser, upload_parser, file_meta_data_parser)
     def post(self, userid):
         """
         Upload file
         """
         args = upload_parser.parse_args()
         uploaded_file = args["files"]
+
+        meta_data = file_meta_data_parser.parse_args()
+        input_format = meta_data["X-Custom-InputFormat"]
 
         # get logged in userid
         user_id = get_or_create_user(userid)
@@ -91,7 +100,21 @@ class UploadFile(Resource):
 
         # TODO
         # add allowed file exensions in the config
-        allowed_extensions = ["csv", "tsv", "txt", "yml", "yaml", "json", "sql"]
+
+        # TODO
+        # add a mapping to be more specific what is allowed
+        # to be uploaded per input format
+
+        allowed_extensions_mapping = {
+            "redcap": ["csv", "tsv", "txt", "yml", "yaml", "json"],
+            "bff": ["json"],
+            "pxf": ["json"],
+            "omop": ["sql"],
+            "cdisc": ["xml", "csv", "tsv", "txt", "yml", "yaml", "json"],
+        }
+        print(allowed_extensions_mapping[input_format])
+
+        allowed_extensions = ["csv", "tsv", "txt", "yml", "yaml", "json", "sql", "xml"]
 
         if ext == "gz" and uploaded_file.filename.rsplit(".", 2)[1] == "sql":
             extension_allowed = True
