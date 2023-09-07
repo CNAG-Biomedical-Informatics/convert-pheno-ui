@@ -70,7 +70,7 @@ class UploadFile(Resource):
     """
 
     @login(login_required)
-    @limiter.limit("3/minute")
+    @limiter.limit("10/minute")
     @api.expect(parser, upload_parser, file_meta_data_parser)
     def post(self, userid):
         """

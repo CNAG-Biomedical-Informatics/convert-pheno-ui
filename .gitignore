@@ -6,3 +6,5 @@
 data/output/*.json
 data/uploads/*.csv
 
+
+/.luarc.json
