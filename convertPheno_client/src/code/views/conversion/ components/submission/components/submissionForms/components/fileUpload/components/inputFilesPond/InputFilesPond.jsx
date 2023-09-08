@@ -81,6 +81,7 @@ export default function InputFilesPond(props) {
     setFilesUploadFinished,
     setRunExampleData,
     inputFormat,
+    setError,
   } = props;
 
   const [files, setFiles] = useState([]);
@@ -132,7 +133,7 @@ export default function InputFilesPond(props) {
       redcap: {
         fileCount: 3,
         files: ["Input", "Dictionary", "Mapping"],
-        fileExtensions: ["csv", "tsv", "txt"],
+        fileExtensions: ["csv", "tsv", "txt", "yaml", "yml", "json"],
         info: [
           "The input-file & dictionary can be a .csv, .tsv or .txt",
           "Make sure that the input and the dictionary have the same separator",
@@ -154,7 +155,7 @@ export default function InputFilesPond(props) {
       cdisc: {
         fileCount: 3,
         files: ["Input", "Dictionary", "Mapping"],
-        fileExtensions: ["csv", "tsv", "txt"],
+        fileExtensions: ["xml", "csv", "tsv", "txt", "yaml", "yml", "json"],
         info: [
           "The input-file has to be a .xml",
           "The dictionary can be a .csv, .tsv or .txt",
@@ -190,6 +191,7 @@ export default function InputFilesPond(props) {
       "text/csv",
       "text/tsv",
       "text/plain",
+      "application/x-yaml",
       ".yaml",
       ".yml",
     ],
@@ -198,6 +200,7 @@ export default function InputFilesPond(props) {
     omop: ["application/sql", "application/x-sql", "application/x-gzip"],
     cdisc: [
       "application/json",
+      "aaplication/x-yaml",
       "application/zip",
       "text/csv",
       "text/plain",
@@ -214,6 +217,35 @@ export default function InputFilesPond(props) {
     pxf: "Expect .json",
     omop: "Expect .sql(.gz)",
     cdisc: "Expect .txt, .c/tsv, .y(a)ml, .json, .xml",
+  };
+
+  const errorHandling = (response) => {
+    const responseObj = JSON.parse(response);
+    const responseCode = responseObj.status_code;
+    const limit = responseObj.limit;
+
+    console.log(responseObj);
+    console.log(responseCode);
+    console.log(typeof responseCode);
+
+    if (responseCode === "429") {
+      console.log("limit", limit);
+
+      const splittedLimitText = limit.split(" per ");
+      const maxNumberOfFiles = splittedLimitText[0];
+      const maxTime = splittedLimitText[1];
+
+      const explanation = `
+        You cannot upload more than ${maxNumberOfFiles} file per${maxTime} 1 minute(s).
+        Please wait ${maxTime} minute(s) and then try again.
+      `;
+
+      setError({
+        status_code: responseCode,
+        explanation,
+      });
+      return;
+    }
   };
 
   return (
@@ -236,6 +268,9 @@ export default function InputFilesPond(props) {
               headers: {
                 Authorization: auth.getToken(),
                 "X-Custom-InputFormat": inputFormat,
+              },
+              onerror: (response) => {
+                errorHandling(response);
               },
             },
             revert: {
