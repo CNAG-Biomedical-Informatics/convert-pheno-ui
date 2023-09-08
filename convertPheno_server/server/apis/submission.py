@@ -70,7 +70,7 @@ class UploadFile(Resource):
     """
 
     @login(login_required)
-    @limiter.limit("10/minute")
+    @limiter.limit("1/minute")
     @api.expect(parser, upload_parser, file_meta_data_parser)
     def post(self, userid):
         """
@@ -88,23 +88,10 @@ class UploadFile(Resource):
         # get the file extension
         ext = uploaded_file.filename.rsplit(".", 1)[1]
 
-        # TODO
-        # depending on the selected mode different
-        # file extensions are allowed
-
-        # TODO
-        # depending on the input format
-        # a different number of file uploads should be possible
-
         extension_allowed = False
 
         # TODO
         # add allowed file exensions in the config
-
-        # TODO
-        # add a mapping to be more specific what is allowed
-        # to be uploaded per input format
-
         allowed_extensions_mapping = {
             "redcap": ["csv", "tsv", "txt", "yml", "yaml", "json"],
             "bff": ["json"],
@@ -148,6 +135,7 @@ class UploadFile(Resource):
         return {"tempFilename": fn}
 
     @login(login_required)
+    @limiter.limit("10/minute")
     @api.expect(parser)
     def delete(self, userid):
         """

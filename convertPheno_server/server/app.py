@@ -22,7 +22,7 @@ from flask_restx import Api
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 
-from flask_limiter import Limiter
+from flask_limiter import Limiter, RateLimitExceeded
 from flask_limiter.util import get_remote_address
 
 from server.utils.error_handler import ApiException
@@ -31,12 +31,7 @@ from server.utils.error_handler import ApiException
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
-limiter = Limiter(
-    get_remote_address,
-    app=app,
-    default_limits=["200 per day", "50 per hour"],
-    storage_uri="memory://",
-)
+limiter = Limiter(get_remote_address, app=app, storage_uri="memory://")
 
 app.config.from_object("server.config.general_config.GeneralConfig")
 app.config.from_object("server.config.config.Config")
@@ -68,6 +63,14 @@ db = SQLAlchemy(app)
 def create_tables():
     """Create all sql tables"""
     db.create_all()
+
+
+@api.errorhandler(RateLimitExceeded)
+def handle_rate_limit(err):
+    """
+    Return custom JSON when rate limit is exceeded
+    """
+    return {"message": f"Rate limit {err.description} exceeded"}, 429
 
 
 @api.errorhandler
