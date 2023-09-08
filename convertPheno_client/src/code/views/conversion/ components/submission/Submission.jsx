@@ -18,6 +18,7 @@ import useFileConversions from "./hooks/fileConversions";
 import LoadingBackdrop from "./components/loadingBackdrop/LoadingBackdrop";
 import SubmissionSummary from "./components/submissionSummary/SubmissionSummary";
 import SubmissionForms from "./components/submissionForms/SubmissionForms";
+import ErrorModal from "./components/modals/errorModal";
 
 export default function Submission(props) {
   const {
@@ -34,6 +35,7 @@ export default function Submission(props) {
   const [runExampleData, setRunExampleData] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [startFileConversion, setStartFileConversion] = useState(false);
+  const [error, setError] = useState(false);
 
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -63,6 +65,7 @@ export default function Submission(props) {
   const showSubmissionSummary = conversionFinished || previousJobData;
   return (
     <>
+      <ErrorModal error={error} setError={setError} />
       <LoadingBackdrop
         open={startFileConversion}
         status={status}
@@ -96,6 +99,7 @@ export default function Submission(props) {
             setUploadedFiles,
             setStartFileConversion,
             setRunExampleData,
+            setError,
           }}
         />
       )}

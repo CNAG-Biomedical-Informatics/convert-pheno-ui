@@ -81,6 +81,7 @@ export default function InputFilesPond(props) {
     setFilesUploadFinished,
     setRunExampleData,
     inputFormat,
+    setError,
   } = props;
 
   const [files, setFiles] = useState([]);
@@ -218,6 +219,35 @@ export default function InputFilesPond(props) {
     cdisc: "Expect .txt, .c/tsv, .y(a)ml, .json, .xml",
   };
 
+  const errorHandling = (response) => {
+    const responseObj = JSON.parse(response);
+    const responseCode = responseObj.status_code;
+    const limit = responseObj.limit;
+
+    console.log(responseObj);
+    console.log(responseCode);
+    console.log(typeof responseCode);
+
+    if (responseCode === "429") {
+      console.log("limit", limit);
+
+      const splittedLimitText = limit.split(" per ");
+      const maxNumberOfFiles = splittedLimitText[0];
+      const maxTime = splittedLimitText[1];
+
+      const explanation = `
+        You cannot upload more than ${maxNumberOfFiles} file per${maxTime} 1 minute(s).
+        Please wait ${maxTime} minute(s) and then try again.
+      `;
+
+      setError({
+        status_code: responseCode,
+        explanation,
+      });
+      return;
+    }
+  };
+
   return (
     <Grid container>
       <Grid item xs={11}>
@@ -238,6 +268,9 @@ export default function InputFilesPond(props) {
               headers: {
                 Authorization: auth.getToken(),
                 "X-Custom-InputFormat": inputFormat,
+              },
+              onerror: (response) => {
+                errorHandling(response);
               },
             },
             revert: {

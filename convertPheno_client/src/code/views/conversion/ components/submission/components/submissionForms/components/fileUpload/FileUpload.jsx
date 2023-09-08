@@ -34,6 +34,7 @@ export default function fileUpload(props) {
     setRunExampleData,
     setUploadedFiles,
     setFilesUploadFinished,
+    setError,
   } = props;
 
   const triggerFileDownload = async ({ inputFormat }) => {
@@ -73,6 +74,7 @@ export default function fileUpload(props) {
             setFilesUploadFinished={setFilesUploadFinished}
             setRunExampleData={setRunExampleData}
             inputFormat={inputFormat}
+            setError={setError}
           />
           <ToggleButton
             value="check"

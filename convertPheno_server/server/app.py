@@ -70,7 +70,11 @@ def handle_rate_limit(err):
     """
     Return custom JSON when rate limit is exceeded
     """
-    return {"message": f"Rate limit {err.description} exceeded"}, 429
+    return {
+        "message": f"Rate limit {err.description} exceeded",
+        "status_code": "429",
+        "limit": err.description,
+    }, 429
 
 
 @api.errorhandler
