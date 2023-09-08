@@ -36,6 +36,7 @@ export default function Submission(props) {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [startFileConversion, setStartFileConversion] = useState(false);
   const [error, setError] = useState(false);
+  const [retryTime, setRetryTime] = useState(10);
 
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -63,9 +64,20 @@ export default function Submission(props) {
   };
 
   const showSubmissionSummary = conversionFinished || previousJobData;
+
+  // const handleOpenErrorModal = (message, retryTime) => {
+  //   setErrorMessage(message);
+  //   setRetryTime(retryTime);
+  //   setIsErrorModalOpen(true);
+  // };
+
+  const onErrorModalClose = () => {
+    setError(false);
+  };
+
   return (
     <>
-      <ErrorModal error={error} setError={setError} />
+      <ErrorModal error={error} onClose={onErrorModalClose} />
       <LoadingBackdrop
         open={startFileConversion}
         status={status}
