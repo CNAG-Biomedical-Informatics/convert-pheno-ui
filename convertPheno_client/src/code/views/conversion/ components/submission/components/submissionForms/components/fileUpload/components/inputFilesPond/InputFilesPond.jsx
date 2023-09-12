@@ -236,7 +236,7 @@ export default function InputFilesPond(props) {
       const maxTime = splittedLimitText[1];
 
       const explanation = `
-        You cannot upload more than ${maxNumberOfFiles} file per${maxTime} 1 minute(s).
+        You cannot upload more than ${maxNumberOfFiles} file per ${maxTime} minute(s).
         Please wait ${maxTime} minute(s) and then try again.
       `;
 

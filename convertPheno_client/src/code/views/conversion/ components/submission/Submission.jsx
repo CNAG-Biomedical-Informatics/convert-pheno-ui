@@ -36,6 +36,7 @@ export default function Submission(props) {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [startFileConversion, setStartFileConversion] = useState(false);
   const [error, setError] = useState(false);
+  const [retryTime, setRetryTime] = useState(10);
 
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -63,9 +64,28 @@ export default function Submission(props) {
   };
 
   const showSubmissionSummary = conversionFinished || previousJobData;
+
+  // TODO
+  // suggestion by ChatGPT how to reset the ratelimit
+  // https://chat.openai.com/share/352d4b4e-85d9-4217-9274-58554de8453c
+
+  // const handleOpenErrorModal = (message, retryTime) => {
+  //   setErrorMessage(message);
+  //   setRetryTime(retryTime);
+  //   setIsErrorModalOpen(true);
+  // };
+
+  const onErrorModalClose = () => {
+    setError(false);
+  };
+
   return (
     <>
-      <ErrorModal error={error} setError={setError} />
+      <ErrorModal
+        error={error}
+        onClose={onErrorModalClose}
+        setError={setError}
+      />
       <LoadingBackdrop
         open={startFileConversion}
         status={status}
