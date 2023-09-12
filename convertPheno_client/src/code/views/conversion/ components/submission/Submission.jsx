@@ -65,10 +65,9 @@ export default function Submission(props) {
 
   const showSubmissionSummary = conversionFinished || previousJobData;
 
-
   // TODO
   // suggestion by ChatGPT how to reset the ratelimit
-  https://chat.openai.com/share/352d4b4e-85d9-4217-9274-58554de8453c
+  // https://chat.openai.com/share/352d4b4e-85d9-4217-9274-58554de8453c
 
   // const handleOpenErrorModal = (message, retryTime) => {
   //   setErrorMessage(message);
@@ -82,7 +81,11 @@ export default function Submission(props) {
 
   return (
     <>
-      <ErrorModal error={error} onClose={onErrorModalClose} />
+      <ErrorModal
+        error={error}
+        onClose={onErrorModalClose}
+        setError={setError}
+      />
       <LoadingBackdrop
         open={startFileConversion}
         status={status}
