@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 
 import HCaptcha from "@hcaptcha/react-hcaptcha";
-import { postCaptchaToken } from "../../../../../../apis";
+import { postCaptchaToken, getJobData } from "../../../../../../apis";
 import auth from "../../../../../../Auth";
 
 // TODO
@@ -35,16 +35,41 @@ const handleVerificationSuccess = async (token, ekey, setError) => {
     ekey: ekey,
   };
 
-  const response = await postCaptchaToken(auth.getToken(), api_endpoint, data);
-  const responseJson = await response.json();
-  console.log(responseJson);
-  if (responseJson.success) {
-    setError(false);
-  } else {
-    setError({
-      explanation: "captcha token could not be stored in the redis cache",
-    });
+  console.log("handleVerificationSuccess data", data);
+
+  // const res = await getJobData(
+  //   auth.getToken(),
+  //   api_endpoint,
+  //   JSON.stringify(data)
+  // );
+
+  const res = await postCaptchaToken(
+    auth.getToken(),
+    api_endpoint,
+    JSON.stringify(data)
+  );
+
+  if (!res.ok) {
+    console.log("handleVerificationSuccess res not ok", res);
+    const error = await res.json();
+    return Promise.reject(error);
   }
+  return res.json();
+
+  // const response = await postCaptchaToken(
+  //   auth.getToken(),
+  //   api_endpoint,
+  //   JSON.stringify(data)
+  // );
+  // const responseJson = await response.json();
+  // console.log(responseJson);
+  // if (responseJson.success) {
+  //   setError(false);
+  // } else {
+  //   setError({
+  //     explanation: "captcha token could not be stored in the redis cache",
+  //   });
+  // }
 };
 
 function ErrorModal(props) {

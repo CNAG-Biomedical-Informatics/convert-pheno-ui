@@ -23,8 +23,8 @@ cfg = app.config
 login_required = cfg["SECURITY"]
 
 ns = Namespace(
-    "clinical",
-    description="clinical data related operations",
+    "captcha",
+    description="captcha related operations",
     decorators=[cross_origin()],
 )
 
@@ -32,8 +32,12 @@ parser = api.parser()
 parser.add_argument("Authorization", type=str, location="headers", required=True)
 
 
-@ns.route("/captcha", methods=("POST",))
+@ns.route("/store", methods=("POST",))
 class Captcha(Resource):
+    """
+    store the captcha token in redis
+    """
+
     @login(login_required)
     @api.expect(parser)
     def post(self, userid):
@@ -52,4 +56,4 @@ class Captcha(Resource):
         return make_response({"message": "success"}, 200)
 
 
-ns.add_resource(Captcha, "/captcha", endpoint="captcha")
+ns.add_resource(Captcha, "/store", endpoint="store_captcha")

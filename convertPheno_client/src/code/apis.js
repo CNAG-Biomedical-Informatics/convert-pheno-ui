@@ -112,7 +112,11 @@ export async function getJobData(token, urlprefix, data) {
 }
 
 export async function postCaptchaToken(token, urlprefix, data) {
-  return fetch(`${urlprefix}api/captcha`, {
+  console.log("postCaptchaToken data", data);
+  console.log("postCaptchaToken urlprefix", urlprefix);
+  console.log("postCaptchaToken token", token);
+
+  return fetch(`${urlprefix}api/captcha/store`, {
     method: "POST",
     body: data,
     headers: {
