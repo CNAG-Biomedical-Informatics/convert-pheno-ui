@@ -110,3 +110,16 @@ export async function getJobData(token, urlprefix, data) {
     },
   });
 }
+
+export async function postCaptchaToken(token, urlprefix, data) {
+  return fetch(`${urlprefix}api/captcha`, {
+    method: "POST",
+    body: data,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      connection: "keep-alive",
+      Authorization: token,
+    },
+  });
+}
