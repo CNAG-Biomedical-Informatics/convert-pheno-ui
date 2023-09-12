@@ -118,11 +118,14 @@ from server.apis.test import ns as ns_test  # noqa: E402
 from server.apis.submission import ns as ns_submission  # noqa: E402
 from server.apis.jobs import ns as ns_jobs  # noqa: E402
 from server.apis.clinical import ns as ns_clinical  # noqa: E402
+from server.apis.captcha import ns as ns_captcha  # noqa: E402
+
 
 api.add_namespace(ns_test, path="/api")
 api.add_namespace(ns_submission, path="/api/submission")
 api.add_namespace(ns_jobs, path="/api/jobs")
 api.add_namespace(ns_clinical, path="/api/clinical")
+api.add_namespace(ns_captcha, path="/api/captcha")
 
 if __name__ == "__main__":  # pragma: no cover
     app.run(host="127.0.0.1", port=5000, threaded=True)

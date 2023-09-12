@@ -10,18 +10,41 @@ import {
 } from "@mui/material";
 
 import HCaptcha from "@hcaptcha/react-hcaptcha";
+import { postCaptchaToken } from "../../../../../../apis";
+import auth from "../../../../../../Auth";
 
 // TODO
 // another thing which could be used to reset the ratelimit
 // is to trigger a captcha challenge
 
-const handleVerificationSuccess = (token, ekey, setError) => {
+const api_endpoint =
+  process.env.NODE_ENV === "production"
+    ? window.REACT_APP_API_URL
+    : import.meta.env.VITE_API_URL;
+
+const handleVerificationSuccess = async (token, ekey, setError) => {
   console.log(token, ekey);
-  setError(false);
+  // setError(false);
   // TODO
   // send token to backend
   // if token is valid, reset ratelimit
   // if token is invalid, show error message
+
+  const data = {
+    token: token,
+    ekey: ekey,
+  };
+
+  const response = await postCaptchaToken(auth.getToken(), api_endpoint, data);
+  const responseJson = await response.json();
+  console.log(responseJson);
+  if (responseJson.success) {
+    setError(false);
+  } else {
+    setError({
+      explanation: "captcha token could not be stored in the redis cache",
+    });
+  }
 };
 
 function ErrorModal(props) {
