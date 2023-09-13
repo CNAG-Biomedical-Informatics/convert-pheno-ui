@@ -242,6 +242,22 @@ def generate_url(ontology_id):
         rxnorm_url = f"{rxnorm_base}search?searchBy=RXCUI&searchTerm={ont_query}"
         return rxnorm_url
 
+    # TODO
+    # if "OMIM" in ontology_id:
+    #     omim_url = f"https://omim.org/entry/{ont_query}"
+    #     return omim_url
+
+    # if "DrugCentral" in ontology_id:
+
+    # if "HP" in ontology_id:
+
+    # if
+
+    # TODO
+    # if NA then render a URL pointing to the Github of Convert-Pheno-UI
+    # and redirect to Github with a SweepAI issue template
+    # https://sweep.dev/
+
     return "NA"
 
 
