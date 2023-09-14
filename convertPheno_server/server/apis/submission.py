@@ -25,7 +25,8 @@ from flask_restx import Resource, Namespace, fields
 from flask_cors import cross_origin
 from werkzeug.datastructures import FileStorage
 
-from server.app import app, api, db, limiter
+# from server.app import app, api, db, limiter
+from server.app import app, api, db
 from server.model import Job, Output, Upload, User
 from server.security import login
 
@@ -70,7 +71,7 @@ class UploadFile(Resource):
     """
 
     @login(login_required)
-    @limiter.limit("1/minute")
+    # @limiter.limit("1/minute")
     @api.expect(parser, upload_parser, file_meta_data_parser)
     def post(self, userid):
         """
@@ -135,7 +136,7 @@ class UploadFile(Resource):
         return {"tempFilename": fn}
 
     @login(login_required)
-    @limiter.limit("10/minute")
+    # @limiter.limit("10/minute")
     @api.expect(parser)
     def delete(self, userid):
         """

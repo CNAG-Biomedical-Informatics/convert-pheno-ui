@@ -227,31 +227,32 @@ def generate_url(ontology_id):
         snomed_url = f"{snomed_base}{snomed_query}{snomed_suffix}"
         return snomed_url
 
-    # TODO
-    # OMOP-CDM to BFF/PXF
-    # Treatments rendering is not working as expected
-
-    # + clicking on it returns:
-    # Something went wrong:
-    # data[field].data is undefined
-
-    # same for PhenotypicFeatures
-
     if "RxNorm" in ontology_id:
         rxnorm_base = "https://mor.nlm.nih.gov/RxNav/"
         rxnorm_url = f"{rxnorm_base}search?searchBy=RXCUI&searchTerm={ont_query}"
         return rxnorm_url
 
-    # TODO
-    # if "OMIM" in ontology_id:
-    #     omim_url = f"https://omim.org/entry/{ont_query}"
-    #     return omim_url
+    if "MONDO" in ontology_id:
+        mondo_base = "https://www.ebi.ac.uk/ols4/ontologies/mondo/classes/"
+        mondo_query = f"http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMONDO_{ont_query}"
+        mondo_url = f"{mondo_base}{mondo_query}"
+        return mondo_url
 
-    # if "DrugCentral" in ontology_id:
+    if "OMIM" in ontology_id:
+        omim_url = f"https://omim.org/entry/{ont_query}"
+        return omim_url
 
-    # if "HP" in ontology_id:
+    if "DrugCentral" in ontology_id:
+        drugcentral_url = f"http://drugcentral.org/drugcard/{ont_query}"
+        return drugcentral_url
 
-    # if
+    if "CHEBI" in ontology_id:
+        chebi_url = f"https://www.ebi.ac.uk/chebi/searchId.do?chebiId={ont_query}"
+        return chebi_url
+
+    if "HP" in ontology_id:
+        hp_url = f"https://hpo.jax.org/app/browse/term/HP:{ont_query}"
+        return hp_url
 
     # TODO
     # if NA then render a URL pointing to the Github of Convert-Pheno-UI
