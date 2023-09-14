@@ -200,7 +200,7 @@ export default function InputFilesPond(props) {
     omop: ["application/sql", "application/x-sql", "application/x-gzip"],
     cdisc: [
       "application/json",
-      "aaplication/x-yaml",
+      "application/x-yaml",
       "application/zip",
       "text/csv",
       "text/plain",

@@ -186,16 +186,33 @@ output_formats_schema = api.schema_model(
     },
 )
 
+uploaded_files_schema = api.schema_model(
+    "UploadedFiles",
+    {
+        "type": "object",
+        "properties": {
+            "red_data.csv": {"type": "array", "items": {"type": "string"}},
+            "redcap_dictionary.csv": {"type": "array", "items": {"type": "string"}},
+            "red_mapping.yaml": {"type": "array", "items": {"type": "string"}},
+        },
+        "required": ["red_data.csv", "redcap_dictionary.csv", "red_mapping.yaml"],
+    },
+)
+
 resource_fields = api.model(
     "ConvertFile",
     {
         "runExampleData": fields.Boolean(required=True),
-        "uploadedFiles": fields.List(fields.String, required=True),
+        # "uploadedFiles": fields.List(fields.String, required=True),
+        "uploadedFiles": fields.Nested(uploaded_files_schema, required=True),
         "inputFormat": fields.String(required=True),
         "outputFormats": fields.Nested(output_formats_schema, required=True),
     },
     strict=True,
 )
+
+# TODO
+# make sure that the json schema validation is working again
 
 
 @ns.route("/convert", methods=("POST",))
@@ -205,7 +222,7 @@ class ConvertFile(Resource):
     """
 
     @login(login_required)
-    @api.expect(parser, resource_fields, validate=True)
+    # @api.expect(parser, resource_fields, validate=True)
     @api.doc(responses={200: "Success", 400: "Validation Error"})
     def post(self, userid):
         """
