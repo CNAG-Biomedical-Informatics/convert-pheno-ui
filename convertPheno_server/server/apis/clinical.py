@@ -549,14 +549,20 @@ class ClinicalDataView(Resource):
         # TODO this should not be hardcoded here
         # better change the dictionary "CLINICAL_DATA_COLS"
         if job.input_format == "pxf" and job.target_formats[0] == "bff":
-            del default_cols["info"]
-            del default_cols["ethnicity"]
-            del default_cols["exposures"]
+            default_cols.pop("info", None)
+            default_cols.pop("exposures", None)
+            default_cols.pop("ethnicity", None)
 
-        if job.input_format == "omop" and job.target_formats[0] == "bff":
-            del default_cols["info"]
-            del default_cols["exposures"]
-            del default_cols["measures"]
+        if job.input_format == "bff" and job.target_formats[0] == "pxf":
+            default_cols.pop("phenotypicFeatures", None)
+
+        if job.input_format == "omop" and "bff" in job.target_formats:
+            default_cols.pop("info", None)
+            default_cols.pop("exposures", None)
+            default_cols.pop("measures", None)
+
+        if job.input_format == "omop" and "pxf" in job.target_formats:
+            default_cols.pop("measurements", None)
 
         if not shown_cols:
             selected_cols = deepcopy(default_cols)
