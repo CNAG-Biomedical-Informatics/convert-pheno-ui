@@ -68,7 +68,9 @@ export default function SubmissionForms(props) {
     }
     if (["redcap", "cdisc"].includes(inputFormat)) {
       setOpenModal(true);
+      return;
     }
+    setStartFileConversion(true);
   };
 
   return (
