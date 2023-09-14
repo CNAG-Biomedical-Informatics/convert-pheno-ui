@@ -242,6 +242,22 @@ def generate_url(ontology_id):
         rxnorm_url = f"{rxnorm_base}search?searchBy=RXCUI&searchTerm={ont_query}"
         return rxnorm_url
 
+    # TODO
+    # if "OMIM" in ontology_id:
+    #     omim_url = f"https://omim.org/entry/{ont_query}"
+    #     return omim_url
+
+    # if "DrugCentral" in ontology_id:
+
+    # if "HP" in ontology_id:
+
+    # if
+
+    # TODO
+    # if NA then render a URL pointing to the Github of Convert-Pheno-UI
+    # and redirect to Github with a SweepAI issue template
+    # https://sweep.dev/
+
     return "NA"
 
 
@@ -484,29 +500,6 @@ class ClinicalDataView(Resource):
 
         clinical_format = data["phenoFormat"]
         job_id = data.get("jobId")
-        shown_cols = data.get("shownColumns")
-        filter_criteria = data.get(
-            "filter",
-            {
-                "inclusion": {},
-                "exclusion": {},
-            },
-        )
-        table_config = deepcopy(cfg["CLINICAL_DATA_COLS"][clinical_format])
-
-        selected_cols = deepcopy(shown_cols)
-        default_cols = table_config["default_cols"]
-        if not shown_cols:
-            selected_cols = deepcopy(default_cols)
-
-        key_to_subkey = table_config["key_to_subkey"]
-        new_default_cols = deepcopy(default_cols)
-        if key_to_subkey:
-            for col in default_cols:
-                if col in key_to_subkey:
-                    new_default_cols[col] = key_to_subkey[col]
-                    if col in selected_cols and len(selected_cols[col]) == 0:
-                        selected_cols[col] = key_to_subkey[col]
 
         job = (
             db.session.query(Job).filter_by(job_id=job_id, owner=user.id).one_or_none()
@@ -538,6 +531,39 @@ class ClinicalDataView(Resource):
         interesting_tree_data = []
         node_to_selected = {}
         selected_fields = {}
+
+        shown_cols = data.get("shownColumns")
+        filter_criteria = data.get(
+            "filter",
+            {
+                "inclusion": {},
+                "exclusion": {},
+            },
+        )
+        table_config = deepcopy(cfg["CLINICAL_DATA_COLS"][clinical_format])
+
+        selected_cols = deepcopy(shown_cols)
+        default_cols = table_config["default_cols"]
+
+        # TODO this should not be hardcoded here
+        # better change the dictionary "CLINICAL_DATA_COLS"
+        if job.input_format == "pxf" and job.target_formats[0] == "bff":
+            del default_cols["info"]
+            del default_cols["ethnicity"]
+            del default_cols["exposures"]
+
+        if not shown_cols:
+            selected_cols = deepcopy(default_cols)
+
+        key_to_subkey = table_config["key_to_subkey"]
+        new_default_cols = deepcopy(default_cols)
+        if key_to_subkey:
+            for col in default_cols:
+                if col in key_to_subkey:
+                    new_default_cols[col] = key_to_subkey[col]
+                    if col in selected_cols and len(selected_cols[col]) == 0:
+                        selected_cols[col] = key_to_subkey[col]
+
         for col in new_default_cols:
             field_of_interest = col
 
