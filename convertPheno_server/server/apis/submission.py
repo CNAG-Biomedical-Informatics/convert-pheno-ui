@@ -230,7 +230,6 @@ class ConvertFile(Resource):
         """
         data = request.get_json()
         runExample = data["runExampleData"]
-        print("data", data)
 
         if runExample:
             ns.logger.info("run /w example data")

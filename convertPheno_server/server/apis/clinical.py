@@ -553,6 +553,11 @@ class ClinicalDataView(Resource):
             del default_cols["ethnicity"]
             del default_cols["exposures"]
 
+        if job.input_format == "omop" and job.target_formats[0] == "bff":
+            del default_cols["info"]
+            del default_cols["exposures"]
+            del default_cols["measures"]
+
         if not shown_cols:
             selected_cols = deepcopy(default_cols)
 
