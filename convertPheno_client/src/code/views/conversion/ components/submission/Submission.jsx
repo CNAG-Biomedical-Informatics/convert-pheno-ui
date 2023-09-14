@@ -79,6 +79,11 @@ export default function Submission(props) {
     setError(false);
   };
 
+  // depending on the value of previousJobData
+  // set the inputFormat
+
+  // const previousJobDataExists = previousJobData !== undefined;
+
   return (
     <>
       <ErrorModal
@@ -93,7 +98,9 @@ export default function Submission(props) {
       />
       {showSubmissionSummary ? (
         <SubmissionSummary
-          inputFormat={inputFormat}
+          inputFormat={
+            data === undefined ? previousJobData.data.inputFormat : inputFormat
+          }
           outputFormats={outputFormats}
           status={status}
           data={data === undefined ? previousJobData.data : data}
