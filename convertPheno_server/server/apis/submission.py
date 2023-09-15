@@ -119,8 +119,14 @@ class UploadFile(Resource):
         if ext == "gz" and input_format == "omop":
             extension_allowed = True
             fn = f"{str(uuid4())}.sql.{ext}"
-            if not might_be_sql(uploaded_file):
-                return {"message": "File not a SQL"}, 400
+
+            # TODO
+            # check if the file is indeed a sql file
+            # seems to tamper with the file somehow
+            # so the conversion later fails
+
+            # if not might_be_sql(uploaded_file):
+            #     return {"message": "File not a SQL"}, 400
         else:
             if ext in allowed_extensions:
                 extension_allowed = True
