@@ -104,16 +104,17 @@ class UploadFile(Resource):
 
         allowed_extensions = ["csv", "tsv", "txt", "yml", "yaml", "json", "sql", "xml"]
 
-        if ext == "gz" and uploaded_file.filename.rsplit(".", 2)[1] == "sql":
+        if ext == "gz" and input_format == "omop":
             extension_allowed = True
+            fn = f"{str(uuid4())}.sql.{ext}"
         else:
             if ext in allowed_extensions:
                 extension_allowed = True
+                fn = f"{str(uuid4())}.{ext}"
 
         if not extension_allowed:
             return {"message": f"File extension {ext} is not allowed"}, 400
 
-        fn = f"{str(uuid4())}.{ext}"
         try:
             uploaded_file.save(cfg["FLASK_UPLOAD_DIR"] / fn)
         except FileNotFoundError as err:
