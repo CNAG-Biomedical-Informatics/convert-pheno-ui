@@ -552,6 +552,8 @@ class ClinicalDataView(Resource):
             default_cols.pop("info", None)
             default_cols.pop("exposures", None)
             default_cols.pop("ethnicity", None)
+            default_cols["karyotypicSex"] = []
+            table_config["default_order"].append("karyotypicSex")
 
         if job.input_format == "bff" and job.target_formats[0] == "pxf":
             default_cols.pop("phenotypicFeatures", None)
@@ -702,9 +704,7 @@ class ClinicalDataView(Resource):
                 top_level_to_nodes,
             )
 
-        table_config = cfg["CLINICAL_DATA_COLS"][clinical_format]
         column_order = table_config["default_order"]
-
         headers = []
         selected_cols_flattened = [
             item for sublist in list(selected_cols.values()) for item in sublist if item
