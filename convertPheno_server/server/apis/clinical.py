@@ -545,6 +545,7 @@ class ClinicalDataView(Resource):
 
         selected_cols = deepcopy(shown_cols)
         default_cols = table_config["default_cols"]
+        default_order = table_config["default_order"]
 
         # TODO this should not be hardcoded here
         # better change the dictionary "CLINICAL_DATA_COLS"
@@ -553,7 +554,9 @@ class ClinicalDataView(Resource):
             default_cols.pop("exposures", None)
             default_cols.pop("ethnicity", None)
             default_cols["karyotypicSex"] = []
-            table_config["default_order"].append("karyotypicSex")
+
+            pos_of_sex = default_order.index("sex")
+            default_order.insert(pos_of_sex + 1, "karyotypicSex")
 
         if job.input_format == "bff" and job.target_formats[0] == "pxf":
             default_cols.pop("phenotypicFeatures", None)
@@ -704,7 +707,7 @@ class ClinicalDataView(Resource):
                 top_level_to_nodes,
             )
 
-        column_order = table_config["default_order"]
+        column_order = default_order
         headers = []
         selected_cols_flattened = [
             item for sublist in list(selected_cols.values()) for item in sublist if item
