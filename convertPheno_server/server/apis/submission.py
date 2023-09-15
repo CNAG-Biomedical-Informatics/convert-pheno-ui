@@ -69,7 +69,7 @@ def might_be_sql(gzip_file):
     with gzip.open(gzip_file, "rt", encoding="utf-8") as f:
         content = "".join([f.readline() for _ in range(50)])
 
-        # reset the file pointer
+        # reset the file pointer (otherwise the conversion will fail)
         f.seek(0)
 
     # Check against a set of common SQL keywords
@@ -123,11 +123,6 @@ class UploadFile(Resource):
         if ext == "gz" and input_format == "omop":
             extension_allowed = True
             fn = f"{str(uuid4())}.sql.{ext}"
-
-            # TODO
-            # check if the file is indeed a sql file
-            # seems to tamper with the file somehow
-            # so the conversion later fails
 
             if not might_be_sql(uploaded_file):
                 return {"message": "File not a SQL"}, 400
