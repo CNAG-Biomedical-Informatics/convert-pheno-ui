@@ -15,6 +15,7 @@ For submitting a to be converted file
 """
 from copy import deepcopy
 from io import BytesIO
+import gzip
 import json
 from uuid import uuid4
 import zipfile
@@ -64,6 +65,17 @@ upload_parser.add_argument("files", location="files", type=FileStorage, required
 # output
 
 
+def might_be_sql(gzip_file):
+    with gzip.open(gzip_file, "rt", encoding="utf-8") as f:
+        content = "".join([f.readline() for _ in range(50)])
+    # Check against a set of common SQL keywords
+    keywords = ["CREATE", "INSERT", "SELECT", "UPDATE", "DELETE", "ALTER", "DROP"]
+    for keyword in keywords:
+        if keyword in content:
+            return True
+    return False
+
+
 @ns.route("/upload", methods=("POST", "DELETE"))
 class UploadFile(Resource):
     """
@@ -104,16 +116,19 @@ class UploadFile(Resource):
 
         allowed_extensions = ["csv", "tsv", "txt", "yml", "yaml", "json", "sql", "xml"]
 
-        if ext == "gz" and uploaded_file.filename.rsplit(".", 2)[1] == "sql":
+        if ext == "gz" and input_format == "omop":
             extension_allowed = True
+            fn = f"{str(uuid4())}.sql.{ext}"
+            if not might_be_sql(uploaded_file):
+                return {"message": "File not a SQL"}, 400
         else:
             if ext in allowed_extensions:
                 extension_allowed = True
+                fn = f"{str(uuid4())}.{ext}"
 
         if not extension_allowed:
             return {"message": f"File extension {ext} is not allowed"}, 400
 
-        fn = f"{str(uuid4())}.{ext}"
         try:
             uploaded_file.save(cfg["FLASK_UPLOAD_DIR"] / fn)
         except FileNotFoundError as err:
