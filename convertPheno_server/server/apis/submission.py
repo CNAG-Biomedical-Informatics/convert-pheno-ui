@@ -68,6 +68,10 @@ upload_parser.add_argument("files", location="files", type=FileStorage, required
 def might_be_sql(gzip_file):
     with gzip.open(gzip_file, "rt", encoding="utf-8") as f:
         content = "".join([f.readline() for _ in range(50)])
+
+        # reset the file pointer
+        f.seek(0)
+
     # Check against a set of common SQL keywords
     keywords = ["CREATE", "INSERT", "SELECT", "UPDATE", "DELETE", "ALTER", "DROP"]
     for keyword in keywords:
@@ -125,8 +129,8 @@ class UploadFile(Resource):
             # seems to tamper with the file somehow
             # so the conversion later fails
 
-            # if not might_be_sql(uploaded_file):
-            #     return {"message": "File not a SQL"}, 400
+            if not might_be_sql(uploaded_file):
+                return {"message": "File not a SQL"}, 400
         else:
             if ext in allowed_extensions:
                 extension_allowed = True
