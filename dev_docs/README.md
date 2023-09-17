@@ -4,7 +4,7 @@ This directory, 'dev_docs', contains the developer documentation for the Convert
 
 ## Contents
 
-0. **Project Structure**: This document provides an overview of the project's structure, including the organization of the source code and the roles of different directories and files.
+0. [**Project Structure**](https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui/blob/main/dev_docs/project_structure.md): This document provides an overview of the project's structure, including the organization of the source code and the roles of different directories and files.
 
 1. **Component Documentation**: This document provides detailed information about the project' React components, including their props, state, and methods.
 
