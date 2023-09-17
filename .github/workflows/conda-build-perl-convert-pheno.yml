@@ -16,7 +16,7 @@ jobs:
               docker pull quay.io/dpryan79/mulled_container:latest
               export OSTYPE="linux-gnu"
               export CI="true"
-              bioconda-utils build conda_recipe conda_recipe/config.yml --docker --mulled-test > /tmp/build.docker.log 2>&1
+              bioconda-utils build conda_recipe conda_recipe/config.yml --docker --mulled-test > /tmp/build.log 2>&1
               docker rmi quay.io/dpryan79/mulled_container:latest
           - os : macos-latest
             bash: |
@@ -26,7 +26,7 @@ jobs:
               export OSTYPE="darwin"
               export CI="true"
               export HOME=`pwd`
-              bioconda-utils build conda_recipe conda_recipe/config.yml
+              bioconda-utils build conda_recipe conda_recipe/config.yml > /tmp/build.log 2>&1
 
     runs-on: ${{ matrix.os }}
     continue-on-error: true
@@ -103,5 +103,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: build_log_${{ matrix.os }}
-          path: /tmp/build.docker.log
+          path: /tmp/build.log
         
