@@ -20,6 +20,7 @@ requirements:
     - perl-app-cpanminus
     - perl-dbi
     - perl-dbd-sqlite
+    - perl-json-validator
     # - perl-file-sharedir-install
     - perl-json-xs
     # - perl-perlio-gzip
@@ -30,6 +31,7 @@ requirements:
     - perl
     - perl-dbi
     - perl-dbd-sqlite
+    - perl-json-validator
     - perl-json-xs
     # - perl-perlio-gzip
     - perl-sort-naturally
