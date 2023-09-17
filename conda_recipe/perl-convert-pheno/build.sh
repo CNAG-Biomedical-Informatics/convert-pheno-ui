@@ -46,7 +46,8 @@ cpanm File::ShareDir::Install
 if [[ "$(uname)" == Darwin ]]; then
     install_deps(general_deps)
 else
-    install_deps(general_deps+=("JSON::Validator"))
+    new_deps=("${general_deps[@]}" "JSON::Validator")
+    install_deps(new_deps))
 fi
 # install_deps
 perl Makefile.PL INSTALLDIRS=site
