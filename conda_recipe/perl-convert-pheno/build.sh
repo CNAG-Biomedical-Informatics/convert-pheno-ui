@@ -65,6 +65,7 @@ do
   mkdir -p "${PREFIX}/etc/conda/${CHANGE}.d"
 done
 echo "#!/bin/sh" > "${PREFIX}/etc/conda/activate.d/${PKG_NAME}_activate.sh"
-echo "export PERL5LIB=$PREFIX/lib/perl5/site_perl/5.22.0/" >> "${PREFIX}/etc/conda/activate.d/${PKG_NAME}_activate.sh"
+# echo "export PERL5LIB=$PREFIX/lib/perl5/site_perl/5.22.0/" >> "${PREFIX}/etc/conda/activate.d/${PKG_NAME}_activate.sh"
+echo "export PERL5LIB=$PREFIX/lib/perl5/site_perl/5.36.0/" >> "${PREFIX}/etc/conda/activate.d/${PKG_NAME}_activate.sh"
 echo "#!/bin/sh" > "${PREFIX}/etc/conda/deactivate.d/${PKG_NAME}_deactivate.sh"
 echo "unset PERL5LIB" >> "${PREFIX}/etc/conda/deactivate.d/${PKG_NAME}_deactivate.sh"
