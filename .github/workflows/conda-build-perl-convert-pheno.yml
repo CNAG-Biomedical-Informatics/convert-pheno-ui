@@ -16,7 +16,7 @@ jobs:
               docker pull quay.io/dpryan79/mulled_container:latest
               export OSTYPE="linux-gnu"
               export CI="true"
-              bioconda-utils build conda_recipe conda_recipe/config.yml --docker --mulled-test
+              bioconda-utils build conda_recipe conda_recipe/config.yml --docker --mulled-test > 2>&1 
               docker rmi quay.io/dpryan79/mulled_container:latest
           - os : macos-latest
             bash: |
@@ -97,3 +97,11 @@ jobs:
         with:
           name: cpan_log_${{ matrix.os }}
           path: /tmp/.cpanm/work/*/build.log
+
+      - name: Archive build logs
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: build_log_${{ matrix.os }}
+          path: /tmp/build.docker.log
+        
