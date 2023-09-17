@@ -4,12 +4,10 @@ This directory, 'dev_docs', contains the developer documentation for the Convert
 
 ## Contents
 
-0. [**Deployment with user authentication enabled**](https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui/blob/main/dev_docs/how_to_self_host_w_keycloak_login_enabled.md): This document explains how deploy the software whith Keycload secured authentication enabled.
+0. **Project Structure**: This document provides an overview of the project's structure, including the organization of the source code and the roles of different directories and files.
 
-1. **Project Structure**: This document provides an overview of the project's structure, including the organization of the source code and the roles of different directories and files.
+1. **Component Documentation**: This document provides detailed information about the project' React components, including their props, state, and methods.
 
-2. **Component Documentation**: This document provides detailed information about the project's components, including their props, state, and methods.
-
-3. **Development Practices**: This document outlines the development practices followed in this project, including coding standards, testing practices, and the process for submitting pull requests.
+2. [**Deployment with user authentication enabled**](https://github.com/CNAG-Biomedical-Informatics/convert-pheno-ui/blob/main/dev_docs/how_to_self_host_w_keycloak_login_enabled.md): This document explains how deploy the software whith Keycload secured authentication enabled.
 
 Please refer to the individual documents for more detailed information.
