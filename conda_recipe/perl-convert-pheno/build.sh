@@ -33,6 +33,7 @@ if [[ "$(uname)" == Darwin ]]; then
     conda install -c conda-forge perl-data-optlist -y
     conda install -c bioconda perl-sub-exporter -y
     conda install -c bioconda perl-mac-systemdirectory -y
+    conda install -c bioconda perl-json-validator
     #perl-mac-system directory needs perl 5.26.2
 
     conda install -c bioconda perl-file-homedir -y
