@@ -16,7 +16,7 @@ general_deps=(
 
 # install dependencies not found in conda channels
 install_deps() {
-    local -n deps="$1" 
+    local deps=("${!1}")  # Use "!" to dereference the array variable passed as an argument
     
     for dep in "${deps[@]}"; do
         HOME=/tmp cpanm -v "$dep" || {
