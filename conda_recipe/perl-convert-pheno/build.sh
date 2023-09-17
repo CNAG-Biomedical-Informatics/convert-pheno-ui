@@ -15,8 +15,8 @@ general_deps=(
 )
 
 # install dependencies not found in conda channels
-install_deps(deps) {
-    for dep in "${deps[@]}"; do
+install_deps() {
+    for dep in "${$1[@]}"; do
         HOME=/tmp cpanm -v "$dep" || {
         # cpanm "$dep" || {
             echo "Failed to install perl module $dep"
@@ -44,10 +44,10 @@ fi
 
 cpanm File::ShareDir::Install
 if [[ "$(uname)" == Darwin ]]; then
-    install_deps(general_deps)
+    install_deps $general_deps
 else
     new_deps=("${general_deps[@]}" "JSON::Validator")
-    install_deps(new_deps))
+    install_deps $new_deps
 fi
 # install_deps
 perl Makefile.PL INSTALLDIRS=site
