@@ -1,20 +1,21 @@
 #!/bin/bash
 
+general_deps=(
+    "Data::Leaf::Walker"
+    #"JSON::Validator"
+    "File::ShareDir::ProjectDistDir"
+    "Moo"
+    "Path::Tiny"
+    "Test::Deep"
+    "Text::CSV_XS"
+    "Text::Similarity"
+    "Types::Standard"
+    "XML::Fast"
+    "YAML::XS"
+)
+
 # install dependencies not found in conda channels
-install_deps() {
-    deps=(
-        "Data::Leaf::Walker"
-        #"JSON::Validator"
-        "File::ShareDir::ProjectDistDir"
-        "Moo"
-        "Path::Tiny"
-        "Test::Deep"
-        "Text::CSV_XS"
-        "Text::Similarity"
-        "Types::Standard"
-        "XML::Fast"
-        "YAML::XS"
-    )
+install_deps(deps) {
     for dep in "${deps[@]}"; do
         HOME=/tmp cpanm -v "$dep" || {
         # cpanm "$dep" || {
@@ -39,10 +40,15 @@ if [[ "$(uname)" == Darwin ]]; then
     conda install -c bioconda perl-file-homedir -y
     # conda install -v -c conda-forge perl-yaml-libyaml=0.85 -y
     #perl-yaml-libyaml=0.85 needs perl 5.32.1
-fi
+fi 
 
 cpanm File::ShareDir::Install
-install_deps
+if [[ "$(uname)" == Darwin ]]; then
+    install_deps(general_deps)
+else
+    install_deps(general_deps+=("JSON::Validator"))
+fi
+# install_deps
 perl Makefile.PL INSTALLDIRS=site
 make
 # make test
