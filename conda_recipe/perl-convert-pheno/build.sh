@@ -19,7 +19,7 @@ install_deps() {
     local deps=("${!1}")  # Use "!" to dereference the array variable passed as an argument
 
     for dep in "${deps[@]}"; do
-        echo "Installing $dep"
+        echo "Installing the dependency: $dep"
         HOME=/tmp cpanm -v "$dep" || {
         # cpanm "$dep" || {
             echo "Failed to install perl module $dep"
