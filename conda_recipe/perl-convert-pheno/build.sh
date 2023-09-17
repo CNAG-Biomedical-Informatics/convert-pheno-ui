@@ -17,8 +17,9 @@ general_deps=(
 # install dependencies not found in conda channels
 install_deps() {
     local deps=("${!1}")  # Use "!" to dereference the array variable passed as an argument
-    
+
     for dep in "${deps[@]}"; do
+        echo "Installing $dep"
         HOME=/tmp cpanm -v "$dep" || {
         # cpanm "$dep" || {
             echo "Failed to install perl module $dep"
@@ -42,14 +43,14 @@ if [[ "$(uname)" == Darwin ]]; then
     conda install -c bioconda perl-file-homedir -y
     # conda install -v -c conda-forge perl-yaml-libyaml=0.85 -y
     #perl-yaml-libyaml=0.85 needs perl 5.32.1
-fi 
+fi
 
 cpanm File::ShareDir::Install
 if [[ "$(uname)" == Darwin ]]; then
-    install_deps general_deps
+    install_deps general_deps[@]
 else
     new_deps=("${general_deps[@]}" "JSON::Validator")
-    install_deps new_deps
+    install_deps new_deps[@]
 fi
 # install_deps
 perl Makefile.PL INSTALLDIRS=site
