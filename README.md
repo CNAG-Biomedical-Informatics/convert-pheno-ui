@@ -26,8 +26,6 @@
 `convert-pheno-ui` is a web-interface for the CPAN's module [Convert::Pheno](https://metacpan.org/pod/Convert%3A%3APheno)
 which is a software toolkit for the interconversion of standard data models for phenotypic data.
 
-The module will be uploaded to CPAN once the paper is submitted.
-
 [![Convert-Pheno-UI](docs/ui.gif)](docs/ui.gif)
 
 # Getting Started
