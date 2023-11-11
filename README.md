@@ -63,7 +63,7 @@ Rueda, M; Leist, IC et al., (2023). Convert-Pheno: A software toolkit for the in
 
 ### AUTHOR
 
-Written by Ivo Christopher Leist, PhD student at CNAG [https://www.cnag.crg.eu](https://www.cnag.crg.eu).
+Written by Ivo Christopher Leist, PhD student at CNAG [https://www.cnag.eu](https://www.cnag.eu).
 
 ### COPYRIGHT AND LICENSE
 
