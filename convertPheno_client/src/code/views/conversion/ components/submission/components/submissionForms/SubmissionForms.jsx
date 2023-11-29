@@ -27,6 +27,7 @@ export default function SubmissionForms(props) {
     setUploadedFiles,
     setRunExampleData,
     setStartFileConversion,
+    setError,
   } = setters;
 
   const [openModal, setOpenModal] = useState(false);
@@ -67,7 +68,9 @@ export default function SubmissionForms(props) {
     }
     if (["redcap", "cdisc"].includes(inputFormat)) {
       setOpenModal(true);
+      return;
     }
+    setStartFileConversion(true);
   };
 
   return (
@@ -89,6 +92,7 @@ export default function SubmissionForms(props) {
             setRunExampleData={setRunExampleData}
             setUploadedFiles={setUploadedFiles}
             setFilesUploadFinished={setFilesUploadFinished}
+            setError={setError}
           />
         </Grid>
         <Grid item xs={1} align="center">

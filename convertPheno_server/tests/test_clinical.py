@@ -73,20 +73,20 @@ class TestClinicalFilteringClass:
         # certain fields can only be filtered by an exact match
         # example: sex; allowed values:"Male","Female"
 
-        expected_val = "Male (NCIT:C20197)"
+        expected_val = "Male"
         filter_criteria = ["inclusion", "sex", "Male"]
         filter_by_criteria(client, header, url_suffix, filter_criteria, expected_val)
 
-        disallowed_val = "Male (NCIT:C20197)"
-        filter_criteria = ["exclusion", "sex", "Male"]
+        disallowed_val = "Female"
+        filter_criteria = ["exclusion", "sex", "Female"]
         filter_by_criteria(client, header, url_suffix, filter_criteria, disallowed_val)
 
     def test_filter_by_partial_match(self, client, header):
-        expected_val = "Caucasian (NCIT:C41261)"
+        expected_val = "Caucasian"
         filter_criteria = ["inclusion", "ethnicity", "Cauca"]
         filter_by_criteria(client, header, url_suffix, filter_criteria, expected_val)
 
-        disallowed_val = "Caucasian (NCIT:C41261)"
+        disallowed_val = "Caucasian"
         filter_criteria = ["exclusion", "ethnicity", "Cauca"]
         filter_by_criteria(client, header, url_suffix, filter_criteria, disallowed_val)
 

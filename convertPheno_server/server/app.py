@@ -22,12 +22,16 @@ from flask_restx import Api
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 
+# from flask_limiter import Limiter, RateLimitExceeded
+# from flask_limiter.util import get_remote_address
+
 from server.utils.error_handler import ApiException
 
 # configure root logger
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
+# limiter = Limiter(get_remote_address, app=app, storage_uri="memory://")
 
 app.config.from_object("server.config.general_config.GeneralConfig")
 app.config.from_object("server.config.config.Config")
@@ -59,6 +63,18 @@ db = SQLAlchemy(app)
 def create_tables():
     """Create all sql tables"""
     db.create_all()
+
+
+# @api.errorhandler(RateLimitExceeded)
+# def handle_rate_limit(err):
+#     """
+#     Return custom JSON when rate limit is exceeded
+#     """
+#     return {
+#         "message": f"Rate limit {err.description} exceeded",
+#         "status_code": "429",
+#         "limit": err.description,
+#     }, 429
 
 
 @api.errorhandler
@@ -102,11 +118,14 @@ from server.apis.test import ns as ns_test  # noqa: E402
 from server.apis.submission import ns as ns_submission  # noqa: E402
 from server.apis.jobs import ns as ns_jobs  # noqa: E402
 from server.apis.clinical import ns as ns_clinical  # noqa: E402
+from server.apis.captcha import ns as ns_captcha  # noqa: E402
+
 
 api.add_namespace(ns_test, path="/api")
 api.add_namespace(ns_submission, path="/api/submission")
 api.add_namespace(ns_jobs, path="/api/jobs")
 api.add_namespace(ns_clinical, path="/api/clinical")
+api.add_namespace(ns_captcha, path="/api/captcha")
 
 if __name__ == "__main__":  # pragma: no cover
     app.run(host="127.0.0.1", port=5000, threaded=True)

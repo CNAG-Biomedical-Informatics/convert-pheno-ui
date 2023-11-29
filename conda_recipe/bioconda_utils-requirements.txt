@@ -1,8 +1,8 @@
 #taken from
-#https://raw.githubusercontent.com/bioconda/bioconda-utils/v2.3.2/bioconda_utils/bioconda_utils-requirements.txt
+#https://raw.githubusercontent.com/bioconda/bioconda-utils/v2.4.0/bioconda_utils/bioconda_utils-requirements.txt
 
 # added
-bioconda-utils=2.3.3
+bioconda-utils=2.4.0
 
 # basics
 python>=3.7

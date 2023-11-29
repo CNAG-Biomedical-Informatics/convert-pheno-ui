@@ -15,16 +15,18 @@ For submitting a to be converted file
 """
 from copy import deepcopy
 from io import BytesIO
+import gzip
 import json
 from uuid import uuid4
 import zipfile
 from time import time, localtime
 
 from flask import request, send_file
-from flask_restx import Resource, Namespace
+from flask_restx import Resource, Namespace, fields
 from flask_cors import cross_origin
 from werkzeug.datastructures import FileStorage
 
+# from server.app import app, api, db, limiter
 from server.app import app, api, db
 from server.model import Job, Output, Upload, User
 from server.security import login
@@ -49,6 +51,11 @@ ns = Namespace(
 parser = api.parser()
 parser.add_argument("Authorization", type=str, location="headers", required=True)
 
+file_meta_data_parser = api.parser()
+file_meta_data_parser.add_argument(
+    "X-Custom-InputFormat", type=str, location="headers", required=True
+)
+
 upload_parser = api.parser()
 upload_parser.add_argument("files", location="files", type=FileStorage, required=True)
 
@@ -58,15 +65,30 @@ upload_parser.add_argument("files", location="files", type=FileStorage, required
 # output
 
 
-@api.expect(parser)
-@api.expect(upload_parser)
-@ns.route("/", methods=("POST", "DELETE"))
+def might_be_sql(gzip_file):
+    with gzip.open(gzip_file, "rt", encoding="utf-8") as f:
+        content = "".join([f.readline() for _ in range(50)])
+
+        # reset the file pointer (otherwise the conversion will fail)
+        f.seek(0)
+
+    # Check against a set of common SQL keywords
+    keywords = ["CREATE", "INSERT", "SELECT", "UPDATE", "DELETE", "ALTER", "DROP"]
+    for keyword in keywords:
+        if keyword in content:
+            return True
+    return False
+
+
+@ns.route("/upload", methods=("POST", "DELETE"))
 class UploadFile(Resource):
     """
     API to upload files
     """
 
     @login(login_required)
+    # @limiter.limit("1/minute")
+    @api.expect(parser, upload_parser, file_meta_data_parser)
     def post(self, userid):
         """
         Upload file
@@ -74,16 +96,44 @@ class UploadFile(Resource):
         args = upload_parser.parse_args()
         uploaded_file = args["files"]
 
+        meta_data = file_meta_data_parser.parse_args()
+        input_format = meta_data["X-Custom-InputFormat"]
+
         # get logged in userid
         user_id = get_or_create_user(userid)
 
         # get the file extension
         ext = uploaded_file.filename.rsplit(".", 1)[1]
 
+        extension_allowed = False
+
         # TODO
         # add allowed file exensions in the config
+        allowed_extensions_mapping = {
+            "redcap": ["csv", "tsv", "txt", "yml", "yaml", "json"],
+            "bff": ["json"],
+            "pxf": ["json"],
+            "omop": ["sql"],
+            "cdisc": ["xml", "csv", "tsv", "txt", "yml", "yaml", "json"],
+        }
+        print(allowed_extensions_mapping[input_format])
 
-        fn = f"{str(uuid4())}.{ext}"
+        allowed_extensions = ["csv", "tsv", "txt", "yml", "yaml", "json", "sql", "xml"]
+
+        if ext == "gz" and input_format == "omop":
+            extension_allowed = True
+            fn = f"{str(uuid4())}.sql.{ext}"
+
+            if not might_be_sql(uploaded_file):
+                return {"message": "File not a SQL"}, 400
+        else:
+            if ext in allowed_extensions:
+                extension_allowed = True
+                fn = f"{str(uuid4())}.{ext}"
+
+        if not extension_allowed:
+            return {"message": f"File extension {ext} is not allowed"}, 400
+
         try:
             uploaded_file.save(cfg["FLASK_UPLOAD_DIR"] / fn)
         except FileNotFoundError as err:
@@ -106,6 +156,8 @@ class UploadFile(Resource):
         return {"tempFilename": fn}
 
     @login(login_required)
+    # @limiter.limit("10/minute")
+    @api.expect(parser)
     def delete(self, userid):
         """
         Delete uploaded file
@@ -141,21 +193,63 @@ class UploadFile(Resource):
         return {"message": "File is deleted"}, 200
 
 
-@api.expect(parser)
-@ns.route("/", methods=("POST",))
+output_formats_schema = api.schema_model(
+    "OutputFormats",
+    {
+        "type": "object",
+        "properties": {
+            "bff": {"type": "boolean"},
+            "pxf": {"type": "boolean"},
+            "omop": {"type": "boolean"},
+        },
+        "required": ["bff", "pxf", "omop"],
+    },
+)
+
+uploaded_files_schema = api.schema_model(
+    "UploadedFiles",
+    {
+        "type": "object",
+        "properties": {
+            "red_data.csv": {"type": "array", "items": {"type": "string"}},
+            "redcap_dictionary.csv": {"type": "array", "items": {"type": "string"}},
+            "red_mapping.yaml": {"type": "array", "items": {"type": "string"}},
+        },
+        "required": ["red_data.csv", "redcap_dictionary.csv", "red_mapping.yaml"],
+    },
+)
+
+resource_fields = api.model(
+    "ConvertFile",
+    {
+        "runExampleData": fields.Boolean(required=True),
+        # "uploadedFiles": fields.List(fields.String, required=True),
+        "uploadedFiles": fields.Nested(uploaded_files_schema, required=True),
+        "inputFormat": fields.String(required=True),
+        "outputFormats": fields.Nested(output_formats_schema, required=True),
+    },
+    strict=True,
+)
+
+# TODO
+# make sure that the json schema validation is working again
+
+
+@ns.route("/convert", methods=("POST",))
 class ConvertFile(Resource):
     """
     API to convert uploaded file
     """
 
     @login(login_required)
+    # @api.expect(parser, resource_fields, validate=True)
+    @api.doc(responses={200: "Success", 400: "Validation Error"})
     def post(self, userid):
         """
         Convert file
         """
         data = request.get_json()
         runExample = data["runExampleData"]
-        print("data", data)
 
         if runExample:
             ns.logger.info("run /w example data")
@@ -341,14 +435,14 @@ def downloadAllFiles(data, job_id):
     return mem_zip
 
 
-@api.expect(parser)
-@ns.route("/", methods=("POST",))
+@ns.route("/download", methods=("POST",))
 class DownloadFile(Resource):
     """
     API to download the converted file
     """
 
     @login(login_required)
+    @api.expect(parser)
     def post(self, userid):
         """
         Flask send_file
@@ -386,14 +480,14 @@ class DownloadFile(Resource):
         )
 
 
-@api.expect(parser)
-@ns.route("/", methods=("POST",))
+@ns.route("/download/example", methods=("POST",))
 class DownloadExampleFile(Resource):
     """
     API to download example input
     """
 
     @login(login_required)
+    @api.expect(parser)
     def post(self, userid):
         """
         Flask send_file

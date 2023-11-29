@@ -14,7 +14,7 @@ bash Mambaforge-$(uname)-$(uname -m).sh
 
 ```bash
 mamba create -n build-env python=3.7
-mamba env update -n build-env -f conda_recipe/bioconda_utils-requirements.txt
+mamba env update -n build-env -f bioconda_utils-requirements.txt
 mamba install python=3.7
 ```
 

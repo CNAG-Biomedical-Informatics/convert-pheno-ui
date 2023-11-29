@@ -175,7 +175,6 @@ def recursive_search(dictionary, key):
 
 
 def generate_url(ontology_id):
-
     if ontology_id is None:
         return "NA"
 
@@ -184,7 +183,6 @@ def generate_url(ontology_id):
 
     ont_query = ontology_id.split(":")[1]
     if "NCIT" in ontology_id and ontology_id != "NCIT:NA0000":
-
         # TODO
         # The NCIT base url should be in a config file
         ncit_base = "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp"
@@ -229,20 +227,37 @@ def generate_url(ontology_id):
         snomed_url = f"{snomed_base}{snomed_query}{snomed_suffix}"
         return snomed_url
 
-    # TODO
-    # OMOP-CDM to BFF/PXF
-    # Treatments rendering is not working as expected
-
-    # + clicking on it returns:
-    # Something went wrong:
-    # data[field].data is undefined
-
-    # same for PhenotypicFeatures
-
     if "RxNorm" in ontology_id:
         rxnorm_base = "https://mor.nlm.nih.gov/RxNav/"
         rxnorm_url = f"{rxnorm_base}search?searchBy=RXCUI&searchTerm={ont_query}"
         return rxnorm_url
+
+    if "MONDO" in ontology_id:
+        mondo_base = "https://www.ebi.ac.uk/ols4/ontologies/mondo/classes/"
+        mondo_query = f"http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FMONDO_{ont_query}"
+        mondo_url = f"{mondo_base}{mondo_query}"
+        return mondo_url
+
+    if "OMIM" in ontology_id:
+        omim_url = f"https://omim.org/entry/{ont_query}"
+        return omim_url
+
+    if "DrugCentral" in ontology_id:
+        drugcentral_url = f"http://drugcentral.org/drugcard/{ont_query}"
+        return drugcentral_url
+
+    if "CHEBI" in ontology_id:
+        chebi_url = f"https://www.ebi.ac.uk/chebi/searchId.do?chebiId={ont_query}"
+        return chebi_url
+
+    if "HP" in ontology_id:
+        hp_url = f"https://hpo.jax.org/app/browse/term/HP:{ont_query}"
+        return hp_url
+
+    # TODO
+    # if NA then render a URL pointing to the Github of Convert-Pheno-UI
+    # and redirect to Github with a SweepAI issue template
+    # https://sweep.dev/
 
     return "NA"
 
@@ -467,13 +482,17 @@ resource_fields = api.model(
     strict=True,
 )
 
+# TODO
+# test which makes sure that
+# only the POST request is allowed
 
+
+@ns.route("/json", methods=("POST",))
 class ClinicalDataView(Resource):
     @login(login_required)
-    @api.expect(resource_fields, validate=True)
+    @api.expect(parser, resource_fields, validate=True)
     @api.doc(responses={200: "Success", 400: "Validation Error"})
     def post(self, userid):
-
         user = db.session.query(User).filter_by(name=userid).one_or_none()
         if user is None:
             return {"message": "User not found"}, 404
@@ -482,29 +501,6 @@ class ClinicalDataView(Resource):
 
         clinical_format = data["phenoFormat"]
         job_id = data.get("jobId")
-        shown_cols = data.get("shownColumns")
-        filter_criteria = data.get(
-            "filter",
-            {
-                "inclusion": {},
-                "exclusion": {},
-            },
-        )
-        table_config = deepcopy(cfg["CLINICAL_DATA_COLS"][clinical_format])
-
-        selected_cols = deepcopy(shown_cols)
-        default_cols = table_config["default_cols"]
-        if not shown_cols:
-            selected_cols = deepcopy(default_cols)
-
-        key_to_subkey = table_config["key_to_subkey"]
-        new_default_cols = deepcopy(default_cols)
-        if key_to_subkey:
-            for col in default_cols:
-                if col in key_to_subkey:
-                    new_default_cols[col] = key_to_subkey[col]
-                    if col in selected_cols and len(selected_cols[col]) == 0:
-                        selected_cols[col] = key_to_subkey[col]
 
         job = (
             db.session.query(Job).filter_by(job_id=job_id, owner=user.id).one_or_none()
@@ -536,6 +532,55 @@ class ClinicalDataView(Resource):
         interesting_tree_data = []
         node_to_selected = {}
         selected_fields = {}
+
+        shown_cols = data.get("shownColumns")
+        filter_criteria = data.get(
+            "filter",
+            {
+                "inclusion": {},
+                "exclusion": {},
+            },
+        )
+        table_config = deepcopy(cfg["CLINICAL_DATA_COLS"][clinical_format])
+
+        selected_cols = deepcopy(shown_cols)
+        default_cols = table_config["default_cols"]
+        default_order = table_config["default_order"]
+
+        # TODO this should not be hardcoded here
+        # better change the dictionary "CLINICAL_DATA_COLS"
+        if job.input_format == "pxf" and job.target_formats[0] == "bff":
+            default_cols.pop("info", None)
+            default_cols.pop("exposures", None)
+            default_cols.pop("ethnicity", None)
+            default_cols["karyotypicSex"] = []
+
+            pos_of_sex = default_order.index("sex")
+            default_order.insert(pos_of_sex + 1, "karyotypicSex")
+
+        if job.input_format == "bff" and job.target_formats[0] == "pxf":
+            default_cols.pop("phenotypicFeatures", None)
+
+        if job.input_format == "omop" and "bff" in job.target_formats:
+            default_cols.pop("info", None)
+            default_cols.pop("exposures", None)
+            default_cols.pop("measures", None)
+
+        if job.input_format == "omop" and "pxf" in job.target_formats:
+            default_cols.pop("measurements", None)
+
+        if not shown_cols:
+            selected_cols = deepcopy(default_cols)
+
+        key_to_subkey = table_config["key_to_subkey"]
+        new_default_cols = deepcopy(default_cols)
+        if key_to_subkey:
+            for col in default_cols:
+                if col in key_to_subkey:
+                    new_default_cols[col] = key_to_subkey[col]
+                    if col in selected_cols and len(selected_cols[col]) == 0:
+                        selected_cols[col] = key_to_subkey[col]
+
         for col in new_default_cols:
             field_of_interest = col
 
@@ -662,9 +707,7 @@ class ClinicalDataView(Resource):
                 top_level_to_nodes,
             )
 
-        table_config = cfg["CLINICAL_DATA_COLS"][clinical_format]
-        column_order = table_config["default_order"]
-
+        column_order = default_order
         headers = []
         selected_cols_flattened = [
             item for sublist in list(selected_cols.values()) for item in sublist if item

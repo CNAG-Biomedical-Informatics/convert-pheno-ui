@@ -34,9 +34,13 @@ export default function fileUpload(props) {
     setRunExampleData,
     setUploadedFiles,
     setFilesUploadFinished,
+    setError,
   } = props;
 
   const triggerFileDownload = async ({ inputFormat }) => {
+    // TODO
+    // should not be hardcoded
+    // but in the config file
     const inputFormatToFileNameMapping = {
       redcap: "redcap.zip",
       bff: "individuals.bff.json",
@@ -65,12 +69,12 @@ export default function fileUpload(props) {
         </Grid>
         <Grid item xs={6}>
           {/* TODO wrap everything in react-hook-form */}
-
           <InputFilesPond
             setUploadedFiles={setUploadedFiles}
             setFilesUploadFinished={setFilesUploadFinished}
             setRunExampleData={setRunExampleData}
             inputFormat={inputFormat}
+            setError={setError}
           />
           <ToggleButton
             value="check"

@@ -18,6 +18,7 @@ import useFileConversions from "./hooks/fileConversions";
 import LoadingBackdrop from "./components/loadingBackdrop/LoadingBackdrop";
 import SubmissionSummary from "./components/submissionSummary/SubmissionSummary";
 import SubmissionForms from "./components/submissionForms/SubmissionForms";
+import ErrorModal from "./components/modals/errorModal";
 
 export default function Submission(props) {
   const {
@@ -34,6 +35,8 @@ export default function Submission(props) {
   const [runExampleData, setRunExampleData] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [startFileConversion, setStartFileConversion] = useState(false);
+  const [error, setError] = useState(false);
+  const [retryTime, setRetryTime] = useState(10);
 
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -61,8 +64,33 @@ export default function Submission(props) {
   };
 
   const showSubmissionSummary = conversionFinished || previousJobData;
+
+  // TODO
+  // suggestion by ChatGPT how to reset the ratelimit
+  // https://chat.openai.com/share/352d4b4e-85d9-4217-9274-58554de8453c
+
+  // const handleOpenErrorModal = (message, retryTime) => {
+  //   setErrorMessage(message);
+  //   setRetryTime(retryTime);
+  //   setIsErrorModalOpen(true);
+  // };
+
+  const onErrorModalClose = () => {
+    setError(false);
+  };
+
+  // depending on the value of previousJobData
+  // set the inputFormat
+
+  // const previousJobDataExists = previousJobData !== undefined;
+
   return (
     <>
+      <ErrorModal
+        error={error}
+        onClose={onErrorModalClose}
+        setError={setError}
+      />
       <LoadingBackdrop
         open={startFileConversion}
         status={status}
@@ -70,7 +98,9 @@ export default function Submission(props) {
       />
       {showSubmissionSummary ? (
         <SubmissionSummary
-          inputFormat={inputFormat}
+          inputFormat={
+            data === undefined ? previousJobData.data.inputFormat : inputFormat
+          }
           outputFormats={outputFormats}
           status={status}
           data={data === undefined ? previousJobData.data : data}
@@ -96,6 +126,7 @@ export default function Submission(props) {
             setUploadedFiles,
             setStartFileConversion,
             setRunExampleData,
+            setError,
           }}
         />
       )}

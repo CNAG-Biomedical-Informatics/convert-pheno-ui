@@ -1,20 +1,25 @@
 #!/bin/bash
 
+general_deps=(
+    "Data::Leaf::Walker"
+    #"JSON::Validator"
+    "File::ShareDir::ProjectDistDir"
+    "Moo"
+    "Path::Tiny"
+    "Test::Deep"
+    "Text::CSV_XS"
+    "Text::Similarity"
+    "Types::Standard"
+    "XML::Fast"
+    "YAML::XS"
+)
+
 # install dependencies not found in conda channels
 install_deps() {
-    deps=(
-        "JSON::Validator"
-        "File::ShareDir::ProjectDistDir"
-        "Moo"
-        "Path::Tiny"
-        "Test::Deep"
-        "Text::CSV_XS"
-        "Text::Similarity"
-        "Types::Standard"
-        "XML::Fast"
-        "YAML::XS"
-    )
+    local deps=("${!1}")  # Use "!" to dereference the array variable passed as an argument
+
     for dep in "${deps[@]}"; do
+        echo "Installing the dependency: $dep"
         HOME=/tmp cpanm -v "$dep" || {
         # cpanm "$dep" || {
             echo "Failed to install perl module $dep"
@@ -32,6 +37,7 @@ if [[ "$(uname)" == Darwin ]]; then
     conda install -c conda-forge perl-data-optlist -y
     conda install -c bioconda perl-sub-exporter -y
     conda install -c bioconda perl-mac-systemdirectory -y
+    conda install -c bioconda perl-json-validator
     #perl-mac-system directory needs perl 5.26.2
 
     conda install -c bioconda perl-file-homedir -y
@@ -40,7 +46,13 @@ if [[ "$(uname)" == Darwin ]]; then
 fi
 
 cpanm File::ShareDir::Install
-install_deps
+if [[ "$(uname)" == Darwin ]]; then
+    install_deps general_deps[@]
+else
+    new_deps=("${general_deps[@]}" "JSON::Validator")
+    install_deps new_deps[@]
+fi
+# install_deps
 perl Makefile.PL INSTALLDIRS=site
 make
 # make test
@@ -53,6 +65,8 @@ do
   mkdir -p "${PREFIX}/etc/conda/${CHANGE}.d"
 done
 echo "#!/bin/sh" > "${PREFIX}/etc/conda/activate.d/${PKG_NAME}_activate.sh"
-echo "export PERL5LIB=$PREFIX/lib/perl5/site_perl/5.22.0/" >> "${PREFIX}/etc/conda/activate.d/${PKG_NAME}_activate.sh"
+# echo "export PERL5LIB=$PREFIX/lib/perl5/site_perl/5.22.0/" >> "${PREFIX}/etc/conda/activate.d/${PKG_NAME}_activate.sh"
+echo "export PERL5LIB=$PREFIX/lib/perl5/site_perl/5.32.1/" >> "${PREFIX}/etc/conda/activate.d/${PKG_NAME}_activate.sh"
+# echo "export PERL5LIB=$PREFIX/lib/perl5/site_perl/5.36.0/" >> "${PREFIX}/etc/conda/activate.d/${PKG_NAME}_activate.sh"
 echo "#!/bin/sh" > "${PREFIX}/etc/conda/deactivate.d/${PKG_NAME}_deactivate.sh"
 echo "unset PERL5LIB" >> "${PREFIX}/etc/conda/deactivate.d/${PKG_NAME}_deactivate.sh"
