@@ -12,14 +12,6 @@
     <meta name="maintainer" content="Ivo Christopher Leist" />
     <meta name="license" content="GPLv3" />
     <title>Convert-Pheno</title>
-    <script>
-      var _mtm = window._mtm = window._mtm || [];
-      _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
-      (function() {
-        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-        g.async=true; g.src='{{MATOMO_TAG_MANAGER_URL}}'; s.parentNode.insertBefore(g,s);
-      })();
-    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -28,6 +20,7 @@
       window.REACT_APP_SECURITY = "{{VITE_SECURITY}}";
       window.REACT_APP_API_URL = "{{VITE_API_URL}}";
       window.REACT_APP_KC_CONFIG = "{{VITE_KC_CONFIG}}";
+      window.REACT_APP_MATOMO_URL = "{{MATOMO_TAG_MANAGER_URL}}";
     </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>

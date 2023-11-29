@@ -37,6 +37,13 @@ const security =
     ? window.REACT_APP_SECURITY
     : import.meta.env.VITE_SECURITY;
 
+const matomoUrl =
+  process.env.NODE_ENV === "production"
+    ? JSON.parse(window.REACT_APP_MATOMO_URL.replace(/'/g, '"'))
+    : JSON.parse(import.meta.env.MATOMO_TAG_MANAGER_URL);
+
+console.log("Matomo URL: ", matomoUrl);
+
 if (security !== "true" && security !== "false") {
   throw new Error(
     "The security variable must be a string of either 'true' or 'false'"
@@ -128,6 +135,13 @@ function App() {
 
   const [authenticated, setAuthenticated] = useState(false);
 
+  useEffect(() => {
+    var _mtm = window._mtm = window._mtm || [];
+    _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src=matomoUrl; s.parentNode.insertBefore(g,s);
+  }, [])
+  
   useEffect(() => {
     if (auth.user.authenticated) {
       setAuthenticated(true);
