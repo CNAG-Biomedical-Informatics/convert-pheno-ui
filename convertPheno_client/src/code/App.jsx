@@ -39,8 +39,8 @@ const security =
 
 const matomoUrl =
   process.env.NODE_ENV === "production"
-    ? JSON.parse(window.REACT_APP_MATOMO_URL.replace(/'/g, '"'))
-    : JSON.parse(import.meta.env.MATOMO_TAG_MANAGER_URL);
+    ? window.REACT_APP_MATOMO_URL
+    : import.meta.env.MATOMO_TAG_MANAGER_URL;
 
 console.log("Matomo URL: ", matomoUrl);
 
