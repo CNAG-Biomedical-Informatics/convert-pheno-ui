@@ -25,7 +25,7 @@ services:
       KC_REALM: ${KC_REALM}
       UID: ${UID}
       GID: ${GID}
-      API_SECURITY: "false"
+      API_SECURITY: ${API_SECURITY}
     restart: unless-stopped
     healthcheck:
       test: curl -f http://0.0.0.0:5000/api/curltest
@@ -68,16 +68,16 @@ services:
       - 4173:4173
     environment:
       NODE_ENV: production
-      VITE_SECURITY: false
+      VITE_SECURITY: ${API_SECURITY}
       VITE_API_URL: http://${DOMAIN}:5000/
-      VITE_KC_CONFIG: "{}"
+      VITE_KC_CONFIG: $KC_CONFIG
     restart: unless-stopped
     healthcheck:
       test: curl -f http://0.0.0.0:4173
       interval: 10s
       timeout: 10s
       retries: 5
-    command: /entrypoint_run_vite_preview.sh
+    # command: /entrypoint_run_vite_preview.sh
     tty: true
 
   convert-pheno:

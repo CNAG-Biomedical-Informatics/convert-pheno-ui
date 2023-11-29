@@ -138,7 +138,10 @@ services:
 
   convert-pheno:
     user: root
-    image: manuelrueda/convert-pheno:latest
+    image: manuelrueda/convert-pheno:0.14
+    # image: manuelrueda/convert-pheno:0.13
+    # image: manuelrueda/convert-pheno:0.12
+    # image: manuelrueda/convert-pheno:latest
     container_name: convert-pheno
     restart: unless-stopped
     tty: true
