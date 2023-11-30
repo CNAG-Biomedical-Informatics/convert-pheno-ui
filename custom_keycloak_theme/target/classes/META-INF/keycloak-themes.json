@@ -1,0 +1,36 @@
+{
+  "themes": [
+    {
+      "name": "account-v1",
+      "types": [
+        "account"
+      ]
+    },
+    {
+      "name": "keycloakify-starter",
+      "types": [
+        "login",
+        "account"
+      ]
+    },
+    {
+      "name": "keycloakify-starter_retrocompat",
+      "types": [
+        "account"
+      ]
+    },
+    {
+      "name": "keycloakify-starter-variant-1",
+      "types": [
+        "login",
+        "account"
+      ]
+    },
+    {
+      "name": "keycloakify-starter-variant-1_retrocompat",
+      "types": [
+        "account"
+      ]
+    }
+  ]
+}
