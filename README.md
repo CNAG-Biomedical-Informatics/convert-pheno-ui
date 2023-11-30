@@ -26,8 +26,6 @@
 `convert-pheno-ui` is a web-interface for the CPAN's module [Convert::Pheno](https://metacpan.org/pod/Convert%3A%3APheno)
 which is a software toolkit for the interconversion of standard data models for phenotypic data.
 
-The module will be uploaded to CPAN once the paper is submitted.
-
 [![Convert-Pheno-UI](docs/ui.gif)](docs/ui.gif)
 
 # Getting Started
@@ -43,6 +41,7 @@ The module will be uploaded to CPAN once the paper is submitted.
 ### Quick Start
 
 **_no SSL and user authentication_**
+
 0. git clone this repo and then navigate into the folder convert-pheno-ui
 1. rename the file [example.env](example.env) to .env and fill in the variables
 2. Run `docker compose up -d`
@@ -64,7 +63,7 @@ Rueda, M; Leist, IC et al., (2023). Convert-Pheno: A software toolkit for the in
 
 ### AUTHOR
 
-Written by Ivo Christopher Leist, PhD student at CNAG [https://www.cnag.crg.eu](https://www.cnag.crg.eu).
+Written by Ivo Christopher Leist, PhD student at CNAG [https://www.cnag.eu](https://www.cnag.eu).
 
 ### COPYRIGHT AND LICENSE
 

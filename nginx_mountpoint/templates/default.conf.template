@@ -1,8 +1,8 @@
 server {
     listen 443 ssl; # For IPv4 addresses
     listen [::]:443 ssl; # For IPv6 addresses
-    ssl_certificate /etc/nginx/convertpheno.local.dev.pem;
-    ssl_certificate_key /etc/nginx/convertpheno.local.dev-key.pem;
+    ssl_certificate /etc/nginx/convert-pheno.cnag.cat.pem;
+    ssl_certificate_key /etc/nginx/convert-pheno.cnag.cat-key.pem;
 
     location / {
         access_log  /var/log/nginx/http.access.log;
@@ -96,6 +96,14 @@ server {
         error_log /var/log/nginx/kc_health.error.log;
 
         proxy_pass http://keycloak:8080/health/;
+        include includes/proxy-set-header.conf;
+    }
+
+    location /matomo/ {
+        access_log /var/log/nginx/matomo.access.log;
+        error_log /var/log/nginx/matomo.error.log;
+
+        proxy_pass http://matomo:80/;
         include includes/proxy-set-header.conf;
     }
 }

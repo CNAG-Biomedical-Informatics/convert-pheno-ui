@@ -5,6 +5,6 @@
 .pytest_cache
 data/output/*.json
 data/uploads/*.csv
-
-
-/.luarc.json
+data/uploads/*.yaml
+data/uploads/*.json
+data/uploads/*.sql.gz

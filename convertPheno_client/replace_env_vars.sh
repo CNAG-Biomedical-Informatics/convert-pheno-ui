@@ -14,11 +14,12 @@ echo "=== DEBUG: check if env variables are set ==="
 echo $VITE_SECURITY
 echo $VITE_API_URL
 echo $VITE_KC_CONFIG
+echo $MATOMO_TAG_MANAGER_URL
 echo "=== DEBUG: End of check if env variables are set ==="
 
 # Define the placeholders and their corresponding environment variables
-PLACEHOLDERS="{{VITE_SECURITY}} {{VITE_API_URL}} {{VITE_KC_CONFIG}}"
-ENV_VARS="VITE_SECURITY VITE_API_URL VITE_KC_CONFIG"
+PLACEHOLDERS="{{VITE_SECURITY}} {{VITE_API_URL}} {{VITE_KC_CONFIG}} {{MATOMO_TAG_MANAGER_URL}}"
+ENV_VARS="VITE_SECURITY VITE_API_URL VITE_KC_CONFIG MATOMO_TAG_MANAGER_URL"
 
 # Replace the placeholders with the environment variable values
 for placeholder in $PLACEHOLDERS; do
