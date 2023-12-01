@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en"><head><script>
-    window.kcContext=  
+    window.kcContext=
 <#assign pageId="login-idp-link-confirm.ftl">
 (()=>{
 
@@ -10,7 +10,7 @@
 
     out["messagesPerField"]= {
         <#assign fieldNames = [ "totp", "userLabel", "password", "password-confirm", "username", "email", "firstName", "lastName", "global" ]>
-    
+
         <#attempt>
             <#if profile?? && profile.attributes?? && profile.attributes?is_enumerable>
                 <#list profile.attributes as attribute>
@@ -22,10 +22,10 @@
             </#if>
         <#recover>
         </#attempt>
-    
+
         "printIfExists": function (fieldName, text) {
 
-            <#if !messagesPerField?? || !(messagesPerField?is_hash)>   
+            <#if !messagesPerField?? || !(messagesPerField?is_hash)>
                 throw new Error("You're not supposed to use messagesPerField.printIfExists in this page");
             <#else>
                 <#list fieldNames as fieldName>
@@ -123,7 +123,7 @@
         },
         "existsError": function (fieldName) {
 
-            <#if !messagesPerField?? || !(messagesPerField?is_hash)>   
+            <#if !messagesPerField?? || !(messagesPerField?is_hash)>
                 throw new Error("You're not supposed to use messagesPerField.printIfExists in this page");
             <#else>
                 <#list fieldNames as fieldName>
@@ -209,7 +209,7 @@
         "get": function (fieldName) {
 
 
-            <#if !messagesPerField?? || !(messagesPerField?is_hash)>   
+            <#if !messagesPerField?? || !(messagesPerField?is_hash)>
                 throw new Error("You're not supposed to use messagesPerField.get in this page");
             <#else>
                 <#list fieldNames as fieldName>
@@ -310,7 +310,7 @@
         },
         "exists": function (fieldName) {
 
-            <#if !messagesPerField?? || !(messagesPerField?is_hash)>   
+            <#if !messagesPerField?? || !(messagesPerField?is_hash)>
                 throw new Error("You're not supposed to use messagesPerField.exists in this page");
             <#else>
                 <#list fieldNames as fieldName>
@@ -444,32 +444,32 @@
                     <#continue>
                 </#if>
 
-                <#if 
+                <#if
                     (
-                        ["loginUpdatePasswordUrl", "loginUpdateProfileUrl", "loginUsernameReminderUrl", "loginUpdateTotpUrl"]?seq_contains(key) && 
+                        ["loginUpdatePasswordUrl", "loginUpdateProfileUrl", "loginUsernameReminderUrl", "loginUpdateTotpUrl"]?seq_contains(key) &&
                         are_same_path(path, ["url"])
                     ) || (
-                        key == "updateProfileCtx" && 
+                        key == "updateProfileCtx" &&
                         are_same_path(path, [])
                     ) || (
                         <#-- https://github.com/keycloakify/keycloakify/pull/65#issuecomment-991896344 (reports with saml-post-form.ftl) -->
                         <#-- https://github.com/keycloakify/keycloakify/issues/91#issue-1212319466 (reports with error.ftl and Kc18) -->
                         <#-- https://github.com/keycloakify/keycloakify/issues/109#issuecomment-1134610163 -->
                         <#-- https://github.com/keycloakify/keycloakify/issues/357 -->
-                        key == "loginAction" && 
-                        are_same_path(path, ["url"]) && 
+                        key == "loginAction" &&
+                        are_same_path(path, ["url"]) &&
                         ["saml-post-form.ftl", "error.ftl", "info.ftl", "login-oauth-grant.ftl", "logout-confirm.ftl"]?seq_contains(pageId) &&
                         !(auth?has_content && auth.showTryAnotherWayLink())
                     ) || (
                         <#-- https://github.com/keycloakify/keycloakify/issues/362 -->
-                        ["secretData", "value"]?seq_contains(key) && 
+                        ["secretData", "value"]?seq_contains(key) &&
                         are_same_path(path, [ "totp", "otpCredentials", "*" ])
                     ) || (
                         ["contextData", "idpConfig", "idp", "authenticationSession"]?seq_contains(key) &&
                         are_same_path(path, ["brokerContext"]) &&
                         ["login-idp-link-confirm.ftl", "login-idp-link-email.ftl" ]?seq_contains(pageId)
                     ) || (
-                        key == "identityProviderBrokerCtx" && 
+                        key == "identityProviderBrokerCtx" &&
                         are_same_path(path, []) &&
                         ["login-idp-link-confirm.ftl", "login-idp-link-email.ftl" ]?seq_contains(pageId)
                     ) ||  (
@@ -501,7 +501,7 @@
                     <#recover>
                     </#attempt>
                 </#if>
-                
+
                 <#attempt>
                     <#if !object[key]??>
                         <#continue>
@@ -699,4 +699,4 @@
     --url117749661f1c024: url(${url.resourcesPath}/build/static/media/background.7cd80027de24cbc2280b.svg) no-repeat 50% fixed;
 }
 </style>
-<meta charset="utf-8"><link rel="icon" href="${url.resourcesPath}/build/favicon.ico"><meta name="viewport" content="width=device-width,initial-scale=1"><title>React App</title><link rel="preload" href="${url.resourcesPath}/build/fonts/WorkSans/worksans-bold-webfont.woff2" as="font" crossorigin="anonymous"><link rel="preload" href="${url.resourcesPath}/build/fonts/WorkSans/worksans-medium-webfont.woff2" as="font" crossorigin="anonymous"><link rel="preload" href="${url.resourcesPath}/build/fonts/WorkSans/worksans-regular-webfont.woff2" as="font" crossorigin="anonymous"><link rel="preload" href="${url.resourcesPath}/build/fonts/WorkSans/worksans-semibold-webfont.woff2" as="font" crossorigin="anonymous"><style>@font-face{font-family:'Work Sans';font-style:normal;font-weight:400;font-display:swap;src:url(${url.resourcesPath}/build/fonts/WorkSans/worksans-regular-webfont.woff2) format("woff2")}@font-face{font-family:'Work Sans';font-style:normal;font-weight:500;font-display:swap;src:url(${url.resourcesPath}/build/fonts/WorkSans/worksans-medium-webfont.woff2) format("woff2")}@font-face{font-family:'Work Sans';font-style:normal;font-weight:600;font-display:swap;src:url(${url.resourcesPath}/build/fonts/WorkSans/worksans-semibold-webfont.woff2) format("woff2")}@font-face{font-family:'Work Sans';font-style:normal;font-weight:700;font-display:swap;src:url(${url.resourcesPath}/build/fonts/WorkSans/worksans-bold-webfont.woff2) format("woff2")}</style><script defer="defer" src="${url.resourcesPath}/build/static/js/main.b93a445c.js"></script></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div></body></html>
+<meta charset="utf-8"><link rel="icon" href="${url.resourcesPath}/build/favicon.ico"><meta name="viewport" content="width=device-width,initial-scale=1"><title>React App</title><link rel="preload" href="${url.resourcesPath}/build/fonts/WorkSans/worksans-bold-webfont.woff2" as="font" crossorigin="anonymous"><link rel="preload" href="${url.resourcesPath}/build/fonts/WorkSans/worksans-medium-webfont.woff2" as="font" crossorigin="anonymous"><link rel="preload" href="${url.resourcesPath}/build/fonts/WorkSans/worksans-regular-webfont.woff2" as="font" crossorigin="anonymous"><link rel="preload" href="${url.resourcesPath}/build/fonts/WorkSans/worksans-semibold-webfont.woff2" as="font" crossorigin="anonymous"><style>@font-face{font-family:'Work Sans';font-style:normal;font-weight:400;font-display:swap;src:url(${url.resourcesPath}/build/fonts/WorkSans/worksans-regular-webfont.woff2) format("woff2")}@font-face{font-family:'Work Sans';font-style:normal;font-weight:500;font-display:swap;src:url(${url.resourcesPath}/build/fonts/WorkSans/worksans-medium-webfont.woff2) format("woff2")}@font-face{font-family:'Work Sans';font-style:normal;font-weight:600;font-display:swap;src:url(${url.resourcesPath}/build/fonts/WorkSans/worksans-semibold-webfont.woff2) format("woff2")}@font-face{font-family:'Work Sans';font-style:normal;font-weight:700;font-display:swap;src:url(${url.resourcesPath}/build/fonts/WorkSans/worksans-bold-webfont.woff2) format("woff2")}</style><script defer="defer" src="${url.resourcesPath}/build/static/js/main.e9788297.js"></script></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div></body></html>
