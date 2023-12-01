@@ -129,12 +129,10 @@ services:
         source: ./nginx_mountpoint/certs/${DOMAIN}-key.pem
         target: /opt/keycloak/conf/server.key.pem
         read_only: true
-      - ./custom_keycloak_theme/target/keycloakify-starter-keycloak-theme-5.0.0.jar":"/opt/keycloak/providers/keycloakify-starter-keycloak-theme-5.0.0.jar" \
-      - ./custom_keycloak_theme/src/main/resources/theme/account-v1":"/opt/keycloak/themes/account-v1":rw \
-      - ./custom_keycloak_theme/src/main/resources/theme/keycloakify-starter":"/opt/keycloak/themes/keycloakify-starter":rw \
-      - ./custom_keycloak_theme/src/main/resources/theme/keycloakify-starter-variant-1":"/opt/keycloak/themes/keycloakify-starter-variant-1":rw \
-      - ./custom_keycloak_theme/src/main/resources/theme/keycloakify-starter-variant-1_retrocompat":"/opt/keycloak/themes/keycloakify-starter-variant-1_retrocompat":rw \
-      - ./custom_keycloak_theme/src/main/resources/theme/keycloakify-starter_retrocompat":"/opt/keycloak/themes/keycloakify-starter_retrocompat":rw \
+      - ./custom_keycloak_theme/target/retrocompat-keycloakify-starter-keycloak-theme-5.0.3.jar:/opt/keycloak/providers/retrocompat-keycloakify-starter-keycloak-theme-5.0.3.jar:rw
+      - ./custom_keycloak_theme/src/main/resources/theme/account-v1:/opt/keycloak/themes/account-v1:rw 
+      - ./custom_keycloak_theme/src/main/resources/theme/keycloakify-starter-variant-1_retrocompat:/opt/keycloak/themes/keycloakify-starter-variant-1_retrocompat:rw 
+      - ./custom_keycloak_theme/src/main/resources/theme/keycloakify-starter_retrocompat:/opt/keycloak/themes/keycloakify-starter_retrocompat:rw
 
     restart: unless-stopped
     command: ${KC_CMD}

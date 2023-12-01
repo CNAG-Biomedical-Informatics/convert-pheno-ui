@@ -25,7 +25,7 @@
     </#if>
 </head>
 <body class="admin-console user ${bodyClass}">
-
+        
     <header class="navbar navbar-default navbar-pf navbar-main header">
         <nav class="navbar" role="navigation">
             <div class="navbar-header">

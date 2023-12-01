@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 	<groupId>dev.keycloakify.starter.keycloak</groupId>
 	<artifactId>keycloakify-starter-keycloak-theme</artifactId>
-	<version>5.0.0</version>
+	<version>5.0.3</version>
 	<name>keycloakify-starter-keycloak-theme</name>
   <description />
   <packaging>jar</packaging>

@@ -4,7 +4,7 @@
   <groupId>dev.keycloakify.starter.keycloak</groupId>
   <artifactId>keycloakify-starter-keycloak-theme</artifactId>
   <name>keycloakify-starter-keycloak-theme</name>
-  <version>5.0.0</version>
+  <version>5.0.3</version>
   <build>
     <plugins>
       <plugin>
