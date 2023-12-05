@@ -64,7 +64,7 @@ const FileMappingModal = (props) => {
     setUploadedFiles((prev) => {
       return {
         ...prev,
-        [fileName]: [event.target.value, prev[fileName][1]],
+        [fileName]: [event.target.value, prev[fileName][1], user_id_hash],
       };
     });
   };
