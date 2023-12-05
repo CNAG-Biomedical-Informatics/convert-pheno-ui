@@ -47,30 +47,31 @@ const FileMappingModal = (props) => {
 
   */
   const {
-    open,
-    uploadedFiles,
-    setOpen,
-    setUploadedFiles,
-    setStartFileConversion,
-  } = props;
+      open,
+      user_id_hash,
+      uploadedFiles,
+      setOpen,
+      setUploadedFiles,
+      setStartFileConversion,
+    } = props;
 
   const handleRun = () => {
-    setStartFileConversion(true);
-    setOpen(false);
-  };
+      setStartFileConversion(user_id_hash, true);
+      setOpen(false);
+    };
 
   const handleClose = () => {
     setOpen(false);
   };
 
   const handleChange = (event, fileName) => {
-    setUploadedFiles((prev) => {
-      return {
-        ...prev,
-        [fileName]: [event.target.value, prev[fileName][1]],
-      };
-    });
-  };
+      setUploadedFiles((prev) => {
+        return {
+          ...prev,
+          [fileName]: [event.target.value, prev[fileName][1], user_id_hash],
+        };
+      });
+    };
 
   // should not be hardcoded
   // better get the options from the server
