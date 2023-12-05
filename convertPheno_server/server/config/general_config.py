@@ -42,8 +42,10 @@ class GeneralConfig:
 
     IN_OUT_DIR = "/home"
     UPLOAD_DIR = f"{IN_OUT_DIR}/uploads/"
+    USER_UPLOAD_DIR = f"{IN_OUT_DIR}/uploads/{{user_id_hash}}/"
     EXAMPLE_DIR = f"{IN_OUT_DIR}/example_in/"
     OUT_DIR = f"{IN_OUT_DIR}/output/"
+    USER_OUTPUT_DIR = f"{IN_OUT_DIR}/output/{{user_id_hash}}/"
 
     LOG_FILE_NAME = "convert-pheno-log.json"
 
