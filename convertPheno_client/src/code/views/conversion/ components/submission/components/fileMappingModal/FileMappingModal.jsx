@@ -10,6 +10,9 @@
   License: GPL-3.0 license
 */
 
+// TODO
+// looks like that this file is no longer used
+
 import React from "react";
 import {
   Button,

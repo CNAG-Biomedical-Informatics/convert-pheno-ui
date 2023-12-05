@@ -69,3 +69,10 @@ db-ip:
 
 mkcert:
 	/usr/local/bin/mkcert -cert-file ./nginx_mountpoint/certs/convertpheno.local.dev.pem -key-file ./nginx_mountpoint/certs/convertpheno.local.dev-key.pem convertpheno.local.dev
+
+#analyze docker images using dive (https://github.com/wagoodman/dive)
+dive-server:
+	dive leistivo/convert-pheno-ui-server:${DOCKER_IMG_TAG}
+
+dive-client:
+	dive leistivo/convert-pheno-ui-client:${DOCKER_IMG_TAG}

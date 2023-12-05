@@ -77,7 +77,7 @@
     "merge-cov": "node ./testing/utils/mergeCoverage.js",
     "make-badges": "istanbul-badges-readme --coverageDir='./testing/output/coverage/'",
     "docs": "jsdoc -c jsdoc.conf.json",
-    "sonar": "node sonarqube-scanner.js",
+    "sonar": "dotenv -- /usr/local/bin/sonar-scanner",
     "jenkins:lint": "npm-groovy-lint --fix --verbose -f '**/Jenkinsfile' -i '**/example/Jenkinsfile'",
     "jenkins:format": "npm-groovy-lint --format --verbose -f '**/Jenkinsfile' -i '**/example/Jenkinsfile'",
     "precompose:run": "bash getKCTokens.sh && docker-compose -f Docker-compose-testing.yaml up -d",

@@ -12,7 +12,6 @@
 
 SHELL := /bin/bash
 include .env
-# include .sonar.env
 
 install:
 	pip install --upgrade .
@@ -101,4 +100,4 @@ push:	cov flake, lint badge
 	git push
 
 sonar:
-	bash sonar.sh
+	/usr/local/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN}
