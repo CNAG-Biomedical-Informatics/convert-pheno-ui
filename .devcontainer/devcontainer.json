@@ -1,24 +1,44 @@
 {
-    // Name this configuration
-    "name": "Convert-Pheno",
-    // Use the base codespace image
-    "image": "mcr.microsoft.com/vscode/devcontainers/universal:latest",
-  
-    "remoteUser": "codespace",
-    "overrideCommand": false,
-
-    // Add the IDs of extensions you want installed when the container is created.
-    "customizations": {
-        "vscode": {
-            "extensions": [
-                "GitHub.copilot"
-            ]
-        },
-        "codespaces": {
-            "openFiles": [
-                ".env"
-            ]
-        }
+    "name": "Convert-Pheno UI",
+    
+    "image": "mcr.microsoft.com/devcontainers/universal:2",
+    "hostRequirements": {
+      "cpus": 2
     },
-    "postCreateCommand":"cp example.env .env"
-}
+    "waitFor": "onCreateCommand",
+    "updateContentCommand": [
+      "pip install -r convertPheno_server/requirements.txt",
+      "cd convertPheno_client && npm install"
+    ],
+    "postCreateCommand": "",
+    "postAttachCommand": {
+      "server": "cd convertPheno_server && FLASK_APP=server.app.py poetry run flask run --host 0.0.0.0",
+      "client": "cd convertPheno_client && npm run dev"
+    },
+    "portsAttributes": {
+      "5000": {
+        "label": "Flask Server"
+      },
+      "3000": {
+        "label": "React App",
+        "onAutoForward": "openPreview"
+      }
+    },
+    "customizations": {
+      "codespaces": {
+        "openFiles": [
+          "convertPheno_client/src/code/App.tsx",
+          "convertPheno_server/server/app.py"
+        ]
+      },
+      "vscode": {
+        "extensions": [
+          "GitHub.copilot",
+          "ms-python.python",
+          "dbaeumer.vscode-eslint",
+          "esbenp.prettier-vscode"
+        ]
+      }
+    },
+    "forwardPorts": [3000, 5000]
+  }
