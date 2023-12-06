@@ -1,44 +1,47 @@
 {
-    "name": "Convert-Pheno UI",
-    
-    "image": "mcr.microsoft.com/devcontainers/universal:2",
-    "hostRequirements": {
-      "cpus": 2
+  "name": "Convert-Pheno UI",
+  
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "hostRequirements": {
+    "cpus": 2
+  },
+  "waitFor": "onCreateCommand",
+  "updateContentCommand": [
+    "cd convertPheno_server && pipx install poetry && poetry install",
+    "cd convertPheno_client && pnpm i"
+  ],
+  "postCreateCommand": [
+    "cd convertPheno_server && cp example.env .env",
+    "cd convertPheno_client && cp example.env .env"
+  ],
+  "postAttachCommand": {
+    "server": "cd convertPheno_server && make run",
+    "client": "cd convertPheno_client && pnpm run dev"
+  },
+  "portsAttributes": {
+    "5001": {
+      "label": "Flask Server"
     },
-    "waitFor": "onCreateCommand",
-    "updateContentCommand": [
-      "pip install -r convertPheno_server/requirements.txt",
-      "cd convertPheno_client && npm install"
-    ],
-    "postCreateCommand": "",
-    "postAttachCommand": {
-      "server": "cd convertPheno_server && FLASK_APP=server.app.py poetry run flask run --host 0.0.0.0",
-      "client": "cd convertPheno_client && npm run dev"
+    "5173": {
+      "label": "React App",
+      "onAutoForward": "openPreview"
+    }
+  },
+  "customizations": {
+    "codespaces": {
+      "openFiles": [
+        "convertPheno_client/src/code/App.tsx",
+        "convertPheno_server/server/app.py"
+      ]
     },
-    "portsAttributes": {
-      "5000": {
-        "label": "Flask Server"
-      },
-      "3000": {
-        "label": "React App",
-        "onAutoForward": "openPreview"
-      }
-    },
-    "customizations": {
-      "codespaces": {
-        "openFiles": [
-          "convertPheno_client/src/code/App.tsx",
-          "convertPheno_server/server/app.py"
-        ]
-      },
-      "vscode": {
-        "extensions": [
-          "GitHub.copilot",
-          "ms-python.python",
-          "dbaeumer.vscode-eslint",
-          "esbenp.prettier-vscode"
-        ]
-      }
-    },
-    "forwardPorts": [3000, 5000]
-  }
+    "vscode": {
+      "extensions": [
+        "GitHub.copilot",
+        "ms-python.python",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  },
+  "forwardPorts": [5001, 5173]
+}
