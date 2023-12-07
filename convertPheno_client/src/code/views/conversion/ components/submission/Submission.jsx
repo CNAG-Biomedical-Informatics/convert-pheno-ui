@@ -33,7 +33,7 @@ export default function Submission(props) {
 
   const [inputFormat, setInputFormat] = useState("redcap");
   const [runExampleData, setRunExampleData] = useState(false);
-  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [uploadedFiles, setUploadedFiles] = useState({});
   const [startFileConversion, setStartFileConversion] = useState(false);
   const [error, setError] = useState(false);
   const [retryTime, setRetryTime] = useState(10);

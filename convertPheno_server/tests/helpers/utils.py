@@ -112,11 +112,16 @@ def convert_clinical_data(client, header, data=None):
     if not data:
         data = {
             "runExampleData": True,
-            "uploadedFiles": [],
+            "uploadedFiles": {},
             "inputFormat": "redcap",
             "outputFormats": {"bff": True, "pxf": False, "omop": False},
         }
+
     res = req_post(client, header, "submission/convert", data=data)
+
+    if res.status_code != 200:
+        return res.json
+
     assert res.status_code == 200
     response = res.json
     assert "tempFilenames" and "jobId" in response

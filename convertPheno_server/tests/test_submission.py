@@ -22,7 +22,7 @@ convert_url_suffix = f"{api_path}/convert"
 
 default_data = {
     "runExampleData": True,
-    "uploadedFiles": [],
+    "uploadedFiles": {},
     "inputFormat": "redcap",
     "outputFormats": {
         "bff": True,
@@ -46,16 +46,21 @@ class TestSubmissionClass:
         assert res.status_code == 200
         assert "tempFilename" in res.json
 
+    # Test below deactivated for now
     def test_convert_wrong_schema(self, client, header):
         data = {
             "inputFormat": "redcap",
             "outputFormats": {
                 "bff": True,
                 "pxf": True,
+                "omop": False,
             },
         }
         res = req_post(client, header, "submission/convert", data=data)
         assert res.status_code == 400
+        response = res.json
+        assert response["message"] == "Input payload validation failed"
+        assert "is a required property" in response["errors"]["runExampleData"]
 
     def test_convert_redcap_example(self, client, header):
         job_id = convert_clinical_data(client, header, data=default_data)
@@ -71,8 +76,8 @@ class TestSubmissionClass:
     def test_convert_bff_example_to_bff(self, client, header):
         data = deepcopy(default_data)
         data["inputFormat"] = "bff"
-        job_id = convert_clinical_data(client, header, data=data)
-        assert job_id
+        res = convert_clinical_data(client, header, data=data)
+        assert res["message"] == "Input and output format are the same"
 
     def test_convert_pxf_example(self, client, header):
         data = deepcopy(default_data)

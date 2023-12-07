@@ -32,7 +32,7 @@ const FileMappingModal = (props) => {
   Props:
     - open (boolean): Whether the modal is open or closed
     - setOpen (function): Function to update open state and close/open the modal
-    - uploadedFiles (array): List of files that have been uploaded
+    - uploadedFiles (obj): Object of files that have been uploaded
 
   Functionality:
     - Renders a Modal open/closed based on if there is a uploaded file mapping needed

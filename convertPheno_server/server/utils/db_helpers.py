@@ -30,7 +30,13 @@ def get_or_create_user(userid, uuid):
 
         for directory in ["UPLOAD", "OUT"]:
             directory = cfg[f"FLASK_{directory}_DIR"] / uuid
-            directory.mkdir()
+
+            try:
+                directory.mkdir()
+            except FileExistsError:
+                # TODO
+                # in testing mode return pass otherwise raise error
+                pass
 
     return user
 

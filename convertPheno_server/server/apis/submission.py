@@ -26,7 +26,6 @@ from flask_restx import Resource, Namespace, fields
 from flask_cors import cross_origin
 from werkzeug.datastructures import FileStorage
 
-# from server.app import app, api, db, limiter
 from server.app import app, api, db
 from server.model import Job, Output, Upload, User
 from server.security import login
@@ -206,33 +205,22 @@ output_formats_schema = api.schema_model(
     },
 )
 
-uploaded_files_schema = api.schema_model(
-    "UploadedFiles",
-    {
-        "type": "object",
-        "properties": {
-            "red_data.csv": {"type": "array", "items": {"type": "string"}},
-            "redcap_dictionary.csv": {"type": "array", "items": {"type": "string"}},
-            "red_mapping.yaml": {"type": "array", "items": {"type": "string"}},
-        },
-        "required": ["red_data.csv", "redcap_dictionary.csv", "red_mapping.yaml"],
-    },
-)
-
 resource_fields = api.model(
     "ConvertFile",
     {
         "runExampleData": fields.Boolean(required=True),
-        # "uploadedFiles": fields.List(fields.String, required=True),
-        "uploadedFiles": fields.Nested(uploaded_files_schema, required=True),
+        "uploadedFiles": fields.Nested(
+            api.schema_model(
+                "UploadedFiles",
+                {"type": "object"},
+            ),
+            required=True,
+        ),
         "inputFormat": fields.String(required=True),
         "outputFormats": fields.Nested(output_formats_schema, required=True),
     },
     strict=True,
 )
-
-# TODO
-# make sure that the json schema validation is working again
 
 
 @ns.route("/convert", methods=("POST",))
@@ -242,7 +230,7 @@ class ConvertFile(Resource):
     """
 
     @login(login_required)
-    # @api.expect(parser, resource_fields, validate=True)
+    @api.expect(parser, resource_fields, validate=True)
     @api.doc(responses={200: "Success", 400: "Validation Error"})
     def post(self, userid, uuid):
         """
@@ -335,6 +323,9 @@ class ConvertFile(Resource):
         status = {}
         out_dir = cfg["FLASK_OUT_DIR"] / uuid
         for target_format in target_formats:
+            if input_format == target_format:
+                return {"message": "Input and output format are the same"}, 400
+
             file_name_mapping = generate_file_names(job_id, target_format)
             update_job_status(job, target_format, "started")
             log_file = out_dir / file_name_mapping["log_file"]
@@ -504,7 +495,7 @@ class DownloadExampleFile(Resource):
 
     @login(login_required)
     @api.expect(parser)
-    def post(self, userid):
+    def post(self, userid, uuid):
         """
         Flask send_file
         """

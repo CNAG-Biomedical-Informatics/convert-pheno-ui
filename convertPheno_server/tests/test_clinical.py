@@ -66,6 +66,13 @@ class TestClinicalClass:
         assert res.status_code == 404
         assert res.json["message"] == "clinical data not found"
 
+    def test_conversion_results_wrong_schema(self, client, header):
+        data = deepcopy(default_data)
+        del data["phenoFormat"]
+        res = req_post(client, header, url_suffix, data=data)
+        assert res.status_code == 400
+        assert res.json["message"] == "Input payload validation failed"
+
 
 class TestClinicalFilteringClass:
     def test_filter_by_exact_match(self, client, header):

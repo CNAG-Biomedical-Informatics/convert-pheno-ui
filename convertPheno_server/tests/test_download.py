@@ -66,7 +66,7 @@ class TestDownloadClass:
     def test_download_all_results(self, client, header):
         data = {
             "runExampleData": True,
-            "uploadedFiles": [],
+            "uploadedFiles": {},
             "inputFormat": "redcap",
             "outputFormats": {
                 "bff": True,

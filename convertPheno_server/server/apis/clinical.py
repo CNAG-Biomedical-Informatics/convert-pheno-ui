@@ -509,7 +509,7 @@ class ClinicalDataView(Resource):
             return {"message": "job not found"}, 404
 
         if job.errors:
-            return {"message": "job has errors", "errors": job.errors}, 5000
+            return {"message": "job has errors", "errors": job.errors}, 500
 
         output = (
             db.session.query(Output)
