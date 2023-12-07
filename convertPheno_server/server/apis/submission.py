@@ -13,6 +13,9 @@
 """
 For submitting a to be converted file
 """
+import os
+from pathlib import Path
+
 from copy import deepcopy
 from io import BytesIO
 import gzip
@@ -254,6 +257,20 @@ class ConvertFile(Resource):
         if runExample:
             ns.logger.info("run /w example data")
             user_id = get_or_create_user(userid).id
+
+        # Retrieve the Keycloak userid hash from the request data
+        user_keycloak_hash = data.get("KeycloakUserIdHash")
+        # Check if the user exists in the database based on the Keycloak hash
+        user = db.session.query(User).filter_by(keycloak_hash=user_keycloak_hash).one_or_none()
+        if user is None:
+            # Create new directories in the "output" and "uploads" directories with the Keycloak userid hash
+            upload_dir = GeneralConfig.FLASK_UPLOAD_DIR / user_keycloak_hash
+            output_dir = GeneralConfig.FLASK_OUT_DIR / user_keycloak_hash
+            os.makedirs(upload_dir, exist_ok=True)
+            os.makedirs(output_dir, exist_ok=True)
+
+        # Proceed with getting or creating the user as before
+
         else:
             ns.logger.info("run /w uploaded data")
             user = (
