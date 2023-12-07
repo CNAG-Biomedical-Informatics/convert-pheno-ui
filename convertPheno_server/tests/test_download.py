@@ -63,6 +63,29 @@ class TestDownloadClass:
         assert res.status_code == 404
         assert res.json["message"] == "clinical data not found"
 
+
+    def test_download_access_by_owner(self, client, header):
+        # Simulate the scenario where a user tries to download their own conversion results
+        job_id = convert_clinical_data(client, header)
+        data = deepcopy(default_data)
+        data["jobId"] = job_id
+        data["tempFilename"] = f"{job_id}.result.json"  # Assuming the file format for the test
+        res = req_post(client, header, download_url_suffix, data=data)
+        # Assert the server responds with success message and the correct data
+        assert res.status_code == 200
+        assert res.data == b'some_binary_data'  # Assuming binary data for the test
+
+    def test_download_access_by_other_user(self, client, header, another_user_header):
+        # Simulate the scenario where a user tries to download results of another user
+        job_id = convert_clinical_data(client, header)
+        data = deepcopy(default_data)
+        data["jobId"] = job_id
+        res = req_post(client, another_user_header, download_url_suffix, data=data)
+        # Assert that the server responds with an error or access denied message
+        assert res.status_code == 403  # HTTP Forbidden status code
+        assert res.json["message"] == "Access denied"
+
+
     def test_download_all_results(self, client, header):
         data = {
             "runExampleData": True,
