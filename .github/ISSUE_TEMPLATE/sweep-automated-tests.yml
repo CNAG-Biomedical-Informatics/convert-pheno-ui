@@ -1,6 +1,6 @@
 name: Automated testing
 title: 'Sweep: '
-description: Write something like "Add the following additional tests to the api endpoint/client: ..."
+description: Write something like "Add the following additional tests to the api endpoint/client ..."
 labels: sweep
 body:
   - type: textarea
@@ -8,4 +8,4 @@ body:
     attributes:
       label: Details
       description: More details for Sweep
-      placeholder: We need tests for the following functionalities:...
+      placeholder: We need tests for the following functionalities ...
