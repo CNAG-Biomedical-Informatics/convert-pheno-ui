@@ -508,8 +508,22 @@ class ClinicalDataView(Resource):
         if job is None:
             return {"message": "job not found"}, 404
 
+        # TODO
+        # distinguish between errors and warnings
+
+        job_warnings = {}
         if job.errors:
-            return {"message": "job has errors", "errors": job.errors}, 500
+            for target_format in job.target_formats:
+                error, warning = job.errors[target_format]
+
+                # TODO
+                # Do not error out completely but rather collect
+                # and then present the errors to the user
+                if error:
+                    return {"message": "job has errors", "errors": job.errors}, 500
+
+                if warning:
+                    job_warnings[target_format] = warning
 
         output = (
             db.session.query(Output)
@@ -728,6 +742,7 @@ class ClinicalDataView(Resource):
             "colNodeIds": list(node_to_selected.keys()),
             "shownColumns": selected_cols,
             "nodeToSelected": node_to_selected,
+            "conversionWarnings": job_warnings,
         }
         return make_response(response)
 

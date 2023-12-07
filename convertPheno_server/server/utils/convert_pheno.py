@@ -102,21 +102,23 @@ def run_convert_pheno(
     update_job_status(job_db_obj, target_format, "running")
 
     container = get_docker_container()
-    result, error_msg = container.exec_run(cmd, demux=True)
+    result, (stdout, stderr) = container.exec_run(cmd, demux=True)
     print("result", result)
 
     status = "success" if result == 0 else "failed"
 
-    if error_msg != (None, None):
-        error_msg = error_msg[0].decode("utf-8")
-        logger(f"job_id:{job_id} - The following bash command errored out: {cmd}")
-        logger(
-            f"job_id:{job_id} - Convert-Pheno failed with error message: {error_msg}"
-        )
+    if (stdout, stderr) != (None, None):
+        logger(f"job_id:{job_id} - {cmd} run into:")
 
-    # TODO
-    # test errors
+        if stdout:
+            stdout = stdout.decode("utf-8").split("\n")
+            logger(f"job_id:{job_id} - Convert-Pheno failed: {stdout}")
+
+        if stderr:
+            stderr = stderr.decode("utf-8").split("\n")
+            logger(f"job_id:{job_id} - Convert-Pheno returned: {stderr}")
+
     update_job_status(
-        job_db_obj, target_format, status, log_file=log_file, error_msg=error_msg
+        job_db_obj, target_format, status, log_file=log_file, error_msg=(stdout, stderr)
     )
     return None
