@@ -40,7 +40,7 @@ class JobView(Resource):
 
     @login(login_required)
     @api.expect(parser)
-    def post(self, userid):
+    def post(self, userid, **kwargs):
         user = db.session.query(User).filter_by(name=userid).one_or_none()
         if user is None:
             return {"message": "User does not exist"}, 404

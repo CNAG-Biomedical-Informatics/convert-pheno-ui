@@ -44,7 +44,6 @@ services:
   convert-pheno:
     user: ${UID}
     image: manuelrueda/convert-pheno:0.15
-    # image: manuelrueda/convert-pheno:0.12
     container_name: convert-pheno
     restart: unless-stopped
     tty: true

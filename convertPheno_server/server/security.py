@@ -92,6 +92,7 @@ def login(login_required=True):
                 }, 500
 
             userid = decoded.get("preferred_username")
+            uuid = decoded.get("sub")
 
             timestamp = datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")
             print(
@@ -103,7 +104,7 @@ def login(login_required=True):
                     ]
                 )
             )
-            return func(userid=userid, *args, **kwargs)
+            return func(userid=userid, uuid=uuid, *args, **kwargs)
 
         return decorated_function
 

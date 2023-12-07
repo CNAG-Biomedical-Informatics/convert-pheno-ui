@@ -15,6 +15,10 @@ For converting a file into a different format using convert-pheno
 import docker
 from server.utils.db_helpers import update_job_status
 
+from server.app import app
+
+cfg = app.config
+
 
 def get_docker_container():
     """
@@ -43,49 +47,48 @@ def generate_file_names(job_id, target_format):
 
 
 def run_convert_pheno(
-    job_id,
-    input_format,
-    target_format,
-    runExample,
-    userid,
-    cli_args_mapping,
-    input_file,
-    file_name_mapping,
-    executable_path,
-    job_db_obj,
     logger,
+    kwargs,
     log_file,
     uploaded_files=None,
 ):
+    user_id = kwargs["userid"]
+    uuid = kwargs["uuid"]
+
+    job_id = kwargs["job_id"]
+    job_db_obj = kwargs["job_db_obj"]
+
+    input_file = kwargs["input_file"]
+    input_format = kwargs["input_format"]
+    target_format = kwargs["target_format"]
+    run_example_bool = kwargs["runExample"]
+
+    cli_args_mapping = kwargs["cli_args_mapping"]
+    file_name_mapping = kwargs["file_name_mapping"]
+
     logger(f"job_id:{job_id} - run_convert_pheno")
     cli_args_mapping.update(
         {
             "target": [
                 f"-o{target_format}",
-                file_name_mapping["output_name"],
+                f"{uuid}/{file_name_mapping['output_name']}",
             ],
             "log": [
                 "-log",
-                file_name_mapping["log_file"],
+                f"{uuid}/{file_name_mapping['log_file']}",
             ],
             "user": [
                 "--user",
-                userid,
+                user_id,
             ],
         }
     )
 
-    if not runExample and input_format in ["redcap", "cdisc"]:
+    if not run_example_bool and input_format in ["redcap", "cdisc"]:
         cli_args_mapping.update(
             {
-                "redcap_dict": [
-                    "-rcd",
-                    uploaded_files["redcap-dictionary"],
-                ],
-                "mapping_file": [
-                    "--mapping-file",
-                    uploaded_files["mapping-file"],
-                ],
+                "redcap_dict": ["-rcd", uploaded_files["redcap-dictionary"]],
+                "mapping_file": ["--mapping-file", uploaded_files["mapping-file"]],
             }
         )
 
@@ -94,7 +97,7 @@ def run_convert_pheno(
         cli_args.extend(item)
 
     logger(f"Converting file:{input_file} to format {target_format}")
-    cmd = [executable_path] + cli_args
+    cmd = [cfg["CP_EXECUTABLE_PATH"]] + cli_args
 
     update_job_status(job_db_obj, target_format, "running")
 
@@ -107,7 +110,9 @@ def run_convert_pheno(
     if error_msg != (None, None):
         error_msg = error_msg[0].decode("utf-8")
         logger(f"job_id:{job_id} - The following bash command errored out: {cmd}")
-        logger(f"job_id:{job_id} - Convert-Pheno failed with error message: {error_msg}")
+        logger(
+            f"job_id:{job_id} - Convert-Pheno failed with error message: {error_msg}"
+        )
 
     # TODO
     # test errors

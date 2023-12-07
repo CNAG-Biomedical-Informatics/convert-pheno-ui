@@ -27,10 +27,11 @@ db-ip:
 	db_ip=$$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' convert-pheno-api-db) && \
 	echo $$db_ip && \
 	sed -i "s/API_DB_HOST=.*/API_DB_HOST=$$db_ip/g" .env && \
-	sed -i "s/TEST_DB_HOST=.*/TEST_DB_HOST=$$db_ip/g" .env 
+	sed -i "s/TEST_DB_HOST=.*/TEST_DB_HOST=$$db_ip/g" .env
 
 db-empty:
-	python3 emptyAllTables.py postgres:postgres postgres $(shell docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' cp-pg)
+	db_ip=$$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' convert-pheno-api-db) && \
+	python3 emptyAllTables.py postgres:postgres postgres $$db_ip
 
 kc-key:
 	./get_public_kc_key.sh https://${DOMAIN}/auth/ ${KC_REALM} >> .env

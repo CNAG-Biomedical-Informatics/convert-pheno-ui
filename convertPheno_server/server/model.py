@@ -29,7 +29,8 @@ class User(db.Model):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(120), nullable=False)  # keycloak username
+    name = Column(String(120), nullable=False)  # keycloak "preferred_username"
+    uuid = Column(String(120), nullable=False)  # keycloak "sub"
 
 
 class Upload(db.Model):

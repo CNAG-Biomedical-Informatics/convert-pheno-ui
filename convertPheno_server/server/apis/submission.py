@@ -89,7 +89,7 @@ class UploadFile(Resource):
     @login(login_required)
     # @limiter.limit("1/minute")
     @api.expect(parser, upload_parser, file_meta_data_parser)
-    def post(self, userid):
+    def post(self, userid, uuid):
         """
         Upload file
         """
@@ -100,7 +100,7 @@ class UploadFile(Resource):
         input_format = meta_data["X-Custom-InputFormat"]
 
         # get logged in userid
-        user_id = get_or_create_user(userid)
+        user_id = get_or_create_user(userid, uuid)
 
         # get the file extension
         ext = uploaded_file.filename.rsplit(".", 1)[1]
@@ -135,7 +135,7 @@ class UploadFile(Resource):
             return {"message": f"File extension {ext} is not allowed"}, 400
 
         try:
-            uploaded_file.save(cfg["FLASK_UPLOAD_DIR"] / fn)
+            uploaded_file.save(cfg["FLASK_UPLOAD_DIR"] / uuid / fn)
         except FileNotFoundError as err:
             print(err)
             return {"message": "File not uploaded"}, 500
@@ -158,7 +158,7 @@ class UploadFile(Resource):
     @login(login_required)
     # @limiter.limit("10/minute")
     @api.expect(parser)
-    def delete(self, userid):
+    def delete(self, userid, uuid):
         """
         Delete uploaded file
         """
@@ -181,7 +181,7 @@ class UploadFile(Resource):
             return {"message": "File not found"}, 404
 
         try:
-            (cfg["FLASK_UPLOAD_DIR"] / fn).unlink()
+            (cfg["FLASK_UPLOAD_DIR"] / uuid / fn).unlink()
         except FileNotFoundError as err:
             print(err)
             return {"message": "File not found"}, 404
@@ -244,7 +244,7 @@ class ConvertFile(Resource):
     @login(login_required)
     # @api.expect(parser, resource_fields, validate=True)
     @api.doc(responses={200: "Success", 400: "Validation Error"})
-    def post(self, userid):
+    def post(self, userid, uuid):
         """
         Convert file
         """
@@ -253,7 +253,7 @@ class ConvertFile(Resource):
 
         if runExample:
             ns.logger.info("run /w example data")
-            user_id = get_or_create_user(userid).id
+            user_id = get_or_create_user(userid, uuid).id
         else:
             ns.logger.info("run /w uploaded data")
             user = (
@@ -297,8 +297,10 @@ class ConvertFile(Resource):
             uploaded_mapping = data["uploadedFiles"]
             for file_name in uploaded_mapping:
                 file_type, fn_after_upload = uploaded_mapping[file_name]
-                posix = cfg["FLASK_UPLOAD_DIR"] / fn_after_upload
-                absolute = f"{cfg['IN_OUT_DIR']}/{posix.parent.name}/{posix.name}"
+                posix = cfg["FLASK_UPLOAD_DIR"] / uuid / fn_after_upload
+                absolute = (
+                    f"{cfg['IN_OUT_DIR']}/uploads/{posix.parent.name}/{posix.name}"
+                )
                 file_type_to_file[file_type] = absolute
 
         cli_args_mapping_all = deepcopy(cfg["CLI_ARGS_MAPPING"])
@@ -331,27 +333,29 @@ class ConvertFile(Resource):
 
         errors = {}
         status = {}
-        out_dir = cfg["FLASK_OUT_DIR"]
+        out_dir = cfg["FLASK_OUT_DIR"] / uuid
         for target_format in target_formats:
             file_name_mapping = generate_file_names(job_id, target_format)
-            update_job_status(
-                job,
-                target_format,
-                "started",
-            )
+            update_job_status(job, target_format, "started")
             log_file = out_dir / file_name_mapping["log_file"]
+
+            kwargs = {
+                "job_id": job_id,
+                "input_format": input_format,
+                "target_format": target_format,
+                "runExample": runExample,
+                "userid": userid,
+                "uuid": uuid,
+                "cli_args_mapping": cli_args_mapping,
+                "input_file": input_file,
+                "file_name_mapping": file_name_mapping,
+                "cp_executable_path": cfg["CP_EXECUTABLE_PATH"],
+                "job_db_obj": job,
+            }
+
             error = run_convert_pheno(
-                job_id,
-                input_format,
-                target_format,
-                runExample,
-                userid,
-                cli_args_mapping,
-                input_file,
-                file_name_mapping,
-                cfg["CP_EXECUTABLE_PATH"],
-                job,
                 ns.logger.info,
+                kwargs,
                 log_file=log_file,
                 uploaded_files=file_type_to_file,
             )
@@ -360,16 +364,28 @@ class ConvertFile(Resource):
                 errors = {target_format: error}
                 break
 
-            with open(out_dir / file_name_mapping["output_name"]) as file:
-                obj = json.load(file)
+            # TODO
+            # wrap it in a try except
+            try:
+                with open(out_dir / file_name_mapping["output_name"]) as file:
+                    obj = json.load(file)
+            except FileNotFoundError as err:
+                print(err)
+                errors = {target_format: "File not found"}
+                update_job_status(job, target_format, "failed")
+                break
 
             json_schema = generate_schema_tree(obj)
 
             write_output_to_db(job.id, target_format, obj, json_schema)
             outputs.append(file_name_mapping["output_name"])
 
-        if error:
+        if error or any(value is not None for value in errors.values()):
             job.status = "failed"
+
+            # TODO
+            # This should be handled in the frontend
+            # by e.g. showing an error modal
             return {
                 "message": "convert-pheno errored out",
                 "errors": errors,

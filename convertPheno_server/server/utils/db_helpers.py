@@ -10,21 +10,28 @@
 #
 #   License: GPL-3.0 license
 import json
-from server.app import db
+from server.app import db, app
 from sqlalchemy.orm.attributes import flag_modified
 
 from server.model import Output, User
 
+cfg = app.config
 
-def get_or_create_user(userid):
+
+def get_or_create_user(userid, uuid):
     """
     Get or create a user
     """
     user = db.session.query(User).filter_by(name=userid).one_or_none()
     if user is None:
-        user = User(name=userid)
+        user = User(name=userid, uuid=uuid)
         db.session.add(user)
         db.session.commit()
+
+        for directory in ["UPLOAD", "OUT"]:
+            directory = cfg[f"FLASK_{directory}_DIR"] / uuid
+            directory.mkdir()
+
     return user
 
 

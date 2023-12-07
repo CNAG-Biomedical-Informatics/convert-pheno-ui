@@ -492,7 +492,7 @@ class ClinicalDataView(Resource):
     @login(login_required)
     @api.expect(parser, resource_fields, validate=True)
     @api.doc(responses={200: "Success", 400: "Validation Error"})
-    def post(self, userid):
+    def post(self, userid, **kwargs):
         user = db.session.query(User).filter_by(name=userid).one_or_none()
         if user is None:
             return {"message": "User not found"}, 404

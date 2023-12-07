@@ -20,7 +20,7 @@
   "sqltools.connections": [
     {
       "previewLimit": 50,
-      "server": "10.10.0.3",
+      "server": "10.11.51.3",
       "port": 5432,
       "driver": "PostgreSQL",
       "name": "CP",
