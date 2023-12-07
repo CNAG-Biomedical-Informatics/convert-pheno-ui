@@ -27,5 +27,7 @@ jobs:
         with:
           context: convertPheno_server
           push: true
-          tags: leistivo/convert-pheno-ui-server:${{ github.sha }}
+          tags: |
+            leistivo/convert-pheno-ui-server:${{ github.sha }}
+            leistivo/convert-pheno-ui-server:latest
           target: prod

@@ -1,0 +1,57 @@
+{
+  "name": "Convert-Pheno UI",
+  
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "hostRequirements": {
+    "cpus": 2
+  },
+  "waitFor": "onCreateCommand",
+  "updateContentCommand": {
+    "command": "git pull",
+    "autoReload": "true"
+  },
+  "postCreateCommand": {
+    "envs":"cd convertPheno_server && cp example.dev.env .env && cd ../convertPheno_client && cp example.dev.env .env",
+    "docker-compose": "cd convertPheno_server && docker-compose up -d",
+    "server":"pipx install poetry && cd convertPheno_server && poetry install",
+    "client": "cd convertPheno_client && pnpm install"
+  },
+  "postStartCommand": {
+    "update-env": "cd convertPheno_server && make db-ip"
+  },
+  "postAttachCommand": {
+    "server": "cd convertPheno_server && make run",
+    "client": "cd convertPheno_client && pnpm run dev"
+  },
+  "forwardPorts": [5001,5432,5173],
+  "portsAttributes": {
+    "5001": {
+      "label": "Flask Server"
+    },
+    "5432":{
+      "label": "Postgres"
+    },
+    "5173": {
+      "label": "React App",
+      "onAutoForward": "openPreview"
+    }
+  },
+  "customizations": {
+    "codespaces": {
+      "openFiles": [
+        "convertPheno_client/src/code/App.tsx",
+        "convertPheno_server/server/app.py"
+      ]
+    },
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "ms-azuretools.vscode-docker",
+        "esbenp.prettier-vscode",
+        "GitHub.copilot",
+        "ms-python.python",
+        "vscodevim.vim"
+      ]
+    }
+  }
+}

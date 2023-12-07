@@ -16,7 +16,7 @@ jobs:
         uses: snyk/actions/docker@master
         continue-on-error: true
         with:
-          image: leistivo/convert-pheno-ui-server:883849bcc283397b07109703764e8651bef2992d
+          image: leistivo/convert-pheno-ui-server:latest
           args: --file=convertPheno_server/Dockerfile
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
