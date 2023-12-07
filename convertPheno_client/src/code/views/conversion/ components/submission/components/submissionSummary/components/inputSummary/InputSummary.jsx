@@ -25,7 +25,7 @@ export default function InputSummary(props) {
     bff: "BFF (Beacon v2)",
     pxf: "PXF (Phenopackets v2)",
     omop: "OMOP-CDM",
-    cdisc: "CDISC-CDM",
+    cdisc: "CDISC-ODM",
   };
 
   return (
