@@ -24,7 +24,10 @@ db-run:
 	docker run --name cp-pg -e POSTGRES_PASSWORD=postgres -d postgres
 
 db-ip:
-	docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' cp-pg
+	db_ip=$$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' convert-pheno-api-db) && \
+	echo $$db_ip && \
+	sed -i "s/API_DB_HOST=.*/API_DB_HOST=$$db_ip/g" .env && \
+	sed -i "s/TEST_DB_HOST=.*/TEST_DB_HOST=$$db_ip/g" .env 
 
 db-empty:
 	python3 emptyAllTables.py postgres:postgres postgres $(shell docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' cp-pg)
@@ -101,3 +104,6 @@ push:	cov flake, lint badge
 
 sonar:
 	/usr/local/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN}
+
+github-codespaces-curltest:
+	curl https://${GITHUB_CODESPACES_ID}-5001.app.github.dev/api/curltest -H "X-Github-Token: ${GITHUB_TOKEN}"

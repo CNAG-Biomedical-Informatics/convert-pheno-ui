@@ -4,9 +4,9 @@
     {
       "label": "flask",
       "type": "shell",
-      "command": "source convertPheno_server/.venv/bin/activate && make -C convertPheno_server run",
+      "command": "cd convertPheno_server && make run",
       "runOptions": {
-        "runOn": "folderOpen"
+        "runOn": "${workspaceFolder} == '/workspaces/convert-pheno-ui' ? 'never' : 'folderOpen'"
       }
     },
     {
@@ -14,7 +14,7 @@
       "type": "shell",
       "command": "cd convertPheno_client && npm run dev",
       "runOptions": {
-        "runOn": "folderOpen"
+        "runOn": "${workspaceFolder} == '/workspaces/convert-pheno-ui' ? 'never' : 'folderOpen'"
       }
     }
   ]

@@ -28,22 +28,22 @@ services:
   #   volumes:
   #     - ./data:/data
 
-  # db:
-  #   image: postgres:13-alpine
-  #   container_name: convert-pheno-api-db
-  #   volumes:
-  #     - postgres-data:/var/lib/postgresql/data/
-  #   environment:
-  #     - POSTGRES_DB=${API_DB_NAME}
-  #     - POSTGRES_USER=${API_DB_USER}
-  #     - POSTGRES_PASSWORD=${API_DB_PW}
-  #   restart: unless-stopped
-  #   healthcheck:
-  #     test: pg_isready -U postgres
+  db:
+    image: postgres:13-alpine
+    container_name: convert-pheno-api-db
+    volumes:
+      - postgres-data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=${API_DB_NAME}
+      - POSTGRES_USER=${API_DB_USER}
+      - POSTGRES_PASSWORD=${API_DB_PW}
+    restart: unless-stopped
+    healthcheck:
+      test: pg_isready -U postgres
 
   convert-pheno:
     user: ${UID}
-    image: manuelrueda/convert-pheno:0.13
+    image: manuelrueda/convert-pheno:0.15
     # image: manuelrueda/convert-pheno:0.12
     container_name: convert-pheno
     restart: unless-stopped
