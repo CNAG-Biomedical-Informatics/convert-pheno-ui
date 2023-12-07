@@ -49,6 +49,8 @@
         "ms-azuretools.vscode-docker",
         "esbenp.prettier-vscode",
         "GitHub.copilot",
+        "pflannery.vscode-versionlens",
+        "ms-python.black-formatter",
         "ms-python.python",
         "vscodevim.vim"
       ]
