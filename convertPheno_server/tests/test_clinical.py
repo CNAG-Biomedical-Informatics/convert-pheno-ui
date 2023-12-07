@@ -11,7 +11,8 @@
 #   License: GPL-3.0 license
 
 from copy import deepcopy
-from utils import req_post, convert_clinical_data, filter_by_criteria
+
+from utils import convert_clinical_data, filter_by_criteria, req_post
 
 url_root = "/api/"
 url_suffix = "clinical/json"
@@ -54,6 +55,33 @@ class TestClinicalClass:
         data = deepcopy(default_data)
         data["jobId"] = "1234"
         res = req_post(client, header, url_suffix, data=data)
+    def test_conversion_results_access_by_other_user(self, client, header, another_user_header):
+        # Simulate the scenario where a user tries to access the conversion results of another user
+        job_id = convert_clinical_data(client, header)
+        data = deepcopy(default_data)
+        data["jobId"] = str(job_id)
+        res = req_post(client, another_user_header, url_suffix, data=data)
+        # Assert that the server responds with an error or access denied message
+        assert res.status_code == 403  # HTTP Forbidden status code
+        assert res.json["message"] == "Access denied"
+
+    def test_conversion_results_access_by_owner(self, client, header):
+        # Simulate the scenario where a user tries to access their own conversion results
+        job_id = convert_clinical_data(client, header)
+        data = deepcopy(default_data)
+        data["jobId"] = str(job_id)
+        res = req_post(client, header, url_suffix, data=data)
+        # Assert the server responds with success message and the correct data
+        assert res.status_code == 200
+        expected_keys = [
+            "json",
+            "colHeaders",
+            "colTree",
+            "colNodeIds",
+            "shownColumns",
+            "nodeToSelected",
+        ]
+        assert all(key in res.json for key in expected_keys)
         assert res.status_code == 404
         assert res.json["message"] == "job not found"
 
