@@ -104,7 +104,7 @@ push:	cov flake, lint badge
 	git push
 
 sonar:
-	/usr/local/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN}
+	/usr/local/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.host.url=${SONAR_HOST_URL}
 
 github-codespaces-curltest:
 	curl https://${GITHUB_CODESPACES_ID}-5001.app.github.dev/api/curltest -H "X-Github-Token: ${GITHUB_TOKEN}"

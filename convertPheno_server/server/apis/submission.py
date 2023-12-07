@@ -178,7 +178,7 @@ class UploadFile(Resource):
             .one_or_none()
         )
         if upload is None:
-            return {"message": "File not found"}, 404
+            raise Exception
 
         try:
             (cfg["FLASK_UPLOAD_DIR"] / uuid / fn).unlink()
