@@ -459,7 +459,7 @@ class DownloadFile(Resource):
 
     @login(login_required)
     @api.expect(parser)
-    def post(self, userid):
+    def post(self, userid, uuid):
         """
         Flask send_file
         """
