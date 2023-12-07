@@ -9,7 +9,7 @@
 
   License: GPL-3.0 license
 */
-
+import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
@@ -17,8 +17,6 @@ import toast from "react-hot-toast";
 
 import { fileConversion } from "../../../../../apis";
 import auth from "../../../../../Auth";
-
-// const api_endpoint = import.meta.env.VITE_API_URL;
 
 const api_endpoint =
   process.env.NODE_ENV === "production"

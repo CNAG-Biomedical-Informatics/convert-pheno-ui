@@ -10,6 +10,10 @@
   License: GPL-3.0 license
 */
 
+import axiosInstance from "./axiosInstance";
+
+
+// ist this function actually still used?
 export async function fileUpload(token, urlprefix, data) {
   return fetch(`${urlprefix}api/submission/upload`, {
     method: "POST",
@@ -22,6 +26,8 @@ export async function fileUpload(token, urlprefix, data) {
   });
 }
 
+// TODO
+// reimplment this function using Axios
 export async function fileConversion(token, urlprefix, data) {
   return fetch(`${urlprefix}api/submission/convert`, {
     method: "POST",
@@ -35,6 +41,8 @@ export async function fileConversion(token, urlprefix, data) {
   });
 }
 
+// TODO
+// reimplment this function using Axios
 export async function fileDownload(token, urlprefix, data) {
   try {
     const res = await fetch(`${urlprefix}api/submission/download`, {
@@ -60,6 +68,8 @@ export async function fileDownload(token, urlprefix, data) {
   }
 }
 
+// TODO
+// merge this function with fileDownload
 export async function fileDownloadExample(token, urlprefix, data) {
   try {
     const res = await fetch(`${urlprefix}api/submission/download/example`, {

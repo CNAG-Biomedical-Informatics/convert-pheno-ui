@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "./.",
   "dependencies": {
+    "axios": "^1.6.2",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@hcaptcha/react-hcaptcha": "^1.8.1",
