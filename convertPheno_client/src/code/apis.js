@@ -3,7 +3,7 @@
 
   This file is part of convert-pheno-ui
 
-  Last Modified: Apr/28/2023
+  Last Modified: Apr/08/2023
 
   Copyright (C) 2022-2023 Ivo Christopher Leist - CNAG (Ivo.leist@cnag.eu)
 
@@ -11,7 +11,6 @@
 */
 
 import axiosInstance from "./axiosInstance";
-
 
 // ist this function actually still used?
 export async function fileUpload(token, urlprefix, data) {
@@ -26,9 +25,23 @@ export async function fileUpload(token, urlprefix, data) {
   });
 }
 
-// TODO
-// reimplment this function using Axios
 export async function fileConversion(token, urlprefix, data) {
+  try {
+    const response = await axiosInstance.post(`${urlprefix}api/submission/convert`, data, {
+      headers: {
+        'Authorization': token
+      }
+    });
+    console.log('response', response);
+    console.log('response.data', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error during file conversion:', error);
+    throw error;
+  }
+}
+
+export async function fileConversionOld(token, urlprefix, data) {
   return fetch(`${urlprefix}api/submission/convert`, {
     method: "POST",
     body: data,
