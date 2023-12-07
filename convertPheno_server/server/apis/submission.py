@@ -322,7 +322,7 @@ class ConvertFile(Resource):
         job = Job(
             job_id=job_id,
             owner=user_id,
-            input_name=input_file,  # should not include the full path to the file
+            input_name=input_file.split("/")[-1],
             input_format=input_format,
             target_formats=target_formats,
             status=status,
