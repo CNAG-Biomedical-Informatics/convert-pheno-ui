@@ -11,7 +11,7 @@
 */
 
 import { useQuery } from "@tanstack/react-query";
-import { apiRequest } from "../../../apis";
+import apiRequest from "../../../ApiRequest";
 
 export default function useFinishedJobs(props) {
   const { query, conversionFinished } = props;

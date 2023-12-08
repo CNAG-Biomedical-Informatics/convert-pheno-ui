@@ -10,8 +10,7 @@ import {
 } from "@mui/material";
 
 import HCaptcha from "@hcaptcha/react-hcaptcha";
-import { apiRequest } from "../../../../../../apis";
-import auth from "../../../../../../Auth";
+import apiRequest from "../../../../../../ApiRequest";
 
 // TODO
 // another thing which could be used to reset the ratelimit

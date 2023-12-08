@@ -32,47 +32,41 @@ axiosInstance.interceptors.request.use(config => {
   return Promise.reject(error);
 });
 
-
 const baseUrl =
   process.env.NODE_ENV === "production"
     ? window.REACT_APP_API_URL
     : import.meta.env.VITE_API_URL;
 
-export async function apiRequest(endpoint, data) {
+export default async function apiRequest(endpoint, data) {
   try {
+    const isFileDownload = endpoint.includes('download');
     const url = `${baseUrl}api/${endpoint}`;
-    const res = await axiosInstance.post(url, data, {
+    const config = {
       headers: {
         'Authorization': auth.getToken(),
       },
-    });
-    console.log(`Response from ${endpoint}:`, res);
+      responseType: isFileDownload
+        ? 'blob'
+        : undefined
+    };
+    const res = await axiosInstance.post(url, data, config);
+
+    if (isFileDownload) {
+      const objUrl = window.URL.createObjectURL(new Blob([res.data]));
+      const a = document.createElement("a");
+      a.setAttribute("download", data.downloadName);
+      a.style.display = "none";
+      a.href = objUrl;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(objUrl);
+    }
     return res;
   } catch (error) {
-    console.error(`Error during ${endpoint} request:`, error);
-    throw error;
-  }
-}
-
-export async function fileDownload(endpoint, data) {
-  try {
-    const url = `${baseUrl}api/${endpoint}`;
-    const res = await axiosInstance.post(url, data, {
-      headers: {
-        'Authorization': auth.getToken(),
-      },
-      responseType: 'blob'
-    });
-    const objUrl = window.URL.createObjectURL(new Blob([res.data]));
-    const a = document.createElement("a");
-    a.setAttribute("download", data.downloadName);
-    a.style.display = "none";
-    a.href = objUrl;
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(objUrl);
-  } catch (error) {
-    console.error('Error during file download:', error);
+    const errorContext = isFileDownload
+      ? 'Error during file download:'
+      : `Error during ${endpoint} request:`;
+    console.error(errorContext, error);
     throw error;
   }
 }
