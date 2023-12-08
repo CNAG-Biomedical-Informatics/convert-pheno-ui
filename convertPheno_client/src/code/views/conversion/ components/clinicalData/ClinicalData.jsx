@@ -24,7 +24,7 @@ export default function ClinicalData(props) {
   hierarchy:
   Tabs (outputFormats)
     --> queryBuilder
-    --> dataGrid
+    --> dataTable
   */
   const { outputFormats, jobId } = props;
   const location = useLocation();
@@ -76,7 +76,8 @@ export default function ClinicalData(props) {
     shownColumns,
     headers,
   });
-  const renderDataGrid = useDataGrid({
+
+  const renderDataTable = useDataGrid({
     error,
     data,
     status,
@@ -110,7 +111,7 @@ export default function ClinicalData(props) {
       handleTabChanged={handleTabChanged}
     >
       {renderQueryBuilder}
-      {renderDataGrid}
+      {renderDataTable}
     </SimpleTabs>
   );
 }
