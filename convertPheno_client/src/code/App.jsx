@@ -3,7 +3,7 @@
 
   This file is part of convert-pheno-ui
 
-  Last Modified: Apr/28/2023
+  Last modified: Dec/08/2023
 
   Copyright (C) 2022-2023 Ivo Christopher Leist - CNAG (Ivo.leist@cnag.eu)
 
@@ -141,7 +141,7 @@ function App() {
     var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
     g.async=true; g.src=matomoUrl; s.parentNode.insertBefore(g,s);
   }, [])
-  
+
   useEffect(() => {
     if (auth.user.authenticated) {
       setAuthenticated(true);
