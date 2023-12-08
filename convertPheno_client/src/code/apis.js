@@ -31,17 +31,13 @@ export async function fileConversion(token, urlprefix, data) {
 // reimplment this function using Axios
 export async function fileDownload(token, urlprefix, data, endpoint = "download") {
   try {
-    const res = await fetch(`${urlprefix}api/submission/${endpoint}`, {
-      method: "POST",
-      body: JSON.stringify(data),
+    const res = await axiosInstance.post(`${urlprefix}api/submission/${endpoint}`, data, {
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: token,
+        'Authorization': token,
       },
+      responseType: 'blob'
     });
-    const blob = await res.blob();
-    const url = window.URL.createObjectURL(blob);
+    const url = window.URL.createObjectURL(new Blob([res.data]));
     const a = document.createElement("a");
     a.setAttribute("download", data.downloadName);
     a.style.display = "none";
@@ -49,8 +45,8 @@ export async function fileDownload(token, urlprefix, data, endpoint = "download"
     document.body.appendChild(a);
     a.click();
     window.URL.revokeObjectURL(url);
-  } catch (err) {
-    return console.error(err);
+  } catch (error) {
+    console.error('Error during file download:', error);
   }
 }
 
