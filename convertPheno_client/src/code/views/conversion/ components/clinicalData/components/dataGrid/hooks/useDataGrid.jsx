@@ -17,7 +17,7 @@ export default function useDataGrid({
     if (gridType === "dialogGrid") {
       return;
     }
-    const cols = params.columnApi.getColumns();
+    const cols = params.api.getColumns();
     const columnHeaders = cols.map((column) => column.getColDef().field);
     const filteredCols = columnHeaders.filter((col) => col !== "#");
     setJsonDataKeys(filteredCols);
