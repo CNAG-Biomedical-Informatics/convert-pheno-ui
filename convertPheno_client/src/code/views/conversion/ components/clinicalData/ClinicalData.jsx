@@ -31,10 +31,7 @@ export default function ClinicalData(props) {
   const queryClient = useQueryClient();
 
   const [tabValue, setTabValue] = useState(0);
-  const [jsonDataKeys, setJsonDataKeys] = useState([]);
-
   const [shownColumns, setShownColumns] = useState({});
-
   const [headers, setHeaders] = useState([]);
 
   // for the query builder
@@ -85,7 +82,6 @@ export default function ClinicalData(props) {
     status,
     tabValue,
     setters: {
-      setJsonDataKeys,
       setShownColumns,
     },
   });

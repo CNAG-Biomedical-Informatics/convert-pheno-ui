@@ -9,18 +9,16 @@ export default function useDataGrid({
   tabValue,
   setters,
 }) {
-  const { setJsonDataKeys, setShownColumns } = setters;
+  const {
+    setShownColumns
+  } = setters;
   const [renderDataGrid, setRenderDataGrid] = useState(null);
 
-  const onGridReady = (params, gridId) => {
+  const onGridReady = (gridId) => {
     const gridType = gridId.split("-")[1];
     if (gridType === "dialogGrid") {
       return;
     }
-    const cols = params.api.getColumns();
-    const columnHeaders = cols.map((column) => column.getColDef().field);
-    const filteredCols = columnHeaders.filter((col) => col !== "#");
-    setJsonDataKeys(filteredCols);
   };
 
   useEffect(() => {
