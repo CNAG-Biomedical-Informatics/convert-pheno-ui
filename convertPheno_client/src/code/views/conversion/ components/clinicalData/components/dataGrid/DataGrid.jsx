@@ -47,7 +47,6 @@ export default function DataGrid(props) {
     colHeaders,
     colTree,
     colTreeNodeIds,
-    onGridReady,
     shownColumns,
     setShownColumns,
     colTreeNodeSelected,
@@ -231,10 +230,7 @@ export default function DataGrid(props) {
 
     const gridOptions = {
       pagination: true,
-      paginationPageSize: 20,
-      onGridReady: (params) => {
-        onGridReady(params, gridId);
-      },
+      paginationPageSize: 20
     };
 
     return (
