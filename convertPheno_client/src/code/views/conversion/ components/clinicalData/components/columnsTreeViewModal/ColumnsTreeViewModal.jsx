@@ -25,7 +25,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/system";
 
-import { TreeView, TreeItem } from "@mui/lab";
+import { TreeView, TreeItem } from "@mui/x-tree-view";
 import { ExpandMore, ExpandLess, ChevronRight } from "@mui/icons-material";
 
 const TreeItemWithCheckbox = ({
