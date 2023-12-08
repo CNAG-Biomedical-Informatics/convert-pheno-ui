@@ -10,14 +10,13 @@ import {
 } from "@mui/material";
 
 import HCaptcha from "@hcaptcha/react-hcaptcha";
-import { postCaptchaToken, getJobData } from "../../../../../../apis";
+import { apiRequest } from "../../../../../../apis";
 import auth from "../../../../../../Auth";
 
 // TODO
 // another thing which could be used to reset the ratelimit
 // is to trigger a captcha challenge
-
-const api_endpoint =
+const apiBaseUrl =
   process.env.NODE_ENV === "production"
     ? window.REACT_APP_API_URL
     : import.meta.env.VITE_API_URL;
@@ -37,24 +36,11 @@ const handleVerificationSuccess = async (token, ekey, setError) => {
 
   console.log("handleVerificationSuccess data", data);
 
-  // const res = await getJobData(
-  //   auth.getToken(),
-  //   api_endpoint,
-  //   JSON.stringify(data)
-  // );
-
-  const res = await postCaptchaToken(
-    auth.getToken(),
-    api_endpoint,
+  const res = await apiRequest(
+    "captcha/store",
     JSON.stringify(data)
   );
-
-  if (!res.ok) {
-    console.log("handleVerificationSuccess res not ok", res);
-    const error = await res.json();
-    return Promise.reject(error);
-  }
-  return res.json();
+  return res.data;
 
   // const response = await postCaptchaToken(
   //   auth.getToken(),

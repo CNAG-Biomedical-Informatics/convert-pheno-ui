@@ -12,15 +12,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import { getJson } from "../../../../../apis";
-import auth from "../../../../../Auth";
-
-// const api_endpoint = import.meta.env.VITE_API_URL;
-
-const api_endpoint =
-  process.env.NODE_ENV === "production"
-    ? window.REACT_APP_API_URL
-    : import.meta.env.VITE_API_URL;
+import { apiRequest } from "../../../../../apis";
 
 export default function useQueryDb(props) {
   const { query, location, setShownColumns, setHeaders } = props;
@@ -36,16 +28,11 @@ export default function useQueryDb(props) {
   return useQuery({
     queryKey: ["resultsQuery", tabValue, filter, location, shownColumns],
     queryFn: async () => {
-      const res = await getJson(
-        auth.getToken(),
-        api_endpoint,
+      const res = await apiRequest(
+        "clinical/json",
         JSON.stringify(query)
       );
-      if (!res.ok) {
-        const error = await res.json();
-        return Promise.reject(error);
-      }
-      return res.json();
+      return res.data;
     },
     retry: 1,
     retryDelay: 10,

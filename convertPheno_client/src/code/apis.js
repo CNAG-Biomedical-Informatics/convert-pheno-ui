@@ -10,85 +10,49 @@
   License: GPL-3.0 license
 */
 
-import axiosInstance from "./axiosInstance";
+import axiosInstance from "./AxiosInstance";
+import auth from "./Auth";
 
-export async function fileConversion(token, urlprefix, data) {
+const baseUrl =
+  process.env.NODE_ENV === "production"
+    ? window.REACT_APP_API_URL
+    : import.meta.env.VITE_API_URL;
+
+export async function apiRequest(endpoint, data) {
   try {
-    const res = await axiosInstance.post(`${urlprefix}api/submission/convert`, data, {
+    const url = `${baseUrl}api/${endpoint}`;
+    const res = await axiosInstance.post(url, data, {
       headers: {
-        'Authorization': token
-      }
+        'Authorization': auth.getToken(),
+      },
     });
-    console.log('res', res);
+    console.log(`Response from ${endpoint}:`, res);
     return res;
   } catch (error) {
-    console.error('Error during file conversion:', error);
+    console.error(`Error during ${endpoint} request:`, error);
     throw error;
   }
 }
 
-// TODO
-// reimplment this function using Axios
-export async function fileDownload(token, urlprefix, data, endpoint = "download") {
+export async function fileDownload(endpoint, data) {
   try {
-    const res = await axiosInstance.post(`${urlprefix}api/submission/${endpoint}`, data, {
+    const url = `${baseUrl}api/${endpoint}`;
+    const res = await axiosInstance.post(url, data, {
       headers: {
-        'Authorization': token,
+        'Authorization': auth.getToken(),
       },
       responseType: 'blob'
     });
-    const url = window.URL.createObjectURL(new Blob([res.data]));
+    const objUrl = window.URL.createObjectURL(new Blob([res.data]));
     const a = document.createElement("a");
     a.setAttribute("download", data.downloadName);
     a.style.display = "none";
-    a.href = url;
+    a.href = objUrl;
     document.body.appendChild(a);
     a.click();
-    window.URL.revokeObjectURL(url);
+    window.URL.revokeObjectURL(objUrl);
   } catch (error) {
     console.error('Error during file download:', error);
+    throw error;
   }
-}
-
-export async function getJson(token, urlprefix, data) {
-  return fetch(`${urlprefix}api/clinical/json`, {
-    method: "POST",
-    body: data,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      connection: "keep-alive",
-      Authorization: token,
-    },
-  });
-}
-
-export async function getJobData(token, urlprefix, data) {
-  return fetch(`${urlprefix}api/jobs/job`, {
-    method: "POST",
-    body: data,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      connection: "keep-alive",
-      Authorization: token,
-    },
-  });
-}
-
-export async function postCaptchaToken(token, urlprefix, data) {
-  console.log("postCaptchaToken data", data);
-  console.log("postCaptchaToken urlprefix", urlprefix);
-  console.log("postCaptchaToken token", token);
-
-  return fetch(`${urlprefix}api/captcha/store`, {
-    method: "POST",
-    body: data,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      connection: "keep-alive",
-      Authorization: token,
-    },
-  });
 }
