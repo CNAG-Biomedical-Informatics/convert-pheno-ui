@@ -495,7 +495,7 @@ class ClinicalDataView(Resource):
     def post(self, userid, **kwargs):
         user = db.session.query(User).filter_by(name=userid).one_or_none()
         if user is None:
-            return {"message": "User not found"}, 404
+            return {"message": "user not found"}, 404
 
         data = request.get_json()
 

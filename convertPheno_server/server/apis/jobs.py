@@ -43,7 +43,7 @@ class JobView(Resource):
     def post(self, userid, **kwargs):
         user = db.session.query(User).filter_by(name=userid).one_or_none()
         if user is None:
-            return {"message": "User does not exist"}, 404
+            return {"message": "user not found"}, 404
 
         data = request.get_json()
         job_id = data["jobId"]
@@ -55,7 +55,7 @@ class JobView(Resource):
             db.session.query(Job).filter_by(job_id=job_id, owner=user.id).one_or_none()
         )
         if job is None:
-            return {"message": "Job does not exist"}, 404
+            return {"message": "job not found"}, 404
 
         output_formats = job.target_formats
         tempfiles_names = [f"{job_id}.{format}.json" for format in output_formats]

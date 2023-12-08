@@ -84,7 +84,8 @@ debug-test3:
 remove_reports:
 	rm -rf tests/reports/coverage
 
-cov:
+cov:|
+	source .venv/bin/activate && \
 	KC_PUBLIC_KEY=$(KC_PUBLIC_KEY) python3 -m pytest --junitxml=tests/reports/junit.xml --cov-config=tests/.coveragerc --cov-branch --cov-report html:tests/reports/coverage --cov-report xml:tests/reports/coverage/coverage.xml  --cov-report term --cov=server tests/
 
 flake:

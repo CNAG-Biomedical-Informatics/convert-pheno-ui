@@ -31,7 +31,7 @@ class TestClinicalClass:
     def test_conversion_results_user_not_exist(self, client, header):
         res = req_post(client, header, url_suffix, data=default_data)
         assert res.status_code == 404
-        assert res.json["message"] == "User not found"
+        assert res.json["message"] == "user not found"
 
     def test_conversion_results(self, client, header):
         job_id = convert_clinical_data(client, header)
@@ -63,7 +63,7 @@ class TestClinicalClass:
         data["jobId"] = "1234"
         res = req_post(client, header_2, url_suffix, data=data)
         assert res.status_code == 404
-        assert res.json["message"] == "User not found"
+        assert res.json["message"] == "user not found"
 
     def test_conversion_clinical_data_not_found(self, client, header):
         job_id = convert_clinical_data(client, header)

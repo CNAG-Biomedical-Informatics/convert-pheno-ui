@@ -46,13 +46,13 @@ class TestDownloadClass:
     def test_download_results_user_not_exist(self, client, header_2):
         res = req_post(client, header_2, download_url_suffix, data=default_data)
         assert res.status_code == 404
-        assert res.json["message"] == "User does not exist"
+        assert res.json["message"] == "user not found"
 
     def test_download_results_job_does_not_exist(self, client, header):
         convert_clinical_data(client, header)
         res = req_post(client, header, download_url_suffix, data=default_data)
         assert res.status_code == 404
-        assert res.json["message"] == "Job does not exist"
+        assert res.json["message"] == "job not found"
 
     def test_download_results_clinical_data_not_found(self, client, header):
         job_id = convert_clinical_data(client, header)
@@ -74,7 +74,7 @@ class TestDownloadClass:
         data["jobId"] = job_id
         res = req_post(client, header_3, download_url_suffix, data=data)
         assert res.status_code == 404
-        assert res.json["message"] == "Job not found"
+        assert res.json["message"] == "job not found"
 
     def test_download_all_results(self, client, header):
         data = {

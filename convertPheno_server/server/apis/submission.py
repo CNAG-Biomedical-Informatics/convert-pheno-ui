@@ -168,7 +168,7 @@ class UploadFile(Resource):
 
         user_id = db.session.query(User).filter_by(name=userid).one_or_none()
         if user_id is None:
-            return {"message": "User does not exist"}, 404
+            return {"message": "user not found"}, 404
 
         # check if the file is in the database
         upload = (
@@ -251,7 +251,7 @@ class ConvertFile(Resource):
                 .one_or_none()
             )
             if user is None:
-                return {"message": "User does not exist"}, 404
+                return {"message": "user not found"}, 404
 
             user_id = user[0]
 
@@ -456,7 +456,7 @@ class DownloadFile(Resource):
         """
         user = db.session.query(User).filter_by(name=userid).one_or_none()
         if user is None:
-            return {"message": "User not found"}, 404
+            return {"message": "user not found"}, 404
 
         data = request.get_json()
         job_id = data["jobId"]
@@ -464,7 +464,7 @@ class DownloadFile(Resource):
             db.session.query(Job).filter_by(job_id=job_id, owner=user.id).one_or_none()
         )
         if job is None:
-            return {"message": "Job not found"}, 404
+            return {"message": "job not found"}, 404
 
         if data.get("downloadAllFiles"):
             mem_zip = downloadAllFiles(data, job.id)
