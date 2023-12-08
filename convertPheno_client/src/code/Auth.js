@@ -10,8 +10,6 @@
   License: GPL-3.0 license
 */
 
-import jwt_decode from "jwt-decode";
-
 export default {
   user: {
     authenticated: false,
@@ -19,9 +17,6 @@ export default {
   },
   getToken() {
     return this.user.keycloak !== undefined ? this.user.keycloak.token : false;
-  },
-  decoded() {
-    return this.user.keycloak !== undefined ? jwt_decode(this.user.keycloak.token) : "empty";
   },
   setToken(user) {
     this.user = user;

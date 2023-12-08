@@ -213,6 +213,15 @@ export default function DataGrid(props) {
         headerName: header,
         flex: 1,
         cellRenderer: CopyOnClick,
+        valueFormatter: (params) => {
+          if (params.value === undefined) {
+            return "";
+          }
+          if (typeof params.value === "object") {
+            return JSON.stringify(params.value);
+          }
+          return params.value;
+        }
       });
     });
 
