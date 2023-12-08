@@ -12,19 +12,6 @@
 
 import axiosInstance from "./axiosInstance";
 
-// ist this function actually still used?
-export async function fileUpload(token, urlprefix, data) {
-  return fetch(`${urlprefix}api/submission/upload`, {
-    method: "POST",
-    body: data,
-    headers: {
-      Accept: "application/json",
-      connection: "keep-alive",
-      Authorization: token,
-    },
-  });
-}
-
 export async function fileConversion(token, urlprefix, data) {
   try {
     const res = await axiosInstance.post(`${urlprefix}api/submission/convert`, data, {

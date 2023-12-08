@@ -6,7 +6,7 @@
 #
 #   Last Modified: Apr/28/2023
 #
-#   Copyright (C) 2022-2023 Ivo Christopher Leist - CNAG (Ivo.leist@cnag.crg.eu)
+#   Copyright (C) 2022-2023 Ivo Christopher Leist - CNAG (Ivo.leist@cnag.eu)
 #
 #   License: GPL-3.0 license
 
@@ -67,7 +67,7 @@ kc-ip:
 db-ip:
 	db_ip=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' convert-pheno-api-db)
 	echo $${db_ip}
-	
+
 mkcert:
 	/usr/local/bin/mkcert -cert-file ./nginx_mountpoint/certs/convertpheno.local.dev.pem -key-file ./nginx_mountpoint/certs/convertpheno.local.dev-key.pem convertpheno.local.dev
 

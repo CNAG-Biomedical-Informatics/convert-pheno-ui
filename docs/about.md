@@ -1,4 +1,4 @@
-**Convert-Pheno-UI** has been developed at [CNAG](https://cnag.crg.eu), Barcelona, Spain.
+**Convert-Pheno-UI** has been developed at [CNAG](https://cnag.eu), Barcelona, Spain.
 
 ## Developers
 
@@ -20,7 +20,7 @@
 
     * Group Leader: [Ivo G. Gut](https://scholar.google.com/citations?user=YKdDEVYAAAAJ)
     * Design: [Sofia Chaves](https://scholar.google.com/citations?user=Q0wogt8AAAAJ)
-    * Developmental support: [Davide Piscia](https://github.com/dpiscia) and his [team](https://www.cnag.crg.eu/teams/bioinformatics-unit/data-platforms-and-tools-development)
+    * Developmental support: [Davide Piscia](https://github.com/dpiscia) and his [team](https://www.cnag.eu/teams/bioinformatics-unit/data-platforms-and-tools-development)
 
 === "External"
 

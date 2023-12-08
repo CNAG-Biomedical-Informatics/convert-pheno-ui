@@ -6,7 +6,7 @@
 #
 #   Last Modified: Apr/28/2023
 #
-#   Copyright (C) 2022-2023 Ivo Christopher Leist - CNAG (Ivo.leist@cnag.crg.eu)
+#   Copyright (C) 2022-2023 Ivo Christopher Leist - CNAG (Ivo.leist@cnag.eu)
 #
 #   License: GPL-3.0 license
 # CERTS_URL="https://client/auth/realms/$KC_REALM/protocol/openid-connect/certs"
@@ -24,4 +24,3 @@ if [ -z "$KEY" ]; then
     exit 1
 fi
 echo KC_PUBLIC_KEY=$KEY
-
