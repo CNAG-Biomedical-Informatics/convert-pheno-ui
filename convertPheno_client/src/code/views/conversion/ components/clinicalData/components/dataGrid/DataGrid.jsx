@@ -164,7 +164,7 @@ export default function DataGrid(props) {
 
   const getDialogTableValue = (params) => {
     const { value } = params;
-    if (value === undefined || value === []) {
+    if (value === undefined || value.length === 0) {
       return "";
     }
     return value;
