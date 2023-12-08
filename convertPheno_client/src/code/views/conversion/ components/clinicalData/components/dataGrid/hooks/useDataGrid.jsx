@@ -14,13 +14,6 @@ export default function useDataGrid({
   } = setters;
   const [renderDataGrid, setRenderDataGrid] = useState(null);
 
-  const onGridReady = (gridId) => {
-    const gridType = gridId.split("-")[1];
-    if (gridType === "dialogGrid") {
-      return;
-    }
-  };
-
   useEffect(() => {
     if (status === "loading" && !error) {
       setRenderDataGrid(<Typography variant="body2">Loading Table</Typography>);
@@ -39,7 +32,6 @@ export default function useDataGrid({
           colTree={data.colTree}
           colTreeNodeIds={data.colNodeIds}
           colTreeNodeSelected={data.nodeToSelected}
-          onGridReady={onGridReady}
           setShownColumns={setShownColumns}
         />
       );
