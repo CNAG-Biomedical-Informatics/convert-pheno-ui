@@ -13,8 +13,7 @@
 import React from "react";
 import { Button } from "@mui/material";
 
-import { fileDownload } from "../../../../../../../../apis";
-import auth from "../../../../../../../../Auth";
+import apiRequest from "../../../../../../../../ApiRequest";
 
 function FileDownloadButton(jobId, tempFilename, newFilename, targetFormat) {
   // better on the server side
@@ -25,7 +24,7 @@ function FileDownloadButton(jobId, tempFilename, newFilename, targetFormat) {
 
   const data = { jobId, tempFilename, downloadName: newFilename };
   const triggerFileDownload = async (data) => {
-    await fileDownload(
+    await apiRequest(
       "submission/download",
       data
     );
@@ -67,7 +66,7 @@ const DownloadAllFilesButton = ({ data }) => {
         downloadName: `${data.jobId}.zip`,
         downloadAllFiles: true,
       };
-      await fileDownload(
+      await apiRequest(
         "submission/download",
         query
       );

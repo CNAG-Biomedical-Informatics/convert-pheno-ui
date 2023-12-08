@@ -12,7 +12,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import { apiRequest } from "../../../../../apis";
+import apiRequest from "../../../../../ApiRequest";
 
 export default function useQueryDb(props) {
   const { query, location, setShownColumns, setHeaders } = props;

@@ -15,8 +15,7 @@ import { Button, Grid, ToggleButton, Typography } from "@mui/material";
 
 import InputFilesPond from "./components/inputFilesPond/InputFilesPond";
 import InputFormatSelection from "./components/inputFormatSelection/InputFormatSelection";
-import { fileDownload } from "../../../../../../../../apis";
-import auth from "../../../../../../../../Auth";
+import apiRequest from "../../../../../../../../ApiRequest";
 
 export default function fileUpload(props) {
   const {
@@ -46,7 +45,7 @@ export default function fileUpload(props) {
       inputFormat,
       downloadName: inputFormatToFileNameMapping[inputFormat],
     };
-    await fileDownload(
+    await apiRequest(
       "submission/download/example",
       query
     );
