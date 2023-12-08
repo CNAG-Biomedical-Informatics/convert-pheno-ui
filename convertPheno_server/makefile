@@ -17,8 +17,11 @@ install:
 	pip install --upgrade .
 
 .PHONY: .venv
-venv:
-	python3 -m venv .venv && source venv/bin/activate && pip3 install -r requirements-mini.txt
+venv:|
+	python3 -m venv .venv && \
+	source .venv/bin/activate && \
+	pip3 install --upgrade pip && \
+	pip3 install -r requirements.txt
 
 db-run:
 	docker run --name cp-pg -e POSTGRES_PASSWORD=postgres -d postgres

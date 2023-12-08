@@ -49,6 +49,11 @@ def header_2():
     return get_header("test2", DevelopmentConfig)
 
 
+@pytest.fixture(scope="session")
+def header_3():
+    return get_header("test3", DevelopmentConfig)
+
+
 @pytest.fixture(autouse=True)
 def app_context():
     with app.app_context():

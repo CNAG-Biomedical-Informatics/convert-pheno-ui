@@ -4,7 +4,7 @@
 #
 #   This file is part of convert-pheno-ui
 #
-#   Last Modified: Apr/28/2023
+#   Last Modified: Apr/08/2023
 #
 #   Copyright (C) 2022-2023 Ivo Christopher Leist - CNAG (Ivo.leist@cnag.eu)
 #
@@ -62,6 +62,19 @@ class TestDownloadClass:
         res = req_post(client, header, download_url_suffix, data=data)
         assert res.status_code == 404
         assert res.json["message"] == "clinical data not found"
+
+    def test_download_results_user_not_authorized(self, client, header, header_3):
+        # Simulate user tries to download the conversion results of another user
+
+        # to create another  user
+        convert_clinical_data(client, header_3)
+
+        job_id = convert_clinical_data(client, header)
+        data = deepcopy(default_data)
+        data["jobId"] = job_id
+        res = req_post(client, header_3, download_url_suffix, data=data)
+        assert res.status_code == 404
+        assert res.json["message"] == "Job not found"
 
     def test_download_all_results(self, client, header):
         data = {

@@ -57,6 +57,14 @@ class TestClinicalClass:
         assert res.status_code == 404
         assert res.json["message"] == "job not found"
 
+    def test_user_not_exist(self, client, header, header_2):
+        convert_clinical_data(client, header)
+        data = deepcopy(default_data)
+        data["jobId"] = "1234"
+        res = req_post(client, header_2, url_suffix, data=data)
+        assert res.status_code == 404
+        assert res.json["message"] == "User not found"
+
     def test_conversion_clinical_data_not_found(self, client, header):
         job_id = convert_clinical_data(client, header)
         data = deepcopy(default_data)
@@ -72,6 +80,20 @@ class TestClinicalClass:
         res = req_post(client, header, url_suffix, data=data)
         assert res.status_code == 400
         assert res.json["message"] == "Input payload validation failed"
+
+    def test_conversion_results_user_not_authorized(self, client, header, header_3):
+        # Simulate user tries to access the conversion results of another user
+
+        # to create another  user
+        convert_clinical_data(client, header_3)
+
+        job_id = convert_clinical_data(client, header)
+        data = deepcopy(default_data)
+        data["jobId"] = str(job_id)
+        res = req_post(client, header_3, url_suffix, data=data)
+        # Assert that the server responds with an error or access denied message
+        assert res.status_code == 404  # HTTP Forbidden status code
+        assert res.json["message"] == "job not found"
 
 
 class TestClinicalFilteringClass:
