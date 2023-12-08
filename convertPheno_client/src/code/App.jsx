@@ -42,8 +42,6 @@ const matomoUrl =
     ? window.REACT_APP_MATOMO_URL
     : import.meta.env.MATOMO_TAG_MANAGER_URL;
 
-console.log("Matomo URL: ", matomoUrl);
-
 if (security !== "true" && security !== "false") {
   throw new Error(
     "The security variable must be a string of either 'true' or 'false'"

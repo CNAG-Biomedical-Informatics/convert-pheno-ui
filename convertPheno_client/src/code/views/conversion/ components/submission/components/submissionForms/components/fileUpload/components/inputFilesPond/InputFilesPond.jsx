@@ -228,10 +228,6 @@ export default function InputFilesPond(props) {
     const responseCode = responseObj.status_code;
     const limit = responseObj.limit;
 
-    // console.log(responseObj);
-    // console.log(responseCode);
-    // console.log(typeof responseCode);
-
     if (responseCode === "429") {
       console.log("limit", limit);
 
