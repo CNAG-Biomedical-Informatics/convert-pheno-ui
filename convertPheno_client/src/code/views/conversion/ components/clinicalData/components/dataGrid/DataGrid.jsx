@@ -231,7 +231,7 @@ export default function DataGrid(props) {
 
     const gridOptions = {
       pagination: true,
-      paginationPageSize: 10,
+      paginationPageSize: 20,
       onGridReady: (params) => {
         onGridReady(params, gridId);
       },

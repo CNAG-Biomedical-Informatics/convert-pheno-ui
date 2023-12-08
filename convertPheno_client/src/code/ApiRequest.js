@@ -25,10 +25,9 @@ axiosInstance.interceptors.request.use(config => {
     console.log('Running in Codespaces');
     config.headers['X-Github-Token'] = import.meta.env.VITE_GITHUB_TOKEN;
   }
-  console.log('config', config);
   return config;
 }, error => {
-  console.log('error', error);
+  console.error('error', error);
   return Promise.reject(error);
 });
 
