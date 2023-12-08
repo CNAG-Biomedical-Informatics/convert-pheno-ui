@@ -12,7 +12,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, QueryClient } from "@tanstack/react-query";
 
 import SimpleTabs from "./components/simpleTabs/SimpleTabs";
 import useQueryBuilder from "./components/queryBuilder/hooks/useQueryBuilder";
@@ -28,7 +28,7 @@ export default function ClinicalData(props) {
   */
   const { outputFormats, jobId } = props;
   const location = useLocation();
-  const queryClient = useQueryClient();
+  const queryClient = new QueryClient();
 
   const [tabValue, setTabValue] = useState(0);
   const [shownColumns, setShownColumns] = useState({});
@@ -59,7 +59,7 @@ export default function ClinicalData(props) {
   });
 
   useEffect(() => {
-    queryClient.invalidateQueries("resultsQuery", { refetchActive: true });
+    queryClient.invalidateQueries("resultsQuery");
   }, [location, queryClient, shownColumns]);
 
   const renderQueryBuilder = useQueryBuilder({
