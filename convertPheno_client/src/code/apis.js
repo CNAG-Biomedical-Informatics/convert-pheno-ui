@@ -27,31 +27,17 @@ export async function fileUpload(token, urlprefix, data) {
 
 export async function fileConversion(token, urlprefix, data) {
   try {
-    const response = await axiosInstance.post(`${urlprefix}api/submission/convert`, data, {
+    const res = await axiosInstance.post(`${urlprefix}api/submission/convert`, data, {
       headers: {
         'Authorization': token
       }
     });
-    console.log('response', response);
-    console.log('response.data', response.data);
-    return response.data;
+    console.log('res', res);
+    return res;
   } catch (error) {
     console.error('Error during file conversion:', error);
     throw error;
   }
-}
-
-export async function fileConversionOld(token, urlprefix, data) {
-  return fetch(`${urlprefix}api/submission/convert`, {
-    method: "POST",
-    body: data,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      connection: "keep-alive",
-      Authorization: token,
-    },
-  });
 }
 
 // TODO

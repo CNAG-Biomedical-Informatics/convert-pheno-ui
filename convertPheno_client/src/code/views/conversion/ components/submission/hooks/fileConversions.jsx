@@ -34,7 +34,7 @@ export default function useFileConversions(props) {
         api_endpoint,
         JSON.stringify(query)
       );
-      return res.json();
+      return res.data;
     },
     {
       enabled: startFileConversion,
