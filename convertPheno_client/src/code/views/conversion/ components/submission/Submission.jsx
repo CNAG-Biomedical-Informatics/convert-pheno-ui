@@ -38,7 +38,7 @@ export default function Submission(props) {
   const [error, setError] = useState(false);
   const [retryTime, setRetryTime] = useState(10);
 
-  const queryClient = useQueryClient();
+  const queryClient = new QueryClient();
   const navigate = useNavigate();
 
   const { status, data } = useFileConversions({
