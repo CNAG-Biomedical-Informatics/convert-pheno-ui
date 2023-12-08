@@ -11,16 +11,7 @@
 */
 
 import { useQuery } from "@tanstack/react-query";
-
-import { getJobData } from "../../../apis";
-import auth from "../../../Auth";
-
-// const api_endpoint = import.meta.env.VITE_API_URL;
-
-const api_endpoint =
-  process.env.NODE_ENV === "production"
-    ? window.REACT_APP_API_URL
-    : import.meta.env.VITE_API_URL;
+import { apiRequest } from "../../../apis";
 
 export default function useFinishedJobs(props) {
   const { query, conversionFinished } = props;
@@ -29,16 +20,11 @@ export default function useFinishedJobs(props) {
   return useQuery(
     ["finishedJob", jobId],
     async () => {
-      const res = await getJobData(
-        auth.getToken(),
-        api_endpoint,
+      const res = await apiRequest(
+        "jobs/job",
         JSON.stringify(query)
       );
-      if (!res.ok) {
-        const error = await res.json();
-        return Promise.reject(error);
-      }
-      return res.json();
+      return res.data;
     },
     {
       //! when enabled is used query invalidation is not working

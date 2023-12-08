@@ -15,13 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
 import toast from "react-hot-toast";
 
-import { fileConversion } from "../../../../../apis";
-import auth from "../../../../../Auth";
-
-const api_endpoint =
-  process.env.NODE_ENV === "production"
-    ? window.REACT_APP_API_URL
-    : import.meta.env.VITE_API_URL;
+import { apiRequest } from "../../../../../apis";
 
 export default function useFileConversions(props) {
   const navigate = useNavigate();
@@ -29,9 +23,8 @@ export default function useFileConversions(props) {
   return useQuery(
     ["allfileconversions"],
     async () => {
-      const res = await fileConversion(
-        auth.getToken(),
-        api_endpoint,
+      const res = await apiRequest(
+        "submission/convert",
         JSON.stringify(query)
       );
       return res.data;
