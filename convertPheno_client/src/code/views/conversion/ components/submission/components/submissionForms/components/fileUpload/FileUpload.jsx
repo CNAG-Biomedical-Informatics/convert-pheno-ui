@@ -15,7 +15,7 @@ import { Button, Grid, ToggleButton, Typography } from "@mui/material";
 
 import InputFilesPond from "./components/inputFilesPond/InputFilesPond";
 import InputFormatSelection from "./components/inputFormatSelection/InputFormatSelection";
-import { fileDownloadExample } from "../../../../../../../../apis";
+import { fileDownload } from "../../../../../../../../apis";
 import auth from "../../../../../../../../Auth";
 
 // const api_endpoint = import.meta.env.VITE_API_URL;
@@ -53,7 +53,11 @@ export default function fileUpload(props) {
       inputFormat,
       downloadName: inputFormatToFileNameMapping[inputFormat],
     };
-    await fileDownloadExample(auth.getToken(), api_endpoint, query);
+    await fileDownload(
+      auth.getToken(),
+      api_endpoint,
+      query,
+      "download/example");
   };
 
   return (

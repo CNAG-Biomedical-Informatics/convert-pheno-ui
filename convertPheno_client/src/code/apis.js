@@ -29,36 +29,9 @@ export async function fileConversion(token, urlprefix, data) {
 
 // TODO
 // reimplment this function using Axios
-export async function fileDownload(token, urlprefix, data) {
+export async function fileDownload(token, urlprefix, data, endpoint = "download") {
   try {
-    const res = await fetch(`${urlprefix}api/submission/download`, {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: token,
-      },
-    });
-    const blob = await res.blob();
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.setAttribute("download", data.downloadName);
-    a.style.display = "none";
-    a.href = url;
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
-  } catch (err) {
-    return console.error(err);
-  }
-}
-
-// TODO
-// merge this function with fileDownload
-export async function fileDownloadExample(token, urlprefix, data) {
-  try {
-    const res = await fetch(`${urlprefix}api/submission/download/example`, {
+    const res = await fetch(`${urlprefix}api/submission/${endpoint}`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
