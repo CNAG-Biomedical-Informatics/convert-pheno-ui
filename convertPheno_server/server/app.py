@@ -59,6 +59,8 @@ api = Api(app, doc="/doc")
 db = SQLAlchemy(app)
 
 
+# TODO app.before_first_request
+# is deprecated from flask 2.3.0 onwards
 @app.before_first_request
 def create_tables():
     """Create all sql tables"""

@@ -112,3 +112,7 @@ sonar:
 
 github-codespaces-curltest:
 	curl https://${GITHUB_CODESPACES_ID}-5001.app.github.dev/api/curltest -H "X-Github-Token: ${GITHUB_TOKEN}"
+
+upgrade_deps:
+	# poetry self add poetry-plugin-up
+	poetry up
