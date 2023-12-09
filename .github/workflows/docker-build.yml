@@ -1,0 +1,11 @@
+name: Docker build client and server
+
+on:
+    workflow_dispatch:
+
+jobs:
+  call-docker-build-client-workflow:
+    uses: CNAG-Biomedical-Informatics/convert-pheno-ui/.github/workflows/docker-build-client.yml@main
+
+  call-docker-build-server-workflow:
+     uses: CNAG-Biomedical-Informatics/convert-pheno-ui/.github/workflows/docker-build-server.yml@main
