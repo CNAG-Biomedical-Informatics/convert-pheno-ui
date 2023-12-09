@@ -6,6 +6,12 @@ on:
 jobs:
   call-docker-build-client-workflow:
     uses: CNAG-Biomedical-Informatics/convert-pheno-ui/.github/workflows/docker-build-client.yml@main
+    secrets:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
 
   call-docker-build-server-workflow:
      uses: CNAG-Biomedical-Informatics/convert-pheno-ui/.github/workflows/docker-build-server.yml@main
+     secrets:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
