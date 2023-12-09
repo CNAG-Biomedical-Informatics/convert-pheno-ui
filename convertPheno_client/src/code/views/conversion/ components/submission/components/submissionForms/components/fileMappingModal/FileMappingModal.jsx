@@ -73,11 +73,6 @@ const FileMappingModal = (props) => {
   // better get the options from the server
   const options = ["input-file", "redcap-dictionary", "mapping-file"];
 
-  // TODO
-  // show only the mapping modal if three files have been uploaded +
-  // the fileType is RedCap, OMOP or CDISC
-  // otherwise show a message saying that the user needs to upload three files
-
   return (
     <Modal
       open={open}
