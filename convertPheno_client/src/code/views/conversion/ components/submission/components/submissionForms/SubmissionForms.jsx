@@ -72,6 +72,18 @@ export default function SubmissionForms(props) {
         toast.error("Please upload all required files");
         return;
       }
+
+      // if cdisc check if at least one of the files is a .xml file
+      if (inputFormat === "cdisc") {
+        const fileNames = Object.keys(uploadedFiles);
+        const xmlFileNames = fileNames.filter((fileName) =>
+          fileName.endsWith(".xml")
+        );
+        if (xmlFileNames.length === 0) {
+          toast.error("One of the files must be a .xml file");
+          return;
+        }
+      }
       setOpenModal(true);
       return;
     }
