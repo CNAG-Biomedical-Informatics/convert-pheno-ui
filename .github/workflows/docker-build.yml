@@ -1,17 +1,13 @@
 name: Docker build client and server
 
 on:
-    workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
   call-docker-build-client-workflow:
     uses: CNAG-Biomedical-Informatics/convert-pheno-ui/.github/workflows/docker-build-client.yml@main
-    secrets:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-
+    secrets: inherit # pass all secrets
+    
   call-docker-build-server-workflow:
-     uses: CNAG-Biomedical-Informatics/convert-pheno-ui/.github/workflows/docker-build-server.yml@main
-     secrets:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    uses: CNAG-Biomedical-Informatics/convert-pheno-ui/.github/workflows/docker-build-server.yml@main
+    secrets: inherit # pass all secrets
