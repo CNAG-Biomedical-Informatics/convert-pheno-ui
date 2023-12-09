@@ -137,7 +137,6 @@ function App() {
   useEffect(() => {
     const checkServerHealth = async () => {
       try {
-        console.log('Checking server health...');
         await apiRequest('curltest', null, 'GET');
       } catch (err) {
         if (err.code === 'ECONNABORTED') {
