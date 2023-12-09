@@ -17,6 +17,7 @@ import FileMappingModal from "./components/fileMappingModal/FileMappingModal";
 import FileUpload from "./components/fileUpload/FileUpload";
 import OutputFormatsSelection from "./components/outputFormatsSelection/OutputFormatsSelection";
 import { SimpleArrow, ArrowButton } from "./components/arrows/Arrows";
+import toast from "react-hot-toast";
 
 export default function SubmissionForms(props) {
   const { states, setters } = props;
@@ -67,6 +68,10 @@ export default function SubmissionForms(props) {
       return;
     }
     if (["redcap", "cdisc"].includes(inputFormat)) {
+      if (Object.keys(uploadedFiles).length < 3) {
+        toast.error("Please upload all required files");
+        return;
+      }
       setOpenModal(true);
       return;
     }
