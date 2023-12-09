@@ -731,9 +731,17 @@ class ClinicalDataView(Resource):
                 headers.append(col)
 
         rows = []
-        for idx, row in enumerate(json_arr):
-            row_data = return_basic_table_row(idx, row, table_config, selected_fields)
-            rows.append(row_data)
+
+        if isinstance(json_arr, list):
+            for idx, row in enumerate(json_arr):
+                row_data = return_basic_table_row(
+                    idx, row, table_config, selected_fields
+                )
+                rows.append(row_data)
+        else:
+            job_warnings[
+                clinical_format
+            ] = "The conversion resulted in an unexpected output"
 
         response = {
             "json": rows,
@@ -742,7 +750,7 @@ class ClinicalDataView(Resource):
             "colNodeIds": list(node_to_selected.keys()),
             "shownColumns": selected_cols,
             "nodeToSelected": node_to_selected,
-            "conversionWarnings": job_warnings,
+            "conversionWarnings": job_warnings,  # TODO show warnings in the frontend
         }
         return make_response(response)
 
