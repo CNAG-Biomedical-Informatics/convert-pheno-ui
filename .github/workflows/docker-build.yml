@@ -1,13 +1,13 @@
-name: Docker build client and server
+name: Docker build server and client
 
 on:
   workflow_dispatch:
 
 jobs:
-  call-docker-build-client-workflow:
-    uses: CNAG-Biomedical-Informatics/convert-pheno-ui/.github/workflows/docker-build-client.yml@main
-    secrets: inherit # pass all secrets
-    
   call-docker-build-server-workflow:
     uses: CNAG-Biomedical-Informatics/convert-pheno-ui/.github/workflows/docker-build-server.yml@main
+    secrets: inherit # pass all secrets
+    
+  call-docker-build-client-workflow:
+    uses: CNAG-Biomedical-Informatics/convert-pheno-ui/.github/workflows/docker-build-client.yml@main
     secrets: inherit # pass all secrets
