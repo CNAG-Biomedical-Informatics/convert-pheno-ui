@@ -36,19 +36,32 @@ const baseUrl =
     ? window.REACT_APP_API_URL
     : import.meta.env.VITE_API_URL;
 
-export default async function apiRequest(endpoint, data) {
+export default async function apiRequest(endpoint, data, method = "POST") {
   try {
     const isFileDownload = endpoint.includes('download');
     const url = `${baseUrl}api/${endpoint}`;
+    const headers = {
+      'Authorization': auth.getToken(),
+    };
+
     const config = {
-      headers: {
-        'Authorization': auth.getToken(),
-      },
+      method: method,
+      url: url,
+      headers: headers,
       responseType: isFileDownload
         ? 'blob'
         : undefined
     };
-    const res = await axiosInstance.post(url, data, config);
+
+    if (method === "GET") {
+      const timeout = 5000; // 5 seconds
+      config.params = data;
+      config.timeout = timeout;
+    } else {
+      config.data = data;
+    }
+
+    const res = await axiosInstance.request(config);
 
     if (isFileDownload) {
       const objUrl = window.URL.createObjectURL(new Blob([res.data]));

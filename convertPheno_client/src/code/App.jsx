@@ -21,7 +21,9 @@ import {
 import { ErrorBoundary } from "react-error-boundary";
 import { Box, Grid } from "@mui/material";
 import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
-import { Toaster } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
+
+import apiRequest from "./ApiRequest";
 
 import Login from "./Login";
 import auth from "./Auth";
@@ -130,8 +132,24 @@ function AuthenticatedRoute({ element: Component, path, security }) {
 function App() {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
-
   const [authenticated, setAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const checkServerHealth = async () => {
+      try {
+        console.log('Checking server health...');
+        await apiRequest('curltest', null, 'GET');
+      } catch (err) {
+        if (err.code === 'ECONNABORTED') {
+          toast.error('Server health check timed out. Please try again later.');
+          console.error('Server health check timed out:', err);
+          return;
+        }
+        toast.error('Server health check failed. Please try again later.');
+      }
+    };
+    checkServerHealth();
+  }, []);
 
   useEffect(() => {
     var _mtm = window._mtm = window._mtm || [];
