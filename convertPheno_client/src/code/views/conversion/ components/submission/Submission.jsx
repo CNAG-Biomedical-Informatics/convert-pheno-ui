@@ -59,7 +59,7 @@ export default function Submission(props) {
   const handleNewConversion = () => {
     queryClient.resetQueries();
     setConversionFinished(false);
-    setUploadedFiles([]);
+    setUploadedFiles({});
     navigate("/conversion");
   };
 

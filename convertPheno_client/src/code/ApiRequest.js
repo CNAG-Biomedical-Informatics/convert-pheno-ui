@@ -37,8 +37,8 @@ const baseUrl =
     : import.meta.env.VITE_API_URL;
 
 export default async function apiRequest(endpoint, data, method = "POST") {
+  const isFileDownload = endpoint.includes('download');
   try {
-    const isFileDownload = endpoint.includes('download');
     const url = `${baseUrl}api/${endpoint}`;
     const headers = {
       'Authorization': auth.getToken(),
