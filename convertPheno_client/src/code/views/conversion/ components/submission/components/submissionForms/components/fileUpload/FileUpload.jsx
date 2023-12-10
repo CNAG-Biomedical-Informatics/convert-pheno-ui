@@ -22,6 +22,7 @@ export default function fileUpload(props) {
     inputFormat,
     filesUploadFinished,
     runExampleData,
+    uploadedFiles,
     setInputFormat,
     setRunExampleData,
     setUploadedFiles,
@@ -68,6 +69,7 @@ export default function fileUpload(props) {
             setFilesUploadFinished={setFilesUploadFinished}
             setRunExampleData={setRunExampleData}
             inputFormat={inputFormat}
+            uploadedFiles={uploadedFiles}
           />
           <ToggleButton
             value="check"
