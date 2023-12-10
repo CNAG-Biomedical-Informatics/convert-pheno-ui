@@ -26,7 +26,7 @@ import {
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 
-import toast from "react-hot-toast";
+import {toast} from "react-toastify";
 
 import { FilePond, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";

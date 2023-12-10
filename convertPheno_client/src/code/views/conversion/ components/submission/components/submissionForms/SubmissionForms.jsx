@@ -17,7 +17,7 @@ import FileMappingModal from "./components/fileMappingModal/FileMappingModal";
 import FileUpload from "./components/fileUpload/FileUpload";
 import OutputFormatsSelection from "./components/outputFormatsSelection/OutputFormatsSelection";
 import { SimpleArrow, ArrowButton } from "./components/arrows/Arrows";
-import toast from "react-hot-toast";
+import {toast} from "react-toastify";
 
 export default function SubmissionForms(props) {
   const { states, setters } = props;
@@ -32,6 +32,17 @@ export default function SubmissionForms(props) {
 
   const [openModal, setOpenModal] = useState(false);
   const [filesUploadFinished, setFilesUploadFinished] = useState(false);
+  const [conversionCanBeStarted, setConversionCanBeStarted] = useState(false);
+
+  const renderToast = (opts) => {
+    const { id, message } = opts;
+    if (toast.isActive(id)) {
+      return;
+    }
+    toast.error(message,
+      { toastId: id }
+    )
+  }
 
   useEffect(() => {
     let preselectedOutputFormats = ["bff", "pxf"];
@@ -50,19 +61,54 @@ export default function SubmissionForms(props) {
     setOutputFormats(newOutputFormats);
   }, [inputFormat]);
 
-  const conversionCanBeStarted = () => {
+  useEffect(() => {
+    // check if conversion can be started
     const trueVals = Object.values(outputFormats).filter((value) => value);
     if (trueVals.length === 0) {
       // no output format selected
-      return false;
+      setConversionCanBeStarted(false);
+      return;
     }
 
     if (["redcap", "cdisc"].includes(inputFormat) && Object.keys(uploadedFiles).length < 3) {
       // not all files uploaded
-      return false;
+      setConversionCanBeStarted(false);
+      return;
     }
-    if (runExampleData || filesUploadFinished) return true;
-  };
+
+    if (["bff", "pxf"].includes(inputFormat) && Object.keys(uploadedFiles).length > 1) {
+      const fileName = Object.keys(uploadedFiles)[0];
+      renderToast({
+        id:"onlyOneJsonFileExpected",
+        message:"Only one json file is expected"
+      });
+      setConversionCanBeStarted(false);
+      return;
+    }
+
+    if (["bff", "pxf", "omop"].includes(inputFormat) && Object.keys(uploadedFiles).length == 1) {
+      const fileName = Object.keys(uploadedFiles)[0];
+      if (["bff", "pxf"].includes(inputFormat) && !fileName.endsWith(".json")) {
+        renderToast({
+          id:"jsonFileExpected",
+          message:"Please upload a .json file"
+        });
+        setConversionCanBeStarted(false);
+        return;
+      }
+
+      if (!fileName.endsWith(".sql") && !fileName.endsWith(".gz")) {
+        renderToast({
+          id:"sqlOrGzFileExpected",
+          message:"Please upload a .sql or sql.gz file"
+        });
+        setConversionCanBeStarted(false);
+        return;
+      }
+    }
+
+    if (runExampleData || filesUploadFinished) setConversionCanBeStarted(true);
+  }, [inputFormat, outputFormats, uploadedFiles, runExampleData, filesUploadFinished]);
 
   const handleStartConversionClicked = () => {
     if (runExampleData) {
@@ -142,7 +188,7 @@ export default function SubmissionForms(props) {
         </Grid>
         <Grid item xs={1} align="center">
           <ArrowButton
-            enabled={conversionCanBeStarted()}
+            enabled={conversionCanBeStarted}
             onClick={handleStartConversionClicked}
           />
         </Grid>
