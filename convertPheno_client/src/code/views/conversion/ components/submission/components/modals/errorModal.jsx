@@ -1,3 +1,20 @@
+/**
+  Error Modal to be displayed when the user has reached the ratelimit
+  (currently not in use)
+
+  This file is part of convert-pheno-ui
+
+  Last modified: Dec/08/2023
+
+  Copyright (C) 2022-2023 Ivo Christopher Leist - CNAG (Ivo.leist@cnag.eu)
+
+  License: GPL-3.0 license
+*/
+
+// TODO
+// suggestion by ChatGPT how to reset the ratelimit
+// https://chat.openai.com/share/352d4b4e-85d9-4217-9274-58554de8453c
+
 import React, { useState, useEffect } from "react";
 
 import {

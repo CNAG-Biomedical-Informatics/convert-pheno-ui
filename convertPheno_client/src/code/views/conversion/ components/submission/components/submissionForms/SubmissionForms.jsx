@@ -28,7 +28,6 @@ export default function SubmissionForms(props) {
     setUploadedFiles,
     setRunExampleData,
     setStartFileConversion,
-    setError,
   } = setters;
 
   const [openModal, setOpenModal] = useState(false);
@@ -67,6 +66,27 @@ export default function SubmissionForms(props) {
       setStartFileConversion(true);
       return;
     }
+
+    if (inputFormat === "omop") {
+      const fileName = Object.keys(uploadedFiles)[0];
+      if (!fileName.endsWith(".sql") || !fileName.endsWith(".gz")) {
+        toast.error("Please upload a .sql or sql.gz file");
+        return;
+      }
+    }
+
+    if(["bff", "pxf"].includes(inputFormat)) {
+      if (Object.keys(uploadedFiles).length > 1) {
+        toast.error("Only one json file is expected");
+        return;
+      }
+      const fileName = Object.keys(uploadedFiles)[0];
+      if (!fileName.endsWith(".json")) {
+        toast.error("Please upload a .json file");
+        return;
+      }
+    }
+
     if (["redcap", "cdisc"].includes(inputFormat)) {
       if (Object.keys(uploadedFiles).length < 3) {
         toast.error("Please upload all required files");
@@ -109,7 +129,6 @@ export default function SubmissionForms(props) {
             setRunExampleData={setRunExampleData}
             setUploadedFiles={setUploadedFiles}
             setFilesUploadFinished={setFilesUploadFinished}
-            setError={setError}
           />
         </Grid>
         <Grid item xs={1} align="center">
