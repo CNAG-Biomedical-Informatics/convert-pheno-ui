@@ -248,6 +248,7 @@ export default function InputFilesPond(props) {
 
           server={{
             url: `${api_endpoint}api/submission/upload`,
+            timeout: 7000, // 7 seconds
             process: {
               headers: {
                 Authorization: auth.getToken(),

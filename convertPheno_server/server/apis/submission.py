@@ -243,6 +243,36 @@ class ConvertFile(Resource):
         """
         data = request.get_json()
         runExample = data["runExampleData"]
+        uploaded_files = data["uploadedFiles"]
+        input_format = data["inputFormat"]
+
+        # vaidate the uploaded files
+
+        # TODO
+        # additonal validation
+        # the expected file extension are still missing
+
+        uploaded_files_count = len(uploaded_files)
+        if not runExample:
+            if uploaded_files_count in [0, 2] or uploaded_files_count > 3:
+                message = {
+                    0: "No files uploaded",
+                    2: "Uploaded file count can never be 2",
+                    uploaded_files_count: "Too many files uploaded",
+                }.get(uploaded_files_count, "Invalid number of files")
+                return {"message": message}, 400
+
+            if uploaded_files_count == 1 and input_format in ["redcap", "cdisc"]:
+                return {"message": "3 files are expected"}, 400
+
+            if uploaded_files_count == 3 and input_format in ["pxf", "bff", "omop"]:
+                return {"message": "1 file is expected"}, 400
+
+            if uploaded_files_count == 3 and input_format in ["redcap", "cdisc"]:
+                uploaded_files_tuples = uploaded_files.values()
+                file_types = [sublist[0] for sublist in uploaded_files_tuples]
+                if len(file_types) != len(set(file_types)):
+                    return {"message": "One file type is duplicated"}, 400
 
         if runExample:
             ns.logger.info("run /w example data")
