@@ -84,6 +84,7 @@ export default function InputFilesPond(props) {
     setFilesUploadFinished,
     setRunExampleData,
     inputFormat,
+    uploadedFiles
   } = props;
 
   const [files, setFiles] = useState([]);
@@ -102,9 +103,16 @@ export default function InputFilesPond(props) {
         Purpose:
         - To update the state uploadedFiles with the file that was uploaded
     */
-    const returnedFileName = JSON.parse(file.serverId).tempFilename;
 
+    const returnedFileName = JSON.parse(file.serverId).tempFilename;
     const fileName = file.filename;
+
+    if (fileName in uploadedFiles) {
+      toast.error("File already uploaded");
+      file.abortProcessing()
+      return;
+    }
+
     const extension = fileName.split(".").pop();
 
     let fileType = "input-file";
@@ -239,11 +247,6 @@ export default function InputFilesPond(props) {
           onupdatefiles={setFiles}
           allowMultiple={allowMultipleMapping[inputFormat]}
           maxFiles={getFileUploadInfo(inputFormat).fileCount}
-          // modify below
-          // to be able to pass file meta data
-          // how to suggestion by ChatGPT
-          // https://chat.openai.com/share/5e7342b9-75e3-4dd3-bbca-f06e4032cf69
-          // server={serverConfig}
 
           server={{
             url: `${api_endpoint}api/submission/upload`,
@@ -269,9 +272,14 @@ export default function InputFilesPond(props) {
           onprocessfiles={handleAllFilesUploadFinished}
           onremovefile={(_, file) => {
             setFilesUploadFinished(false);
-            // TODO
-            // remove file from list of uploaded files
-            // setSelectedFile(null);
+            const fileName = file.filename;
+
+            // Not sure if below is working as expected
+            setUploadedFiles((prev) => {
+              const prevCopy = { ...prev };
+              delete prevCopy[fileName];
+              return prevCopy;
+            });
           }}
           // option provided by plugins
           acceptedFileTypes={acceptedFileTypesMapping[inputFormat]}
