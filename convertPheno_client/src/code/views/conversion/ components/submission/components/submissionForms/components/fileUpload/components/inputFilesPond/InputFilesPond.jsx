@@ -25,6 +25,9 @@ import {
   DialogTitle,
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
+
+import toast from "react-hot-toast";
+
 import { FilePond, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
@@ -81,7 +84,6 @@ export default function InputFilesPond(props) {
     setFilesUploadFinished,
     setRunExampleData,
     inputFormat,
-    setError,
   } = props;
 
   const [files, setFiles] = useState([]);
@@ -149,8 +151,8 @@ export default function InputFilesPond(props) {
       omop: {
         fileCount: 1,
         files: ["Input-file"],
-        fileExtensions: ["sql", "sql.gz"],
-        info: ["input has to be a .sql or sql.gz"],
+        fileExtensions: ["sql", "gz"],
+        info: ["input has to be a .sql or .gz"],
       },
       cdisc: {
         fileCount: 3,
@@ -225,27 +227,8 @@ export default function InputFilesPond(props) {
 
   const errorHandling = (response) => {
     const responseObj = JSON.parse(response);
-    const responseCode = responseObj.status_code;
-    const limit = responseObj.limit;
-
-    if (responseCode === "429") {
-      console.log("limit", limit);
-
-      const splittedLimitText = limit.split(" per ");
-      const maxNumberOfFiles = splittedLimitText[0];
-      const maxTime = splittedLimitText[1];
-
-      const explanation = `
-        You cannot upload more than ${maxNumberOfFiles} file per ${maxTime} minute(s).
-        Please wait ${maxTime} minute(s) and then try again.
-      `;
-
-      setError({
-        status_code: responseCode,
-        explanation,
-      });
-      return;
-    }
+    console.error(responseObj);
+    toast.error(responseObj.message);
   };
 
   return (

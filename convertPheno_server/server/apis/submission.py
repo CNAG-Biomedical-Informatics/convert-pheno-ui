@@ -65,18 +65,23 @@ upload_parser.add_argument("files", location="files", type=FileStorage, required
 
 
 def might_be_sql(gzip_file):
-    with gzip.open(gzip_file, "rt", encoding="utf-8") as f:
-        content = "".join([f.readline() for _ in range(50)])
+    try:
+        with gzip.open(gzip_file, "rt", encoding="utf-8") as f:
+            content = "".join([f.readline() for _ in range(50)])
 
-        # reset the file pointer (otherwise the conversion will fail)
-        f.seek(0)
+            # reset the file pointer (otherwise the conversion will fail)
+            f.seek(0)
 
-    # Check against a set of common SQL keywords
-    keywords = ["CREATE", "INSERT", "SELECT", "UPDATE", "DELETE", "ALTER", "DROP"]
-    for keyword in keywords:
-        if keyword in content:
-            return True
-    return False
+        # Check against a set of common SQL keywords
+        keywords = ["CREATE", "INSERT", "SELECT", "UPDATE", "DELETE", "ALTER", "DROP"]
+        for keyword in keywords:
+            if keyword in content:
+                return True
+        return False
+    except UnicodeDecodeError:
+        print("UnicodeDecodeError")
+        # send error message to the frontend
+        return False
 
 
 @ns.route("/upload", methods=("POST", "DELETE"))
