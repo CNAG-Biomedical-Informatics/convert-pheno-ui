@@ -70,8 +70,12 @@ export default function SubmissionForms(props) {
       return;
     }
 
-    if (["redcap", "cdisc"].includes(inputFormat)) {
+    if (runExampleData && trueVals.length !== 0 ) {
+      setConversionCanBeStarted(true);
+      return;
+    }
 
+    if (["redcap", "cdisc"].includes(inputFormat)) {
       if (Object.keys(uploadedFiles).length < 3) {
         setConversionCanBeStarted(false);
         return;
@@ -117,6 +121,8 @@ export default function SubmissionForms(props) {
         id:"onlyOneFileExpected",
         message:"Only one file is expected"
       });
+      console.log("only one file expected");
+      console.log("uploadedFiles", uploadedFiles)
       setConversionCanBeStarted(false);
       return;
     }
@@ -141,8 +147,7 @@ export default function SubmissionForms(props) {
         return;
       }
     }
-
-    if (runExampleData || filesUploadFinished) setConversionCanBeStarted(true);
+    if (filesUploadFinished) setConversionCanBeStarted(true);
   }, [inputFormat, outputFormats, uploadedFiles, runExampleData, filesUploadFinished]);
 
   const handleStartConversionClicked = () => {
