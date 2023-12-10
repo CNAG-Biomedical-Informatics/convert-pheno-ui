@@ -90,6 +90,7 @@ export default function SubmissionForms(props) {
     if (["redcap", "cdisc"].includes(inputFormat)) {
       if (Object.keys(uploadedFiles).length < 3) {
         toast.error("Please upload all required files");
+        console.log(uploadedFiles);
         return;
       }
 
