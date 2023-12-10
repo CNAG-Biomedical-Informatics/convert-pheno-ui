@@ -125,6 +125,7 @@ export default function SubmissionForms(props) {
             inputFormat={inputFormat}
             filesUploadFinished={filesUploadFinished}
             runExampleData={runExampleData}
+            uploadedFiles={uploadedFiles}
             setInputFormat={setInputFormat}
             setRunExampleData={setRunExampleData}
             setUploadedFiles={setUploadedFiles}
