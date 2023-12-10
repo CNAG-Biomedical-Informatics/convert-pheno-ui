@@ -138,7 +138,7 @@ export default function SubmissionForms(props) {
         return;
       }
 
-      if (!fileName.endsWith(".sql") && !fileName.endsWith(".gz")) {
+      if (inputFormat == "omop" && !fileName.endsWith(".sql") && !fileName.endsWith(".gz")) {
         renderToast({
           id:"sqlOrGzFileExpected",
           message:"Please upload a .sql or sql.gz file"
