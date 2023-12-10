@@ -105,22 +105,21 @@ export default function InputFilesPond(props) {
     */
 
     const returnedFileName = JSON.parse(file.serverId).tempFilename;
-    const fileName = file.filename;
+    const {filename, fileExtension} = file;
 
-    if (fileName in uploadedFiles) {
+    if (filename in uploadedFiles) {
       toast.error("File already uploaded");
-      file.abortProcessing()
+      file.setMetadata("processingAborted", true)
+      file.abortProcessing();
       return;
     }
 
-    const extension = fileName.split(".").pop();
-
     let fileType = "input-file";
-    if (fileName.includes("dictionary") && extension === "csv") {
+    if (filename.includes("dictionary") && fileExtension === "csv") {
       fileType = "redcap-dictionary";
     } else if (
-      fileName.includes("mapping") &&
-      ["yaml", "yml", "json"].includes(extension)
+      filename.includes("mapping") &&
+      ["yaml", "yml", "json"].includes(fileExtension)
     ) {
       fileType = "mapping-file";
     }
@@ -128,7 +127,7 @@ export default function InputFilesPond(props) {
     setUploadedFiles((prev) => {
       return {
         ...prev,
-        [fileName]: [fileType, returnedFileName],
+        [filename]: [fileType, returnedFileName],
       };
     });
   };
@@ -274,29 +273,25 @@ export default function InputFilesPond(props) {
             setFilesUploadFinished(false);
             const fileName = file.filename;
 
-            // Not sure if below is working as expected
-            setUploadedFiles((prev) => {
-              const prevCopy = { ...prev };
-              delete prevCopy[fileName];
-              return prevCopy;
-            });
+            // only update state if the file processing was finished (status 2 = IDLE)
+            // for reference see
+            // github.com/pqina/filepond-docs/blob/master/content/patterns/API/filepond-object.md#filestatus-enum
+            if (file.status === 2 && file.getMetadata("processingAborted") !== true) {
+              console.log("onremovefile")
+              console.log(uploadedFiles)
+
+              setUploadedFiles((prev) => {
+                const prevCopy = { ...prev };
+                delete prevCopy[fileName];
+                return prevCopy;
+              });
+            }
           }}
           // option provided by plugins
           acceptedFileTypes={acceptedFileTypesMapping[inputFormat]}
           fileValidateTypeLabelExpectedTypes={
             expectedFileExtensionsMapping[inputFormat]
           }
-          // TODO
-          // when showing an error message increase the size of the filepond component
-
-          // fileValidateTypeDetectType={ ( source, type ) =>
-          // {
-          //   console.log( source, type );
-          //   resolve( type );
-          // } }
-
-          // better get this from the server
-
           // this should be a prop
           // so large file are only expected for OMOP (sqls)
           maxFileSize="1000MB"
