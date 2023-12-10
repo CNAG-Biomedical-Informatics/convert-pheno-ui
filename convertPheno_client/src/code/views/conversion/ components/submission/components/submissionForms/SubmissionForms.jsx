@@ -70,17 +70,52 @@ export default function SubmissionForms(props) {
       return;
     }
 
-    if (["redcap", "cdisc"].includes(inputFormat) && Object.keys(uploadedFiles).length < 3) {
-      // not all files uploaded
-      setConversionCanBeStarted(false);
-      return;
+    if (["redcap", "cdisc"].includes(inputFormat)) {
+
+      if (Object.keys(uploadedFiles).length < 3) {
+        setConversionCanBeStarted(false);
+        return;
+      }
+
+      const acceptedFileExtensionsGeneral = ["txt", "tsv", "csv", "yaml", "yml", "json"];
+
+      if (inputFormat === "cdisc") {
+        acceptedFileExtensionsGeneral.push("xml");
+      }
+
+      const fileNames = Object.keys(uploadedFiles);
+      const fileExtensions=[]
+      const filesWithUnacceptedExtensions = fileNames.filter((fileName) => {
+        const fileExtension = fileName.split(".").pop();
+        fileExtensions.push(fileExtension);
+        return !acceptedFileExtensionsGeneral.includes(fileExtension);
+      });
+
+      if (inputFormat === "cdisc") {
+        if (fileExtensions.filter((fileExtension) => fileExtension === "xml").length !== 1) {
+          renderToast({
+            id:"oneXmlFileExpected",
+            message:"One xml file is expected"
+          });
+          setConversionCanBeStarted(false);
+          return;
+        }
+      }
+
+      if (filesWithUnacceptedExtensions.length > 0) {
+        renderToast({
+          id:"unacceptedFileExtension",
+          message:"one or more files have an unacceptable file extension"
+        });
+        setConversionCanBeStarted(false);
+        return;
+      }
     }
 
-    if (["bff", "pxf"].includes(inputFormat) && Object.keys(uploadedFiles).length > 1) {
-      const fileName = Object.keys(uploadedFiles)[0];
+    if (["bff", "pxf", "omop"].includes(inputFormat) && Object.keys(uploadedFiles).length > 1) {
       renderToast({
-        id:"onlyOneJsonFileExpected",
-        message:"Only one json file is expected"
+        id:"onlyOneFileExpected",
+        message:"Only one file is expected"
       });
       setConversionCanBeStarted(false);
       return;
