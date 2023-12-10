@@ -51,11 +51,14 @@ export default function SubmissionForms(props) {
   }, [inputFormat]);
 
   const conversionCanBeStarted = () => {
-    // what is this for?
     const trueVals = Object.values(outputFormats).filter((value) => value);
     if (trueVals.length === 0) {
-      // TODO
-      // show an error toast
+      // no output format selected
+      return false;
+    }
+
+    if (["redcap", "cdisc"].includes(inputFormat) && Object.keys(uploadedFiles).length < 3) {
+      // not all files uploaded
       return false;
     }
     if (runExampleData || filesUploadFinished) return true;
@@ -88,12 +91,6 @@ export default function SubmissionForms(props) {
     }
 
     if (["redcap", "cdisc"].includes(inputFormat)) {
-      if (Object.keys(uploadedFiles).length < 3) {
-        toast.error("Please upload all required files");
-        console.log(uploadedFiles);
-        return;
-      }
-
       // if cdisc check if at least one of the files is a .xml file
       if (inputFormat === "cdisc") {
         const fileNames = Object.keys(uploadedFiles);
