@@ -234,7 +234,6 @@ export default function InputFilesPond(props) {
 
   const errorHandling = (response) => {
     const responseObj = JSON.parse(response);
-    console.error(responseObj);
     toast.error(responseObj.message);
   };
 
@@ -277,9 +276,6 @@ export default function InputFilesPond(props) {
             // for reference see
             // github.com/pqina/filepond-docs/blob/master/content/patterns/API/filepond-object.md#filestatus-enum
             if (file.status === 2 && file.getMetadata("processingAborted") !== true) {
-              console.log("onremovefile")
-              console.log(uploadedFiles)
-
               setUploadedFiles((prev) => {
                 const prevCopy = { ...prev };
                 delete prevCopy[fileName];
