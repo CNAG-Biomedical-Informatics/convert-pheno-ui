@@ -13,7 +13,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
-import toast from "react-hot-toast";
+import {toast} from "react-toastify";
 
 import apiRequest from "../../../../../ApiRequest";
 

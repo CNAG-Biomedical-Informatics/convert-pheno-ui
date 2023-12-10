@@ -21,7 +21,9 @@ import {
 import { ErrorBoundary } from "react-error-boundary";
 import { Box, Grid } from "@mui/material";
 import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
-import { Toaster, toast } from "react-hot-toast";
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import apiRequest from "./ApiRequest";
 
@@ -227,7 +229,7 @@ export default function ToggleColorMode() {
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
-        <Toaster />
+        <ToastContainer />
         <AppWrapper theme={theme}>
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <App />
