@@ -62,93 +62,193 @@ export default function SubmissionForms(props) {
   }, [inputFormat]);
 
   useEffect(() => {
-    // check if conversion can be started
-    const trueVals = Object.values(outputFormats).filter((value) => value);
-    if (trueVals.length === 0) {
-      // no output format selected
+    const isOutputFormatSelected = () => Object.values(outputFormats).some(value => value);
+
+    const showToast = (id, message) => {
+      renderToast({ id, message });
+      setConversionCanBeStarted(false);
+    };
+
+    const getFileExtension = fileName => fileName.split('.').pop();
+
+    const validateFileExtensions = (expectedExtensions, inputFormat) => {
+      const fileNames = Object.keys(uploadedFiles);
+      const fileExtensions = fileNames.map(getFileExtension);
+
+      if (inputFormat === "cdisc"
+          && fileExtensions.filter(ext => ext === "xml").length !== 1
+        ) {
+        showToast(
+          "oneXmlFileExpected",
+          "One xml file is expected"
+        );
+        return false;
+      }
+
+      if (fileNames.some(
+          fileName => !expectedExtensions.includes(getFileExtension(fileName))
+        )) {
+        showToast(
+          "unacceptedFileExtension",
+          "One or more files have an unacceptable file extension"
+        );
+        return false;
+      }
+      return true;
+    };
+
+    if (!isOutputFormatSelected()) {
       setConversionCanBeStarted(false);
       return;
     }
 
-    if (runExampleData && trueVals.length !== 0 ) {
+    if (runExampleData) {
       setConversionCanBeStarted(true);
       return;
     }
 
-    if (["redcap", "cdisc"].includes(inputFormat)) {
-      if (Object.keys(uploadedFiles).length < 3) {
-        setConversionCanBeStarted(false);
-        return;
-      }
+    const acceptedFileExtensions = ["txt", "tsv", "csv", "yaml", "yml", "json"];
+    const inputFormatsNeedingSingleFile = ["bff", "pxf", "omop"];
+    const fileCount = Object.keys(uploadedFiles).length;
 
-      const acceptedFileExtensionsGeneral = ["txt", "tsv", "csv", "yaml", "yml", "json"];
+    if (["cdisc", "redcap"].includes(inputFormat)) {
+        const cdiscFileExtensions = inputFormat === "cdisc"
+          ? [...acceptedFileExtensions, "xml"]
+          : acceptedFileExtensions;
 
-      if (inputFormat === "cdisc") {
-        acceptedFileExtensionsGeneral.push("xml");
-      }
-
-      const fileNames = Object.keys(uploadedFiles);
-      const fileExtensions=[]
-      const filesWithUnacceptedExtensions = fileNames.filter((fileName) => {
-        const fileExtension = fileName.split(".").pop();
-        fileExtensions.push(fileExtension);
-        return !acceptedFileExtensionsGeneral.includes(fileExtension);
-      });
-
-      if (inputFormat === "cdisc") {
-        if (fileExtensions.filter((fileExtension) => fileExtension === "xml").length !== 1) {
-          renderToast({
-            id:"oneXmlFileExpected",
-            message:"One xml file is expected"
-          });
+        if (fileCount < 3) {
           setConversionCanBeStarted(false);
           return;
         }
-      }
 
-      if (filesWithUnacceptedExtensions.length > 0) {
-        renderToast({
-          id:"unacceptedFileExtension",
-          message:"one or more files have an unacceptable file extension"
-        });
+        if (!validateFileExtensions(
+          cdiscFileExtensions,
+          inputFormat
+        )) return;
+    }
+
+    if (inputFormatsNeedingSingleFile.includes(inputFormat)) {
+      if (fileCount === 0) {
         setConversionCanBeStarted(false);
         return;
       }
-    }
 
-    if (["bff", "pxf", "omop"].includes(inputFormat) && Object.keys(uploadedFiles).length > 1) {
-      renderToast({
-        id:"onlyOneFileExpected",
-        message:"Only one file is expected"
-      });
-      console.log("only one file expected");
-      console.log("uploadedFiles", uploadedFiles)
-      setConversionCanBeStarted(false);
-      return;
-    }
+      if (fileCount > 1) {
+        showToast(
+          "onlyOneFileExpected",
+          "Only one file is expected"
+        );
+        return;
+      }
 
-    if (["bff", "pxf", "omop"].includes(inputFormat) && Object.keys(uploadedFiles).length == 1) {
       const fileName = Object.keys(uploadedFiles)[0];
       if (["bff", "pxf"].includes(inputFormat) && !fileName.endsWith(".json")) {
-        renderToast({
-          id:"jsonFileExpected",
-          message:"Please upload a .json file"
-        });
-        setConversionCanBeStarted(false);
+        showToast(
+          "jsonFileExpected",
+          "Please upload a .json file"
+        );
         return;
       }
 
-      if (inputFormat == "omop" && !fileName.endsWith(".sql") && !fileName.endsWith(".gz")) {
-        renderToast({
-          id:"sqlOrGzFileExpected",
-          message:"Please upload a .sql or sql.gz file"
-        });
-        setConversionCanBeStarted(false);
+      if (inputFormat === "omop" && !fileName.endsWith(".sql") && !fileName.endsWith(".gz")) {
+        showToast(
+          "sqlOrGzFileExpected",
+          "Please upload a .sql or sql.gz file"
+        );
         return;
       }
     }
-    if (filesUploadFinished) setConversionCanBeStarted(true);
+    setConversionCanBeStarted(filesUploadFinished);
   }, [inputFormat, outputFormats, uploadedFiles, runExampleData, filesUploadFinished]);
+
+  // useEffect(() => {
+  //   // check if conversion can be started
+  //   const trueVals = Object.values(outputFormats).filter((value) => value);
+  //   if (trueVals.length === 0) {
+  //     // no output format selected
+  //     setConversionCanBeStarted(false);
+  //     return;
+  //   }
+
+  //   if (runExampleData && trueVals.length !== 0 ) {
+  //     setConversionCanBeStarted(true);
+  //     return;
+  //   }
+
+  //   if (["redcap", "cdisc"].includes(inputFormat)) {
+  //     if (Object.keys(uploadedFiles).length < 3) {
+  //       setConversionCanBeStarted(false);
+  //       return;
+  //     }
+
+  //     const acceptedFileExtensionsGeneral = ["txt", "tsv", "csv", "yaml", "yml", "json"];
+
+  //     if (inputFormat === "cdisc") {
+  //       acceptedFileExtensionsGeneral.push("xml");
+  //     }
+
+  //     const fileNames = Object.keys(uploadedFiles);
+  //     const fileExtensions=[]
+  //     const filesWithUnacceptedExtensions = fileNames.filter((fileName) => {
+  //       const fileExtension = fileName.split(".").pop();
+  //       fileExtensions.push(fileExtension);
+  //       return !acceptedFileExtensionsGeneral.includes(fileExtension);
+  //     });
+
+  //     if (inputFormat === "cdisc") {
+  //       if (fileExtensions.filter((fileExtension) => fileExtension === "xml").length !== 1) {
+  //         renderToast({
+  //           id:"oneXmlFileExpected",
+  //           message:"One xml file is expected"
+  //         });
+  //         setConversionCanBeStarted(false);
+  //         return;
+  //       }
+  //     }
+
+  //     if (filesWithUnacceptedExtensions.length > 0) {
+  //       renderToast({
+  //         id:"unacceptedFileExtension",
+  //         message:"one or more files have an unacceptable file extension"
+  //       });
+  //       setConversionCanBeStarted(false);
+  //       return;
+  //     }
+  //   }
+
+  //   if (["bff", "pxf", "omop"].includes(inputFormat) && Object.keys(uploadedFiles).length > 1) {
+  //     renderToast({
+  //       id:"onlyOneFileExpected",
+  //       message:"Only one file is expected"
+  //     });
+  //     console.log("only one file expected");
+  //     console.log("uploadedFiles", uploadedFiles)
+  //     setConversionCanBeStarted(false);
+  //     return;
+  //   }
+
+  //   if (["bff", "pxf", "omop"].includes(inputFormat) && Object.keys(uploadedFiles).length == 1) {
+  //     const fileName = Object.keys(uploadedFiles)[0];
+  //     if (["bff", "pxf"].includes(inputFormat) && !fileName.endsWith(".json")) {
+  //       renderToast({
+  //         id:"jsonFileExpected",
+  //         message:"Please upload a .json file"
+  //       });
+  //       setConversionCanBeStarted(false);
+  //       return;
+  //     }
+
+  //     if (inputFormat == "omop" && !fileName.endsWith(".sql") && !fileName.endsWith(".gz")) {
+  //       renderToast({
+  //         id:"sqlOrGzFileExpected",
+  //         message:"Please upload a .sql or sql.gz file"
+  //       });
+  //       setConversionCanBeStarted(false);
+  //       return;
+  //     }
+  //   }
+  //   if (filesUploadFinished) setConversionCanBeStarted(true);
+  // }, [inputFormat, outputFormats, uploadedFiles, runExampleData, filesUploadFinished]);
 
   const handleStartConversionClicked = () => {
     if (runExampleData) {
