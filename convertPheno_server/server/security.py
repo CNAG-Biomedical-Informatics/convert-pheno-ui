@@ -56,7 +56,7 @@ def login(login_required=True):
         @wraps(func)
         def decorated_function(*args, **kwargs):
             if not login_required:
-                return func(userid="dev", *args, **kwargs)
+                return func(userid="dev", uuid="dev", *args, **kwargs)
 
             token = request.headers.get("Authorization")
 
