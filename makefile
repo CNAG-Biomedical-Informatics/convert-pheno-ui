@@ -64,8 +64,8 @@ kc-key:
 kc-ip:
 	docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' local_keycloak
 
-db-ip:
-	db_ip=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' convert-pheno-api-db)
+db-ip:|
+	db_ip=$$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' convert-pheno-api-db) && \
 	echo $${db_ip}
 
 mkcert:

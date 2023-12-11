@@ -70,6 +70,7 @@ services:
       NODE_ENV: production
       VITE_SECURITY: ${API_SECURITY}
       VITE_API_URL: http://${DOMAIN}:5000/
+      VITE_FILEPOND_TIMEOUT: 7000 # 7 seconds
       VITE_KC_CONFIG: $KC_CONFIG
     restart: unless-stopped
     healthcheck:

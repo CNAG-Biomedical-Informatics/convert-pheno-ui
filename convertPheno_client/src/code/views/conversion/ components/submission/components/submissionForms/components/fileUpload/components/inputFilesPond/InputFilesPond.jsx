@@ -26,7 +26,7 @@ import {
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 
 import { FilePond, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
@@ -40,6 +40,15 @@ const api_endpoint =
   process.env.NODE_ENV === "production"
     ? window.REACT_APP_API_URL
     : import.meta.env.VITE_API_URL;
+
+console.log("api_endpoint", api_endpoint);
+
+const filepondTimeout =
+  process.env.NODE_ENV === "production"
+    ? parseInt(window.REACT_APP_FILEPOND_TIMEOUT)
+    : parseInt(import.meta.env.VITE_FILEPOND_TIMEOUT);
+
+console.log("filepondTimeout", filepondTimeout);
 
 function CustomAlert(props) {
   const { info } = props;
@@ -84,7 +93,7 @@ export default function InputFilesPond(props) {
     setFilesUploadFinished,
     setRunExampleData,
     inputFormat,
-    uploadedFiles
+    uploadedFiles,
   } = props;
 
   const [files, setFiles] = useState([]);
@@ -105,11 +114,11 @@ export default function InputFilesPond(props) {
     */
 
     const returnedFileName = JSON.parse(file.serverId).tempFilename;
-    const {filename, fileExtension} = file;
+    const { filename, fileExtension } = file;
 
     if (filename in uploadedFiles) {
       toast.error("File already uploaded");
-      file.setMetadata("processingAborted", true)
+      file.setMetadata("processingAborted", true);
       file.abortProcessing();
       return;
     }
@@ -245,16 +254,16 @@ export default function InputFilesPond(props) {
           onupdatefiles={setFiles}
           allowMultiple={allowMultipleMapping[inputFormat]}
           maxFiles={getFileUploadInfo(inputFormat).fileCount}
-
           server={{
             url: `${api_endpoint}api/submission/upload`,
-            timeout: 7000, // 7 seconds
+            timeout: filepondTimeout,
             process: {
               headers: {
                 Authorization: auth.getToken(),
                 "X-Custom-InputFormat": inputFormat,
               },
               onerror: (response) => {
+                console.log("error", response);
                 errorHandling(response);
               },
             },
@@ -273,10 +282,27 @@ export default function InputFilesPond(props) {
             setFilesUploadFinished(false);
             const fileName = file.filename;
 
+            console.log("files", files);
+
             // only update state if the file processing was finished (status 2 = IDLE)
             // for reference see
             // github.com/pqina/filepond-docs/blob/master/content/patterns/API/filepond-object.md#filestatus-enum
-            if (file.status === 2 && file.getMetadata("processingAborted") !== true) {
+
+            // TODO
+            // below is not working on the production environment
+            // It will always retrigger the re-upload of the file
+
+            // Potential solution:
+            // do not have a setUploadedFile call here
+            // but rather use the files set by FilePond
+            // either use this state directly
+            // or use a useEffect hook to update the uploadedFiles state
+            // whenever the files state changes
+
+            if (
+              file.status === 2 &&
+              file.getMetadata("processingAborted") !== true
+            ) {
               setUploadedFiles((prev) => {
                 const prevCopy = { ...prev };
                 delete prevCopy[fileName];

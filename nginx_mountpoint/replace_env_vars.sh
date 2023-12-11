@@ -13,6 +13,7 @@
 echo "=== DEBUG: check if env variables are set ==="
 echo $VITE_SECURITY
 echo $VITE_API_URL
+echo $VITE_FILEPOND_TIMEOUT
 echo $VITE_KC_CONFIG
 echo $MATOMO_TAG_MANAGER_URL
 echo "=== DEBUG: End of check if env variables are set ==="
