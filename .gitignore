@@ -3,8 +3,9 @@
 *.log
 .ruff_cache
 .pytest_cache
-data/output/*.json
-data/uploads/*.csv
-data/uploads/*.yaml
-data/uploads/*.json
-data/uploads/*.sql.gz
+data/output/*/*.json
+data/uploads/*/*.csv
+data/uploads/*/*.yaml
+data/uploads/*/*.yml
+data/uploads/*/*.json
+data/uploads/*/*.sql.gz
