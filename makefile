@@ -77,3 +77,7 @@ dive-server:
 
 dive-client:
 	dive leistivo/convert-pheno-ui-client:${DOCKER_IMG_TAG}
+
+change-owner:
+	echo "Changing owner of data directory to ${UID}:${GID}"
+	sudo chown -R ${UID}:${GID} data
