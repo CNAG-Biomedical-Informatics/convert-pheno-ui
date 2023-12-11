@@ -17,7 +17,7 @@ import FileMappingModal from "./components/fileMappingModal/FileMappingModal";
 import FileUpload from "./components/fileUpload/FileUpload";
 import OutputFormatsSelection from "./components/outputFormatsSelection/OutputFormatsSelection";
 import { SimpleArrow, ArrowButton } from "./components/arrows/Arrows";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 
 export default function SubmissionForms(props) {
   const { states, setters } = props;
@@ -39,10 +39,8 @@ export default function SubmissionForms(props) {
     if (toast.isActive(id)) {
       return;
     }
-    toast.error(message,
-      { toastId: id }
-    )
-  }
+    toast.error(message, { toastId: id });
+  };
 
   useEffect(() => {
     let preselectedOutputFormats = ["bff", "pxf"];
@@ -63,32 +61,34 @@ export default function SubmissionForms(props) {
 
   useEffect(() => {
     // check if conversion can be started
-    const isOutputFormatSelected = () => Object.values(outputFormats).some(value => value);
+    const isOutputFormatSelected = () =>
+      Object.values(outputFormats).some((value) => value);
 
     const showToast = (id, message) => {
+      console.log("uploadFiles", uploadedFiles);
       renderToast({ id, message });
       setConversionCanBeStarted(false);
     };
 
-    const getFileExtension = fileName => fileName.split('.').pop();
+    const getFileExtension = (fileName) => fileName.split(".").pop();
 
     const validateFileExtensions = (expectedExtensions, inputFormat) => {
       const fileNames = Object.keys(uploadedFiles);
       const fileExtensions = fileNames.map(getFileExtension);
 
-      if (inputFormat === "cdisc"
-          && fileExtensions.filter(ext => ext === "xml").length !== 1
-        ) {
-        showToast(
-          "oneXmlFileExpected",
-          "One xml file is expected"
-        );
+      if (
+        inputFormat === "cdisc" &&
+        fileExtensions.filter((ext) => ext === "xml").length !== 1
+      ) {
+        showToast("oneXmlFileExpected", "One xml file is expected");
         return false;
       }
 
-      if (fileNames.some(
-          fileName => !expectedExtensions.includes(getFileExtension(fileName))
-        )) {
+      if (
+        fileNames.some(
+          (fileName) => !expectedExtensions.includes(getFileExtension(fileName))
+        )
+      ) {
         showToast(
           "unacceptedFileExtension",
           "One or more files have an unacceptable file extension"
@@ -113,19 +113,17 @@ export default function SubmissionForms(props) {
     const fileCount = Object.keys(uploadedFiles).length;
 
     if (["cdisc", "redcap"].includes(inputFormat)) {
-        const cdiscFileExtensions = inputFormat === "cdisc"
+      const cdiscFileExtensions =
+        inputFormat === "cdisc"
           ? [...acceptedFileExtensions, "xml"]
           : acceptedFileExtensions;
 
-        if (fileCount < 3) {
-          setConversionCanBeStarted(false);
-          return;
-        }
+      if (fileCount < 3) {
+        setConversionCanBeStarted(false);
+        return;
+      }
 
-        if (!validateFileExtensions(
-          cdiscFileExtensions,
-          inputFormat
-        )) return;
+      if (!validateFileExtensions(cdiscFileExtensions, inputFormat)) return;
     }
 
     if (inputFormatsNeedingSingleFile.includes(inputFormat)) {
@@ -135,32 +133,33 @@ export default function SubmissionForms(props) {
       }
 
       if (fileCount > 1) {
-        showToast(
-          "onlyOneFileExpected",
-          "Only one file is expected"
-        );
+        showToast("onlyOneFileExpected", "Only one file is expected");
         return;
       }
 
       const fileName = Object.keys(uploadedFiles)[0];
       if (["bff", "pxf"].includes(inputFormat) && !fileName.endsWith(".json")) {
-        showToast(
-          "jsonFileExpected",
-          "Please upload a .json file"
-        );
+        showToast("jsonFileExpected", "Please upload a .json file");
         return;
       }
 
-      if (inputFormat === "omop" && !fileName.endsWith(".sql") && !fileName.endsWith(".gz")) {
-        showToast(
-          "sqlOrGzFileExpected",
-          "Please upload a .sql or sql.gz file"
-        );
+      if (
+        inputFormat === "omop" &&
+        !fileName.endsWith(".sql") &&
+        !fileName.endsWith(".gz")
+      ) {
+        showToast("sqlOrGzFileExpected", "Please upload a .sql or sql.gz file");
         return;
       }
     }
     setConversionCanBeStarted(filesUploadFinished);
-  }, [inputFormat, outputFormats, uploadedFiles, runExampleData, filesUploadFinished]);
+  }, [
+    inputFormat,
+    outputFormats,
+    uploadedFiles,
+    runExampleData,
+    filesUploadFinished,
+  ]);
 
   const handleStartConversionClicked = () => {
     if (runExampleData) {
@@ -168,38 +167,7 @@ export default function SubmissionForms(props) {
       return;
     }
 
-    if (inputFormat === "omop") {
-      const fileName = Object.keys(uploadedFiles)[0];
-      if (!fileName.endsWith(".sql") || !fileName.endsWith(".gz")) {
-        toast.error("Please upload a .sql or sql.gz file");
-        return;
-      }
-    }
-
-    if(["bff", "pxf"].includes(inputFormat)) {
-      if (Object.keys(uploadedFiles).length > 1) {
-        toast.error("Only one json file is expected");
-        return;
-      }
-      const fileName = Object.keys(uploadedFiles)[0];
-      if (!fileName.endsWith(".json")) {
-        toast.error("Please upload a .json file");
-        return;
-      }
-    }
-
     if (["redcap", "cdisc"].includes(inputFormat)) {
-      // if cdisc check if at least one of the files is a .xml file
-      if (inputFormat === "cdisc") {
-        const fileNames = Object.keys(uploadedFiles);
-        const xmlFileNames = fileNames.filter((fileName) =>
-          fileName.endsWith(".xml")
-        );
-        if (xmlFileNames.length === 0) {
-          toast.error("One of the files must be a .xml file");
-          return;
-        }
-      }
       setOpenModal(true);
       return;
     }
