@@ -77,7 +77,9 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
-    # command: /entrypoint_run_vite_preview.sh
+
+    # run the vite development server and make it available on port 4173
+    command: /entrypoint_run_vite_preview.sh
     tty: true
 
   convert-pheno:
