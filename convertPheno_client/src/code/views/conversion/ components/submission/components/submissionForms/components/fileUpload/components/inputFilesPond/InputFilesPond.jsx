@@ -10,7 +10,7 @@
   License: GPL-3.0 license
 */
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import auth from "../../../../../../../../../../Auth";
 import {
   Button,
@@ -98,6 +98,28 @@ export default function InputFilesPond(props) {
 
   const [files, setFiles] = useState([]);
 
+  useEffect(() => {
+    // to check if one file has been deleted
+    // if so, delete the file from the uploadedFiles state
+    const fileNames = files.map((file) => file.filename);
+    const uploadedFileNames = Object.keys(uploadedFiles);
+
+    const deletedFiles = uploadedFileNames.filter(
+      (fileName) => !fileNames.includes(fileName)
+    );
+
+    if (deletedFiles.length > 0) {
+      setFilesUploadFinished(false);
+      setUploadedFiles((prev) => {
+        const prevCopy = { ...prev };
+        deletedFiles.forEach((fileName) => {
+          delete prevCopy[fileName];
+        });
+        return prevCopy;
+      });
+    }
+  }, [files]);
+
   const handleFileUploadFinished = (_, file) => {
     /*
     handleFileUploadFinished function
@@ -123,15 +145,11 @@ export default function InputFilesPond(props) {
       return;
     }
 
-    let fileType = "input-file";
-    if (filename.includes("dictionary") && fileExtension === "csv") {
-      fileType = "redcap-dictionary";
-    } else if (
-      filename.includes("mapping") &&
-      ["yaml", "yml", "json"].includes(fileExtension)
-    ) {
-      fileType = "mapping-file";
-    }
+    const fileType = filename.includes("dictionary") && fileExtension === "csv"
+      ? "redcap-dictionary"
+      : filename.includes("mapping") && ["yaml", "yml", "json"].includes(fileExtension)
+        ? "mapping-file"
+        : "input-file"
 
     setUploadedFiles((prev) => {
       return {
@@ -278,38 +296,38 @@ export default function InputFilesPond(props) {
           }}
           onprocessfile={handleFileUploadFinished}
           onprocessfiles={handleAllFilesUploadFinished}
-          onremovefile={(_, file) => {
-            setFilesUploadFinished(false);
-            const fileName = file.filename;
+          // onremovefile={(_, file) => {
+          //   setFilesUploadFinished(false);
+          //   const fileName = file.filename;
 
-            console.log("files", files);
+          //   console.log("files", files);
 
-            // only update state if the file processing was finished (status 2 = IDLE)
-            // for reference see
-            // github.com/pqina/filepond-docs/blob/master/content/patterns/API/filepond-object.md#filestatus-enum
+          //   // only update state if the file processing was finished (status 2 = IDLE)
+          //   // for reference see
+          //   // github.com/pqina/filepond-docs/blob/master/content/patterns/API/filepond-object.md#filestatus-enum
 
-            // TODO
-            // below is not working on the production environment
-            // It will always retrigger the re-upload of the file
+          //   // TODO
+          //   // below is not working on the production environment
+          //   // It will always retrigger the re-upload of the file
 
-            // Potential solution:
-            // do not have a setUploadedFile call here
-            // but rather use the files set by FilePond
-            // either use this state directly
-            // or use a useEffect hook to update the uploadedFiles state
-            // whenever the files state changes
+          //   // Potential solution:
+          //   // do not have a setUploadedFile call here
+          //   // but rather use the files set by FilePond
+          //   // either use this state directly
+          //   // or use a useEffect hook to update the uploadedFiles state
+          //   // whenever the files state changes
 
-            if (
-              file.status === 2 &&
-              file.getMetadata("processingAborted") !== true
-            ) {
-              setUploadedFiles((prev) => {
-                const prevCopy = { ...prev };
-                delete prevCopy[fileName];
-                return prevCopy;
-              });
-            }
-          }}
+          //   if (
+          //     file.status === 2 &&
+          //     file.getMetadata("processingAborted") !== true
+          //   ) {
+          //     setUploadedFiles((prev) => {
+          //       const prevCopy = { ...prev };
+          //       delete prevCopy[fileName];
+          //       return prevCopy;
+          //     });
+          //   }
+          // }}
           // option provided by plugins
           acceptedFileTypes={acceptedFileTypesMapping[inputFormat]}
           fileValidateTypeLabelExpectedTypes={
