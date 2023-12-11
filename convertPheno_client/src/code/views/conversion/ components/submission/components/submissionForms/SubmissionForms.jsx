@@ -65,7 +65,7 @@ export default function SubmissionForms(props) {
       Object.values(outputFormats).some((value) => value);
 
     const showToast = (id, message) => {
-      console.log("uploadFiles", uploadedFiles);
+      // console.log("uploadFiles", uploadedFiles);
       renderToast({ id, message });
       setConversionCanBeStarted(false);
     };
