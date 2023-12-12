@@ -12,7 +12,7 @@
     "@mui/material": "^5.14.20",
     "@mui/system": "^5.14.20",
     "@mui/x-tree-view": "^6.17.0",
-    "@tanstack/react-query": "4.36.1",
+    "@tanstack/react-query": "5.x.x",
     "ag-grid-community": "^31.0.0",
     "ag-grid-react": "^31.0.0",
     "axios": "^1.6.2",

@@ -10,7 +10,7 @@
   License: GPL-3.0 license
 */
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "react-query";
 import apiRequest from "../../../ApiRequest";
 
 export default function useFinishedJobs(props) {
@@ -34,6 +34,8 @@ export default function useFinishedJobs(props) {
       cacheTime: 200,
       staleTime: 300_000,
       onSuccess: (data) => {},
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false
     }
   );
 }

@@ -35,7 +35,7 @@ export default function Submission(props) {
   const [uploadedFiles, setUploadedFiles] = useState({});
   const [startFileConversion, setStartFileConversion] = useState(false);
 
-  const queryClient = useQueryClient();
+  const queryClient = new QueryClient();
   const navigate = useNavigate();
 
   const { status, data } = useFileConversions({
