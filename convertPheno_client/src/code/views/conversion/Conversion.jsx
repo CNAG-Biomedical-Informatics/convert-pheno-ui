@@ -15,9 +15,10 @@ import { ErrorBoundary } from "react-error-boundary";
 import { useParams } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 
-import Submission from "./ components/submission/Submission";
-import ClinicalData from "./ components/clinicalData/ClinicalData";
+import Submission from "./components/submission/Submission";
+import ClinicalData from "./components/clinicalData/ClinicalData";
 import useFinishedJobs from "./hooks/finishedJobs";
+import { getFriendlyErrorMessage } from "../utils/errorMessages";
 
 // TODO
 // Make a more user friendly ErrorFallback component
@@ -25,7 +26,7 @@ import useFinishedJobs from "./hooks/finishedJobs";
 const ErrorFallback = ({ error, resetErrorBoundary }) => (
   <div role="alert">
     <p>Something went wrong:</p>
-    <pre>{error.message}</pre>
+    <pre>{getFriendlyErrorMessage(error.message)}</pre>
     <button onClick={resetErrorBoundary}>Try again</button>
   </div>
 );
