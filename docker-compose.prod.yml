@@ -29,6 +29,7 @@ services:
       UID: ${UID}
       GID: ${GID}
       API_SECURITY: true
+      CP_CONTAINER_NAME: convert-pheno
     restart: unless-stopped
     healthcheck:
       test: curl -f http://0.0.0.0:5000/api/curltest
@@ -77,6 +78,7 @@ services:
       VITE_SECURITY: true
       VITE_API_URL: https://${DOMAIN}/
       VITE_KC_CONFIG: ${KC_CONFIG}
+      VITE_FILEPOND_TIMEOUT: 10000 # 10 seconds
       MATOMO_TAG_MANAGER_URL: ${MATOMO_TAG_MANAGER_URL}
     restart: unless-stopped
     healthcheck:
@@ -130,8 +132,8 @@ services:
         target: /opt/keycloak/conf/server.key.pem
         read_only: true
       - ./custom_keycloak_theme/target/retrocompat-keycloakify-starter-keycloak-theme-5.0.3.jar:/opt/keycloak/providers/retrocompat-keycloakify-starter-keycloak-theme-5.0.3.jar:rw
-      - ./custom_keycloak_theme/src/main/resources/theme/account-v1:/opt/keycloak/themes/account-v1:rw 
-      - ./custom_keycloak_theme/src/main/resources/theme/keycloakify-starter-variant-1_retrocompat:/opt/keycloak/themes/keycloakify-starter-variant-1_retrocompat:rw 
+      - ./custom_keycloak_theme/src/main/resources/theme/account-v1:/opt/keycloak/themes/account-v1:rw
+      - ./custom_keycloak_theme/src/main/resources/theme/keycloakify-starter-variant-1_retrocompat:/opt/keycloak/themes/keycloakify-starter-variant-1_retrocompat:rw
       - ./custom_keycloak_theme/src/main/resources/theme/keycloakify-starter_retrocompat:/opt/keycloak/themes/keycloakify-starter_retrocompat:rw
 
     restart: unless-stopped

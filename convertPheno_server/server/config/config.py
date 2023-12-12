@@ -19,6 +19,15 @@ db_port = environ.get("API_DB_PORT")
 db_name = environ.get("API_DB_NAME")
 security = environ.get("API_SECURITY")
 vscode_debugger = environ.get("DEBUGGER")
+cp_container_name = environ.get("CP_CONTAINER_NAME")
+
+# check if all environment variables are set
+if None in [db_user, db_pw, db_host, db_port, db_name, security, cp_container_name]:
+    raise ValueError(
+        "Please set the environment variables:"
+        "API_DB_USER, API_DB_PW, API_DB_HOST, API_DB_PORT, API_DB_NAME"
+        "API_SECURITY, CP_CONTAINER_NAME"
+    )
 
 # throw an error if security is not "true" or "false"
 if security not in ["true", "false"]:
@@ -44,3 +53,5 @@ class Config:
         FLASK_UPLOAD_DIR = Path("../data/uploads/")
         FLASK_EXAMPLE_DIR = Path("../data/example_in/").resolve()
         FLASK_OUT_DIR = Path("../data/output/").resolve()
+
+    CP_CONTAINER_NAME = cp_container_name
