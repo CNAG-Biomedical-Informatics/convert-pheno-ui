@@ -28,23 +28,26 @@ services:
   #   volumes:
   #     - ./data:/data
 
-  db:
-    image: postgres:13-alpine
-    container_name: convert-pheno-api-db
-    volumes:
-      - postgres-data:/var/lib/postgresql/data/
-    environment:
-      - POSTGRES_DB=${API_DB_NAME}
-      - POSTGRES_USER=${API_DB_USER}
-      - POSTGRES_PASSWORD=${API_DB_PW}
-    restart: unless-stopped
-    healthcheck:
-      test: pg_isready -U postgres
+  # db:
+  #   image: postgres:13-alpine
+  #   container_name: convert-pheno-api-db
+  #   volumes:
+  #     - postgres-data:/var/lib/postgresql/data/
+  #   environment:
+  #     - POSTGRES_DB=${API_DB_NAME}
+  #     - POSTGRES_USER=${API_DB_USER}
+  #     - POSTGRES_PASSWORD=${API_DB_PW}
+  #   restart: unless-stopped
+  #   healthcheck:
+  #     test: pg_isready -U postgres
 
+  # run below for local development
+  # make sure to run it from the root of this folder
+  # so that the data folder is mounted correctly
   convert-pheno:
     user: ${UID}
     image: manuelrueda/convert-pheno:0.15
-    container_name: convert-pheno
+    container_name: convert-pheno-container
     restart: unless-stopped
     tty: true
     volumes:

@@ -10,7 +10,7 @@
   License: GPL-3.0 license
 */
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import auth from "../../../../../../../../../../Auth";
 import {
   Button,
@@ -26,7 +26,7 @@ import {
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 
 import { FilePond, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
@@ -40,6 +40,15 @@ const api_endpoint =
   process.env.NODE_ENV === "production"
     ? window.REACT_APP_API_URL
     : import.meta.env.VITE_API_URL;
+
+console.log("api_endpoint", api_endpoint);
+
+const filepondTimeout =
+  process.env.NODE_ENV === "production"
+    ? parseInt(window.REACT_APP_FILEPOND_TIMEOUT)
+    : parseInt(import.meta.env.VITE_FILEPOND_TIMEOUT);
+
+console.log("filepondTimeout", filepondTimeout);
 
 function CustomAlert(props) {
   const { info } = props;
@@ -84,10 +93,65 @@ export default function InputFilesPond(props) {
     setFilesUploadFinished,
     setRunExampleData,
     inputFormat,
-    uploadedFiles
+    uploadedFiles,
   } = props;
 
   const [files, setFiles] = useState([]);
+
+  useEffect(() => {
+    // to check if one file has been deleted
+    // if so, delete the file from the uploadedFiles state
+    const fileNames = files.map((file) => file.filename);
+    const uploadedFileNames = Object.keys(uploadedFiles);
+
+    const deletedFiles = uploadedFileNames.filter(
+      (fileName) => !fileNames.includes(fileName)
+    );
+
+    if (deletedFiles.length > 0) {
+      setFilesUploadFinished(false);
+      setUploadedFiles((prev) => {
+        const prevCopy = { ...prev };
+        deletedFiles.forEach((fileName) => {
+          delete prevCopy[fileName];
+        });
+        return prevCopy;
+      });
+    }
+  }, [files]);
+
+  const inferPotentialFileType = (file) => {
+    /*
+    inferPotentialFileType function
+
+    Props:
+      - filename (string): name of the file that was uploaded
+
+    Functionality:
+      - tries to infer based on the file name and extension the file type
+        (input file, dictionary, mapping file)
+
+    Purpose:
+      - To update the state uploadedFiles with the file that was uploaded
+    */
+    const { filename, fileExtension } = file;
+
+    if (
+      filename.includes("dictionary") &&
+      ["csv", "tsv", "txt"].includes(fileExtension)
+    ) {
+      return "redcap-dictionary";
+    }
+
+    if (
+      filename.includes("mapping") &&
+      ["yaml", "yml", "json"].includes(fileExtension)
+    ) {
+      return "mapping-file";
+    }
+
+    return "input-file";
+  };
 
   const handleFileUploadFinished = (_, file) => {
     /*
@@ -100,29 +164,20 @@ export default function InputFilesPond(props) {
       - tries to infer based on the file name and extension the file type
         (input file, dictionary, mapping file)
 
-        Purpose:
-        - To update the state uploadedFiles with the file that was uploaded
+    Purpose:
+    - To update the state uploadedFiles with the file that was uploaded
     */
 
     const returnedFileName = JSON.parse(file.serverId).tempFilename;
-    const {filename, fileExtension} = file;
+    const { filename } = file;
 
     if (filename in uploadedFiles) {
       toast.error("File already uploaded");
-      file.setMetadata("processingAborted", true)
+      file.setMetadata("processingAborted", true);
       file.abortProcessing();
       return;
     }
-
-    let fileType = "input-file";
-    if (filename.includes("dictionary") && fileExtension === "csv") {
-      fileType = "redcap-dictionary";
-    } else if (
-      filename.includes("mapping") &&
-      ["yaml", "yml", "json"].includes(fileExtension)
-    ) {
-      fileType = "mapping-file";
-    }
+    const fileType = inferPotentialFileType(file);
 
     setUploadedFiles((prev) => {
       return {
@@ -245,16 +300,16 @@ export default function InputFilesPond(props) {
           onupdatefiles={setFiles}
           allowMultiple={allowMultipleMapping[inputFormat]}
           maxFiles={getFileUploadInfo(inputFormat).fileCount}
-
           server={{
             url: `${api_endpoint}api/submission/upload`,
-            timeout: 7000, // 7 seconds
+            timeout: filepondTimeout,
             process: {
               headers: {
                 Authorization: auth.getToken(),
                 "X-Custom-InputFormat": inputFormat,
               },
               onerror: (response) => {
+                console.log("error", response);
                 errorHandling(response);
               },
             },
@@ -269,21 +324,38 @@ export default function InputFilesPond(props) {
           }}
           onprocessfile={handleFileUploadFinished}
           onprocessfiles={handleAllFilesUploadFinished}
-          onremovefile={(_, file) => {
-            setFilesUploadFinished(false);
-            const fileName = file.filename;
+          // onremovefile={(_, file) => {
+          //   setFilesUploadFinished(false);
+          //   const fileName = file.filename;
 
-            // only update state if the file processing was finished (status 2 = IDLE)
-            // for reference see
-            // github.com/pqina/filepond-docs/blob/master/content/patterns/API/filepond-object.md#filestatus-enum
-            if (file.status === 2 && file.getMetadata("processingAborted") !== true) {
-              setUploadedFiles((prev) => {
-                const prevCopy = { ...prev };
-                delete prevCopy[fileName];
-                return prevCopy;
-              });
-            }
-          }}
+          //   console.log("files", files);
+
+          //   // only update state if the file processing was finished (status 2 = IDLE)
+          //   // for reference see
+          //   // github.com/pqina/filepond-docs/blob/master/content/patterns/API/filepond-object.md#filestatus-enum
+
+          //   // TODO
+          //   // below is not working on the production environment
+          //   // It will always retrigger the re-upload of the file
+
+          //   // Potential solution:
+          //   // do not have a setUploadedFile call here
+          //   // but rather use the files set by FilePond
+          //   // either use this state directly
+          //   // or use a useEffect hook to update the uploadedFiles state
+          //   // whenever the files state changes
+
+          //   if (
+          //     file.status === 2 &&
+          //     file.getMetadata("processingAborted") !== true
+          //   ) {
+          //     setUploadedFiles((prev) => {
+          //       const prevCopy = { ...prev };
+          //       delete prevCopy[fileName];
+          //       return prevCopy;
+          //     });
+          //   }
+          // }}
           // option provided by plugins
           acceptedFileTypes={acceptedFileTypesMapping[inputFormat]}
           fileValidateTypeLabelExpectedTypes={
