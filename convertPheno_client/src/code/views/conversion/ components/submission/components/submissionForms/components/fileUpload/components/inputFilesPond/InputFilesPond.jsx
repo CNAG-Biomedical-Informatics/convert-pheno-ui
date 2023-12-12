@@ -120,6 +120,39 @@ export default function InputFilesPond(props) {
     }
   }, [files]);
 
+  const inferPotentialFileType = (file) => {
+    /*
+    inferPotentialFileType function
+
+    Props:
+      - filename (string): name of the file that was uploaded
+
+    Functionality:
+      - tries to infer based on the file name and extension the file type
+        (input file, dictionary, mapping file)
+
+    Purpose:
+      - To update the state uploadedFiles with the file that was uploaded
+    */
+    const { filename, fileExtension } = file;
+
+    if (
+      filename.includes("dictionary") &&
+      ["csv", "tsv", "txt"].includes(fileExtension)
+    ) {
+      return "redcap-dictionary";
+    }
+
+    if (
+      filename.includes("mapping") &&
+      ["yaml", "yml", "json"].includes(fileExtension)
+    ) {
+      return "mapping-file";
+    }
+
+    return "input-file";
+  };
+
   const handleFileUploadFinished = (_, file) => {
     /*
     handleFileUploadFinished function
@@ -131,12 +164,12 @@ export default function InputFilesPond(props) {
       - tries to infer based on the file name and extension the file type
         (input file, dictionary, mapping file)
 
-        Purpose:
-        - To update the state uploadedFiles with the file that was uploaded
+    Purpose:
+    - To update the state uploadedFiles with the file that was uploaded
     */
 
     const returnedFileName = JSON.parse(file.serverId).tempFilename;
-    const { filename, fileExtension } = file;
+    const { filename } = file;
 
     if (filename in uploadedFiles) {
       toast.error("File already uploaded");
@@ -144,12 +177,7 @@ export default function InputFilesPond(props) {
       file.abortProcessing();
       return;
     }
-
-    const fileType = filename.includes("dictionary") && fileExtension === "csv"
-      ? "redcap-dictionary"
-      : filename.includes("mapping") && ["yaml", "yml", "json"].includes(fileExtension)
-        ? "mapping-file"
-        : "input-file"
+    const fileType = inferPotentialFileType(file);
 
     setUploadedFiles((prev) => {
       return {

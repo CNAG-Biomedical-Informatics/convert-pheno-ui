@@ -26,6 +26,7 @@ services:
       UID: ${UID}
       GID: ${GID}
       API_SECURITY: ${API_SECURITY}
+      CP_CONTAINER_NAME: convert-pheno
     restart: unless-stopped
     healthcheck:
       test: curl -f http://0.0.0.0:5000/api/curltest
