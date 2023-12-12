@@ -26,10 +26,11 @@ def get_docker_container():
     """
     # TODO: add error handling
     client = docker.from_env()
+    container_name = cfg["CP_CONTAINER_NAME"]
     try:
-        container_obj = client.containers.get("convert-pheno")
+        container_obj = client.containers.get(container_name)
     except docker.errors.NotFound:
-        raise ValueError("Docker container convert-pheno not found")
+        raise ValueError(f"Docker container {container_name} not found")
 
     return container_obj
 

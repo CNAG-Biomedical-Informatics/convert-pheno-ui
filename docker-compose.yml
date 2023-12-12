@@ -26,6 +26,7 @@ services:
       UID: ${UID}
       GID: ${GID}
       API_SECURITY: ${API_SECURITY}
+      CP_CONTAINER_NAME: convert-pheno
     restart: unless-stopped
     healthcheck:
       test: curl -f http://0.0.0.0:5000/api/curltest
@@ -70,6 +71,7 @@ services:
       NODE_ENV: production
       VITE_SECURITY: ${API_SECURITY}
       VITE_API_URL: http://${DOMAIN}:5000/
+      VITE_FILEPOND_TIMEOUT: 7000 # 7 seconds
       VITE_KC_CONFIG: $KC_CONFIG
     restart: unless-stopped
     healthcheck:

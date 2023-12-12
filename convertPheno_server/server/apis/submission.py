@@ -396,6 +396,8 @@ class ConvertFile(Resource):
                 with open(out_dir / file_name_mapping["output_name"]) as file:
                     obj = json.load(file)
             except FileNotFoundError as err:
+                # The most likely reason for this error is that the
+                # convert-pheno container volume is mounted incorrectly
                 print(err)
                 errors = {target_format: "File not found"}
                 update_job_status(job, target_format, "failed")
