@@ -1,4 +1,4 @@
-FROM python:3.10.6-slim-bullseye AS base
+FROM python:3.11.8-slim-bullseye AS base
 ENV PATH /opt/venv/bin:$PATH
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
