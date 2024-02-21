@@ -15,7 +15,7 @@ COPY . .
 RUN pnpm run build
 
 #production environment
-FROM nginx:1.23-alpine
+FROM nginx:1.25.1-alpine
 RUN apk add openssl shadow
 RUN apk add --no-cache npm
 RUN npm install -g vite
