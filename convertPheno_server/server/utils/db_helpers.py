@@ -28,15 +28,15 @@ def get_or_create_user(userid, uuid):
         db.session.add(user)
         db.session.commit()
 
-        for directory in ["UPLOAD", "OUT"]:
-            directory = cfg[f"FLASK_{directory}_DIR"] / uuid
+    for directory in ["UPLOAD", "OUT"]:
+        directory = cfg[f"FLASK_{directory}_DIR"] / uuid
 
-            try:
-                directory.mkdir()
-            except FileExistsError:
-                # TODO
-                # in testing mode return pass otherwise raise error
-                pass
+        try:
+            directory.mkdir()
+        except FileExistsError:
+            # TODO
+            # in testing mode return pass otherwise raise error
+            pass
 
     return user
 
